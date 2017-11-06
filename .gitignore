@@ -12,3 +12,5 @@
 **/BlockGenPrefabs/
 **/BlockGenPrefabs.meta
 **/Xcode/
+**.DS_Store
+**.userprefs

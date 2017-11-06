@@ -29,7 +29,7 @@ namespace PTGame.Blockly
         {
             mVariableNames = variableNames;
             mVariableDatas = variableDatas;
-            mRunner = CoroutineRunner.Instance;
+            mRunner = CoroutineRunner.Create("CodeRunner", true);
         }
 
         public override void Run(Workspace workspace)

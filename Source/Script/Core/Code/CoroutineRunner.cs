@@ -1,15 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using PTGame.Framework;
 
 namespace PTGame.Blockly
 {
     /// <summary>
     /// responsible for simulating coroutines for code commands
     /// </summary>
-    public class CoroutineRunner : PTMonoSingleton<CoroutineRunner>
+    public class CoroutineRunner : MonoBehaviour
     {
+        public static CoroutineRunner Create(string runnerName, bool dontDestroyOnLoad = false)
+        {
+            GameObject runnerObj = new GameObject(runnerName);
+            if (dontDestroyOnLoad)
+                GameObject.DontDestroyOnLoad(runnerObj);
+            return runnerObj.AddComponent<CoroutineRunner>();
+        }
+
         internal struct CoroutineStruct
         {
             internal Coroutine coroutine;
@@ -24,11 +31,10 @@ namespace PTGame.Blockly
 
         private Dictionary<IEnumerator, CoroutineStruct> mCoroutineDict = new Dictionary<IEnumerator, CoroutineStruct>();
 
-        protected override void OnDestroy()
+        protected void OnDestroy()
         {
             //coroutines will be stopped on destroy by Unity
             mCoroutineDict.Clear();
-            base.OnDestroy();
         }
 
         /// <summary>

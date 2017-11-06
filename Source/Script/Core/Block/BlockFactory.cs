@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
-using PTGame.Framework;
 
 namespace PTGame.Blockly
 {
@@ -9,8 +8,14 @@ namespace PTGame.Blockly
     /// collection of block definitions, mutators, block extensions
     /// factory to create a block
     /// </summary>
-    public class BlockFactory : PTSingleton<BlockFactory>
+    public class BlockFactory
     {
+        private static BlockFactory mInstance = null;
+        public static BlockFactory Instance
+        {
+            get { return mInstance ?? (mInstance = new BlockFactory()); }
+        }
+
         private BlockFactory(){}
         
         private Dictionary<string, BlockDefinition> mDefinitions = new Dictionary<string, BlockDefinition>();

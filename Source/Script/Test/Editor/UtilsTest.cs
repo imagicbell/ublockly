@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using ICSharpCode.SharpZipLib.Core;
 using UnityEngine;
 using NUnit.Framework;
-using Tamir.SharpSsh.jsch;
 using UnityEditor.VersionControl;
 
 namespace PTGame.Blockly.Test
