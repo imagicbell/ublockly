@@ -1,0 +1,317 @@
+[
+  {
+    "type": "text",
+    "message0": "\" %1 \"",
+    "args0": [{
+      "type": "field_input",
+      "name": "TEXT",
+      "text": ""
+    }],
+    "output": "String",
+    "colour": "%{BKY_TEXT_HUE}",
+    "helpUrl": "%{BKY_TEXT_TEXT_HELPURL}",
+    "tooltip": "%{BKY_TEXT_TEXT_TOOLTIP}",
+    "extensions": [
+      "text_quotes",
+      "parent_tooltip_when_inline"
+    ]
+  },
+  {
+    "type": "text_join",
+    "message0": "%{BKY_TEXT_JOIN_TITLE_CREATEWITH}",
+    "output": "String",
+    "colour": "%{BKY_TEXT_HUE}",
+    "helpUrl": "%{BKY_TEXT_JOIN_HELPURL}",
+    "tooltip": "%{BKY_TEXT_JOIN_TOOLTIP}",
+    "mutator": "text_join_mutator"
+  },
+  {
+    "type": "text_append",
+    "message0": "%{BKY_TEXT_APPEND_TITLE}",
+    "args0": [{
+      "type": "field_variable",
+      "name": "VAR",
+      "variable": "%{BKY_TEXT_APPEND_VARIABLE}"
+    },
+    {
+      "type": "input_value",
+      "name": "TEXT"
+    }],
+    "previousStatement": null,
+    "nextStatement": null,
+    "colour": "%{BKY_TEXT_HUE}",
+    "extensions": [
+      "text_append_tooltip"
+    ]
+  },
+  {
+    "type": "text_length",
+    "message0": "%{BKY_TEXT_LENGTH_TITLE}",
+    "args0": [
+      {
+        "type": "input_value",
+        "name": "VALUE",
+        "check": ["String", "Array"]
+      }
+    ],
+    "output": "Number",
+    "colour": "%{BKY_TEXT_HUE}",
+    "tooltip": "%{BKY_TEXT_LENGTH_TOOLTIP}",
+    "helpUrl": "%{BKY_TEXT_LENGTH_HELPURL}"
+  },
+  {
+    "type": "text_isEmpty",
+    "message0": "%{BKY_TEXT_ISEMPTY_TITLE}",
+    "args0": [
+      {
+        "type": "input_value",
+        "name": "VALUE",
+        "check": ["String", "Array"]
+      }
+    ],
+    "output": "Boolean",
+    "colour": "%{BKY_TEXT_HUE}",
+    "tooltip": "%{BKY_TEXT_ISEMPTY_TOOLTIP}",
+    "helpUrl": "%{BKY_TEXT_ISEMPTY_HELPURL}"
+  },
+  {
+    "type": "text_indexOf",
+    "message0": "%{BKY_TEXT_INDEXOF_TITLE}",
+    "args0": [
+      {
+        "type": "input_value",
+        "name": "VALUE",
+        "check": "String"
+      },
+      {
+        "type": "field_dropdown",
+        "name": "END",
+        "options": [
+          ["%{BKY_TEXT_INDEXOF_OPERATOR_FIRST}", "FIRST"],
+          ["%{BKY_TEXT_INDEXOF_OPERATOR_LAST}", "LAST" ]
+        ]
+      },
+      {
+        "type": "input_value",
+        "name": "FIND",
+        "check": "String"
+      }
+    ],
+    "output": "Number",
+    "colour": "%{BKY_TEXT_HUE}",
+    "helpUrl": "%{BKY_TEXT_INDEXOF_HELPURL}",
+    "inputsInline": true,
+    "extensions": [
+      "text_indexOf_tooltip"
+    ]
+  },
+  {
+    "type": "text_charAt",
+    "message0": "%{BKY_TEXT_CHARAT_TITLE}",
+    "args0": [
+      {
+        "type":"input_value",
+        "name": "VALUE",
+        "check": "String"
+      },
+      {
+        "type": "field_dropdown",
+        "name": "WHERE",
+        "options": [
+          ["%{BKY_TEXT_CHARAT_FROM_START}", "FROM_START"],
+          ["%{BKY_TEXT_CHARAT_FROM_END}", "FROM_END"],
+          ["%{BKY_TEXT_CHARAT_FIRST}", "FIRST"],
+          ["%{BKY_TEXT_CHARAT_LAST}", "LAST"],
+          ["%{BKY_TEXT_CHARAT_RANDOM}", "RANDOM"]
+        ]
+      },
+      {
+        "type": "input_dummy"
+      },
+      {
+        "type": "input_dummy",
+        "name": "AT"
+      }
+    ],
+    "mutator": "index_at_mutator",
+    "output": "String",
+    "colour": "%{BKY_TEXT_HUE}",
+    "helpUrl": "%{BKY_TEXT_CHARAT_HELPURL}",
+    "inputsInline": true
+  },
+  {
+    "type": "text_getSubstring",
+    "message0": "%{BKY_TEXT_GET_SUBSTRING_INPUT_IN_TEXT}",
+    "args0": [
+      {
+        "type": "input_value",
+        "name": "STRING",
+        "check": "String"
+      },
+      {
+        "type": "field_dropdown",
+        "name": "WHERE1",
+        "options": [
+          ["%{BKY_TEXT_GET_SUBSTRING_START_FROM_START}", "FROM_START" ],
+          ["%{BKY_TEXT_GET_SUBSTRING_START_FROM_END}", "FROM_END" ],
+          ["%{BKY_TEXT_GET_SUBSTRING_START_FIRST}", "FIRST" ]
+        ]
+      },
+      {
+        "type": "input_dummy"
+      },
+      {
+        "type": "input_dummy",
+        "name": "AT1"
+      },
+      {
+        "type": "field_dropdown",
+        "name": "WHERE2",
+        "options": [
+          ["%{BKY_TEXT_GET_SUBSTRING_START_FROM_START}", "FROM_START" ],
+          ["%{BKY_TEXT_GET_SUBSTRING_START_FROM_END}", "FROM_END" ],
+          ["%{BKY_TEXT_GET_SUBSTRING_START_LAST}", "LAST" ]
+        ]
+      },
+      {
+        "type": "input_dummy"
+      },
+      {
+        "type": "input_dummy",
+        "name": "AT2"
+      }
+    ],
+    "mutator": "index_at_mutator",
+    "output": "String",
+    "colour": "%{BKY_TEXT_HUE}",
+    "helpUrl": "%{BKY_TEXT_GET_SUBSTRING_HELPURL}",
+    "inputsInline": true,
+    "tooltip": "%{BKY_TEXT_GET_SUBSTRING_TOOLTIP}"
+  },
+  {
+    "type": "text_changeCase",
+    "message0": "%1 %2",
+    "args0": [
+      {
+        "type": "field_dropdown",
+        "name": "CASE",
+        "options": [
+          ["%{BKY_TEXT_CHANGECASE_OPERATOR_UPPERCASE}", "UPPERCASE"],
+          ["%{BKY_TEXT_CHANGECASE_OPERATOR_LOWERCASE}", "LOWERCASE"],
+          ["%{BKY_TEXT_CHANGECASE_OPERATOR_TITLECASE}", "TITLECASE"]
+        ]
+      },
+      {
+        "type":"input_value",
+        "name": "TEXT",
+        "check": "String"
+      }
+    ],
+    "output": "String",
+    "colour": "%{BKY_TEXT_HUE}",
+    "helpUrl": "%{BKY_TEXT_CHANGECASE_HELPURL}",
+    "tooltip": "%{BKY_TEXT_CHANGECASE_TOOLTIP}"
+  },
+  {
+    "type": "text_trim",
+    "message0": "%1 %2",
+    "args0": [
+      {
+        "type": "field_dropdown",
+        "name": "MODE",
+        "options": [
+          ["%{BKY_TEXT_TRIM_OPERATOR_BOTH}", "BOTH"],
+          ["%{BKY_TEXT_TRIM_OPERATOR_LEFT}", "LEFT"],
+          ["%{BKY_TEXT_TRIM_OPERATOR_RIGHT}", "RIGHT"]
+        ]
+      },
+      {
+        "type":"input_value",
+        "name": "TEXT",
+        "check": "String"
+      }
+    ],
+    "output": "String",
+    "colour": "%{BKY_TEXT_HUE}",
+    "helpUrl": "%{BKY_TEXT_TRIM_HELPURL}",
+    "tooltip": "%{BKY_TEXT_TRIM_TOOLTIP}"
+  },
+  {
+    "type": "text_print",
+    "message0": "%{BKY_TEXT_PRINT_TITLE}",
+    "args0": [
+      {
+        "type": "input_value",
+        "name": "TEXT"
+      }
+    ],
+    "previousStatement": null,
+    "nextStatement": null,
+    "colour": "%{BKY_TEXT_HUE}",
+    "tooltip":"%{BKY_TEXT_PRINT_TOOLTIP}",
+    "helpUrl":"%{BKY_TEXT_PRINT_HELPURL}"
+  },
+  {
+    "type": "text_count",
+    "message0": "%{BKY_TEXT_COUNT_MESSAGE0}",
+    "args0": [
+      {
+        "type": "input_value",
+        "name": "SUB",
+        "check": "String"
+      },
+      {
+        "type": "input_value",
+        "name": "TEXT",
+        "check": "String"
+      }
+    ],
+    "output": "Number",
+    "inputsInline": true,
+    "colour": "%{BKY_TEXT_HUE}",
+    "tooltip":"%{BKY_TEXT_COUNT_TOOLTIP}",
+    "helpUrl":"%{BKY_TEXT_COUNT_HELPURL}"
+  },
+  {
+    "type": "text_replace",
+    "message0": "%{BKY_TEXT_REPLACE_MESSAGE0}",
+    "args0": [
+      {
+        "type": "input_value",
+        "name": "FROM",
+        "check": "String"
+      },
+      {
+        "type": "input_value",
+        "name": "TO",
+        "check": "String"
+      },
+      {
+        "type": "input_value",
+        "name": "TEXT",
+        "check": "String"
+      }
+    ],
+    "output": "String",
+    "inputsInline": true,
+    "colour": "%{BKY_TEXT_HUE}",
+    "tooltip":"%{BKY_TEXT_REPLACE_TOOLTIP}",
+    "helpUrl":"%{BKY_TEXT_REPLACE_HELPURL}"
+  },
+  {
+    "type": "text_reverse",
+    "message0": "%{BKY_TEXT_REVERSE_MESSAGE0}",
+    "args0": [
+      {
+        "type": "input_value",
+        "name": "TEXT",
+        "check": "String"
+      }
+    ],
+    "output": "String",
+    "inputsInline": true,
+    "colour": "%{BKY_TEXT_HUE}",
+    "tooltip":"%{BKY_TEXT_REVERSE_TOOLTIP}",
+    "helpUrl":"%{BKY_TEXT_REVERSE_HELPURL}"
+  }
+]

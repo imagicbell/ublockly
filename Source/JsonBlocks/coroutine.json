@@ -1,0 +1,28 @@
+[
+    {
+      "type": "coroutine_time_wait",
+      "message0": "%{BKY_COROUTINE_WAIT_TITLE} %1 %2",
+      "args0": [
+        {
+          "type": "input_value",
+          "name": "TIME",
+          "check": "Number"
+        },
+        {
+          "type": "field_dropdown",
+          "name": "UNIT",
+          "options": [
+            ["%{BKY_TIME_UNIT_MILLISECOND}", "MILLISECOND"],
+            ["%{BKY_TIME_UNIT_SECONDS}", "SECONDS"],
+            ["%{BKY_TIME_UNIT_MINUTES}", "MINUTES"],
+            ["%{BKY_TIME_UNIT_TOO_HIGH}", "TOOHIGH"]
+          ]
+        }
+      ],
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": "%{BKY_COLOUR_HUE}",
+      "helpUrl": "%{BKY_COROUTINE_WAIT_HELPURL}",
+      "tooltip": "%{BKY_COROUTINE_WAIT_TOOLTIP}"
+    }
+]

@@ -1,14 +1,14 @@
-*/Temp/
-*/Library/
-*/obj/
+**/Temp/
+**/Library/
+**/obj/
 **.csproj
-.idea/
+**.idea/
 **.sln
 
 **/ProjectVersion.txt
 
-*/PersistentPath/
-*/PersistentPath.meta
-*/BlockGenPrefabs/
-*/BlockGenPrefabs.meta
-*/Xcode/
+**/PersistentPath/
+**/PersistentPath.meta
+**/BlockGenPrefabs/
+**/BlockGenPrefabs.meta
+**/Xcode/

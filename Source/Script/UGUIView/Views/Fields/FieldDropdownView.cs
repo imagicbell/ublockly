@@ -1,0 +1,84 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace PTGame.Blockly.UGUI
+{
+    //todo: to adjust dropdown list gameobject size according to options' max size
+    public class FieldDropdownView : FieldView
+    {
+        [SerializeField] protected Dropdown m_Dropdown;
+
+        protected FieldDropdown mFieldDropdown
+        {
+            get { return mField as FieldDropdown; }
+        }
+
+        /// <summary>
+        /// false: value updated from UI, need to cast event to model
+        /// true: value updated from model, no need to cast event to model
+        /// </summary>
+        protected bool mUpdateFromModel = false;
+        
+        protected float mHorizontalMargin;
+        
+        protected override void SetComponents()
+        {
+            if (m_Dropdown == null)
+                m_Dropdown = GetComponentInChildren<Dropdown>();
+
+            mHorizontalMargin = m_Dropdown.captionText.rectTransform.offsetMin.x - m_Dropdown.captionText.rectTransform.offsetMax.x;
+        }
+
+        protected override void OnBindModel()
+        {
+            m_Dropdown.options.Clear();
+            List<string> optionTexts = mFieldDropdown.GetOptions().Select(o => o.Text).ToList();
+            m_Dropdown.AddOptions(optionTexts);
+            string fieldText = mFieldDropdown.GetText();
+            int option = optionTexts.FindIndex(o => o.Equals(mFieldDropdown.GetText()));
+            if (option != -1)
+                m_Dropdown.value = option;
+        }
+
+        protected override void OnUnBindModel()
+        {
+        }
+
+        protected override void RegisterTouchEvent()
+        {
+            m_Dropdown.onValueChanged.AddListener(newOption =>
+            {
+                if (mUpdateFromModel)
+                {
+                    mUpdateFromModel = false;
+                    return;
+                }
+                mFieldDropdown.OnItemSelected(newOption);
+            });
+        }
+
+        protected override void OnValueChanged(string newValue)
+        {
+            int newIndex = m_Dropdown.options.FindIndex(o => o.text.Equals(newValue));
+            if (newIndex < 0) return;
+
+            if (m_Dropdown.value != newIndex)
+            {
+                mUpdateFromModel = true;
+                m_Dropdown.value = newIndex;
+            }
+            UpdateLayout(XY);    
+        }
+
+        protected override Vector2 CalculateSize()
+        {
+            float width = m_Dropdown.captionText.CalculateTextWidth(m_Dropdown.options[m_Dropdown.value].text);
+            width += mHorizontalMargin;
+            
+            Debug.LogFormat(">>>>> CalculateSize-Dropdown: text: {0}, width: {1}", m_Dropdown.options[m_Dropdown.value].text, width);
+            return new Vector2(width, BlockViewSettings.Get().ContentHeight);
+        }
+    }
+}

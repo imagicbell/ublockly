@@ -1,0 +1,479 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+
+namespace PTGame.Blockly.UGUI
+{
+    public class BlockView : BaseView, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
+    {
+        public override ViewType Type
+        {
+            get { return ViewType.Block; }
+        }
+        
+        public string BlockType
+        {
+            get { return mBlock.Type; }
+        }
+        
+        private Block mBlock;
+        public Block Block { get { return mBlock; } }
+
+        private bool mInToolbox;
+        public bool InToolbox
+        {
+            get { return mInToolbox; }
+            set { mInToolbox = value; }
+        }
+
+        private MemorySafeBlockObserver mBlockObserver;
+        private CustomMeshImage mBgImage;
+
+        public override void InitComponents()
+        {
+            base.InitComponents();
+            mBgImage = GetComponent<CustomMeshImage>();
+            if (mBgImage == null)
+                throw new Exception("the background image of BlockView must be a \"CustomMeshImage\"");
+        }
+
+        public void BindModel(Block block)
+        {
+            if (mBlock == block) return;
+            if (mBlock != null) UnBindModel();
+
+            mBlock = block;
+            BlocklyUI.WorkspaceView.AddBlockView(this);
+
+            mBlockObserver = new MemorySafeBlockObserver(this);
+            mBlock.AddObserver(mBlockObserver);
+
+            //bind input and connections
+            int inputIndex = 0;
+            foreach (BaseView view in Childs)
+            {
+                if (view.Type == ViewType.Connection)
+                {
+                    ConnectionView conView = view as ConnectionView;
+                    conView.BindModel(mBlock.GetFirstClassConnection((int) conView.ConnectionType));
+                }
+                else if (view.Type == ViewType.LineGroup)
+                {
+                    LineGroupView groupView = view as LineGroupView;
+                    foreach (var inputView in groupView.Childs)
+                    {
+                        ((InputView) inputView).BindModel(mBlock.InputList[inputIndex]);
+                        inputIndex++;
+                    }
+                }
+            }
+
+            RegisterUIEvents();
+        }
+
+        public void UnBindModel()
+        {
+            //unbind input and connections
+            int inputIndex = 0;
+            foreach (BaseView view in Childs)
+            {
+                if (view.Type == ViewType.Connection)
+                {
+                    ((ConnectionView) view).UnBindModel();
+                }
+                else if (view.Type == ViewType.LineGroup)
+                {
+                    LineGroupView groupView = view as LineGroupView;
+                    foreach (var inputView in groupView.Childs)
+                    {
+                        ((InputView) inputView).UnBindModel();
+                        inputIndex++;
+                    }
+                }
+            }
+            
+            BlocklyUI.WorkspaceView.RemoveBlockView(this);
+            mBlock.RemoveObserver(mBlockObserver);
+            mBlock = null;
+        }
+
+        /// <summary>
+        /// Dispose the block model and block view
+        /// </summary>
+        public void Dispose()
+        {
+            Block model = mBlock;
+            UnBindModel();
+            GameObject.Destroy(this.gameObject);
+            model.Dispose();
+        }
+
+        #region UI Update
+
+        public override Vector2 ChildStartXY
+        {
+            get
+            {
+                if (Childs[0].Type == ViewType.Connection)
+                {
+                    // connection point' start xy is specified
+                    ConnectionView.ConType conType = ((ConnectionView) Childs[0]).ConnectionType;
+                    switch (conType)
+                    {
+                        case ConnectionView.ConType.OUTPUT_VALUE:
+                            return BlockViewSettings.Get().ValueConnectPointRect.position;
+
+                        case ConnectionView.ConType.PREVIOUS_STATEMENT:
+                        case ConnectionView.ConType.NEXT_STATEMENT:
+                            return BlockViewSettings.Get().StatementConnectPointRect.position;
+                    }
+                }
+                return base.ChildStartXY;
+            }
+        }
+
+        protected override Vector2 CalculateSize()
+        {
+            //accumulate all child lineGroups' size
+            //collect all child lineGroups' vertices for custom drawing
+            Vector2 oriSize = Size;
+            Vector2 size = Vector2.zero;
+            List<Vector4> dimensions = new List<Vector4>();
+            for (int i = 0; i < Childs.Count; i++)
+            {
+                LineGroupView groupView = Childs[i] as LineGroupView;
+                if (groupView != null)
+                {
+                    size.x = Mathf.Max(size.x, groupView.Size.x);
+                    size.y += groupView.Size.y;
+                    if (i < Childs.Count - 1)
+                        size.y += BlockViewSettings.Get().ContentSpace.y;
+                    
+                    //linegroup's anchor and pivot both are top-left
+                    dimensions.Add(new Vector4(groupView.XY.x, groupView.XY.y - groupView.Height, groupView.XY.x + groupView.Width, groupView.XY.y));
+                }
+            }
+            
+            //update image mesh
+            mBgImage.SetDrawDimensions(dimensions.ToArray());
+            return size;
+        }
+
+        protected internal override void OnXYUpdated()
+        {
+            if (InToolbox) return;
+
+            mBlock.XY = XY;
+            //update all connection's location
+            foreach (var view in Childs)
+            {
+                if (view.Type == ViewType.Connection)
+                {
+                    view.OnXYUpdated();
+                }
+                else if (view.Type == ViewType.LineGroup)
+                {
+                    LineGroupView groupView = view as LineGroupView;
+                    foreach (var inputView in groupView.Childs)
+                    {
+                        ConnectionInputView conInputView = ((InputView) inputView).GetConnectionView();
+                        if (conInputView != null)
+                            conInputView.OnXYUpdated();
+                    }
+                }
+            }
+        }
+        
+        /// <summary>
+        /// Build the layout of the block view from its topmost child
+        /// </summary>
+        public void BuildLayout()
+        {
+            BaseView startView = this.GetLineGroup(0).GetTopmostChild();
+            startView.UpdateLayout(startView.HeaderXY);
+        }
+        
+        #endregion
+
+        #region UI Interactions
+        
+        private void RegisterUIEvents()
+        {
+            //show mutator editor
+            var mutatorEntry = ViewTransform.FindChild("Mutator_entry");
+            if (mutatorEntry != null)
+            {
+                mutatorEntry.GetComponent<Button>().onClick.AddListener(() =>
+                    DialogFactory.Get().CreateMutatorDialog(mBlock)
+                );
+            }
+        }
+
+        /// <summary>
+        /// put the blockview under the CodingContent, not in the menu, or child of other block views
+        /// </summary>
+        public void SetOrphan()
+        {
+            if (InToolbox)
+                InToolbox = false;
+            ViewTransform.SetParent(BlocklyUI.WorkspaceView.CodingArea);
+            ViewTransform.SetAsLastSibling();
+        }
+
+        private Vector2 mTouchOffset;
+        // closest connection found when dragging
+        private Connection mClosestConnection = null;
+        // local connection opposite to closest connection found
+        private Connection mAttachingConnection = null;
+        
+        public void OnBeginDrag(PointerEventData eventData)
+        {
+            mBlock.UnPlug();
+            SetOrphan();
+            
+            //record the touch offset relative to the block transform
+            Vector2 localPos;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform) ViewTransform.parent, UnityEngine.Input.mousePosition,
+                                                                    BlocklyUI.UICanvas.worldCamera, out localPos);
+            mTouchOffset = XY - localPos;
+        }
+        
+        public void OnDrag(PointerEventData eventData)
+        {
+            Vector2 localPos;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform) ViewTransform.parent, UnityEngine.Input.mousePosition,
+                                                                    BlocklyUI.UICanvas.worldCamera, out localPos);
+            XY = localPos + mTouchOffset;
+
+            // find the closest connection
+            var oldClosest = mClosestConnection;
+            mClosestConnection = null;
+            mAttachingConnection = null;
+            int minRadius = BlockViewSettings.Get().ConnectSearchRange;
+            for (int i = 0; i < Childs.Count; i++)
+            {
+                if (Childs[i].Type != ViewType.Connection)
+                    break;
+                if (((ConnectionView) Childs[i]).SearchClosest(minRadius, ref mClosestConnection, ref minRadius))
+                {
+                    mAttachingConnection = ((ConnectionView) Childs[i]).Connection;
+                }
+            }
+
+            if (oldClosest != mClosestConnection && oldClosest != null)
+                oldClosest.FireUpdate(Connection.UpdateState.UnHighlight);
+
+            if (oldClosest != mClosestConnection && mClosestConnection != null)
+            {
+                mClosestConnection.FireUpdate(Connection.UpdateState.Highlight);
+            }
+            
+            // check over bin
+            BlocklyUI.WorkspaceView.OverBin();
+        }
+
+        public void OnEndDrag(PointerEventData eventData)
+        {
+            if (mClosestConnection != null)
+            {
+                // attach to closest connection
+                mClosestConnection.Connect(mAttachingConnection);
+                mClosestConnection.FireUpdate(Connection.UpdateState.UnHighlight);
+            }
+            else if (BlocklyUI.WorkspaceView.OverBin())
+            {
+                // check dispose this view
+                Dispose();
+            }
+            BlocklyUI.WorkspaceView.ResetBin();
+        }
+        
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            //todo: background outline
+            if (!eventData.dragging)
+                BlocklyUI.WorkspaceView.CloneBlockView(this, XYInCodingArea + BlockViewSettings.Get().BumpAwayOffset);
+        }
+        
+        #endregion
+
+        #region Block State Update
+
+        /// <summary>
+        /// Called when the underlying block has been updated.
+        /// </summary>
+        protected void OnBlockUpdated(Block.UpdateState updateState)
+        {
+            switch (updateState)
+            {
+                case Block.UpdateState.Inputs:
+                {
+                    //rebuild block view's input views
+                    BlockViewBuilder.BuildInputViews(mBlock, this);
+
+                    //reupdate layout
+                    BuildLayout();
+                    
+                    //call this once to update the connection DB
+                    this.OnXYUpdated();
+                    
+                    break;
+                }
+            }
+        }
+
+        private class MemorySafeBlockObserver : IObserver<int>
+        {
+            private BlockView mViewRef;
+
+            public MemorySafeBlockObserver(BlockView viewRef)
+            {
+                mViewRef = viewRef;
+            }
+
+            public void OnUpdated(object block, int updateStateMask)
+            {
+                if (mViewRef == null || mViewRef.ViewTransform == null || mViewRef.Block != block)
+                {
+                    ((Block) block).RemoveObserver(this);
+                }
+                else
+                {
+                    foreach (Block.UpdateState state in Enum.GetValues(typeof(Block.UpdateState)))
+                    {
+                        if (((1 << (int) state) & updateStateMask) != 0)
+                        {
+                            mViewRef.OnBlockUpdated(state);
+                        }
+                    }
+                }
+            }
+        }
+
+        #endregion
+        
+        #region Child View Getter
+        
+        /// <summary>
+        /// Get the connection view of connectionType
+        /// output, previous, next connection
+        /// </summary>
+        public ConnectionView GetConnectionView(ConnectionView.ConType connectionType)
+        {
+            int i = 0;
+            while (i < Childs.Count)
+            {
+                ConnectionView view = Childs[i] as ConnectionView;
+                if (view == null) break;
+                if (view.ConnectionType == connectionType)
+                    return view;
+                i++;
+            }
+            //Debug.LogFormat("<color=red>Can't find the {0} connection view in block view of {1}.</color>", connectionType, BlockType);
+            return null;
+        }
+
+        /// <summary>
+        /// Get the connection view of input
+        /// </summary>
+        public ConnectionView GetInputConnectionView(int inputIndex)
+        {
+            InputView inputView = GetInputView(inputIndex);
+            if (inputView != null)
+                return inputView.GetConnectionView();
+            return null;
+        }
+
+        /// <summary>
+        /// Get the index's lineGroup child view, index start from 0
+        /// </summary>
+        public LineGroupView GetLineGroup(int index)
+        {
+            int i = 0;
+            while (i < Childs.Count)
+            {
+                LineGroupView view = Childs[i] as LineGroupView;
+                if (view != null)
+                {
+                    if (i + index < Childs.Count)
+                        return Childs[i + index] as LineGroupView;
+                    break;
+                }
+                i++;
+            }
+            //Debug.LogFormat("<color=red>Can't find the {0}th lineGroup in block view of {1}.</color>", index, BlockType);
+            return null;
+        }
+
+        /// <summary>
+        /// Get the index's input view, index start from 0
+        /// </summary>
+        public InputView GetInputView(int index)
+        {
+            int inputCounter = 0;
+            int groupCounter = 0;
+            while (groupCounter < Childs.Count)
+            {
+                LineGroupView view = Childs[groupCounter] as LineGroupView;
+                groupCounter++;
+                if (view == null) continue;
+
+                if (inputCounter + view.Childs.Count > index)
+                    return view.Childs[index - inputCounter] as InputView;
+
+                inputCounter += view.Childs.Count;
+            }
+            //Debug.LogFormat("<color=red>Can't find the {0}th input view in block view of {1}.</color>", index, BlockType);
+            return null;
+        }
+
+        public List<InputView> GetInputViews()
+        {
+            List<InputView> inputViews = new List<InputView>();
+            int i = 0;
+            while (i < Childs.Count)
+            {
+                LineGroupView view = Childs[i] as LineGroupView;
+                if (view != null && view.HasChild())
+                    inputViews.AddRange(view.Childs.Select(v => v as InputView));
+                i++;
+            }
+            return inputViews;
+        }
+
+        /// <summary>
+        /// Get the index's field view, index start from 0
+        /// </summary>
+        public FieldView GetFieldView(int index)
+        {
+            int fieldCounter = 0;
+            int groupCounter = 0;
+            while (groupCounter < Childs.Count)
+            {
+                LineGroupView groupView = Childs[groupCounter] as LineGroupView;
+                groupCounter++;
+                if (groupView == null) continue;
+
+                int inputCounter = 0;
+                while (inputCounter < groupView.Childs.Count)
+                {
+                    InputView inputView = groupView.Childs[inputCounter] as InputView;
+                    //the last child view of inputView is ConnectionInputView
+                    if (fieldCounter + inputView.Childs.Count - 1 > index)
+                        return inputView.Childs[index - fieldCounter] as FieldView;
+
+                    fieldCounter += inputView.Childs.Count - 1;
+                    inputCounter++;
+                }
+            }
+            
+            //Debug.LogFormat("<color=red>Can't find the {0}th field view in block view of {1}.</color>", index, BlockType);
+            return null;
+        }
+        
+        #endregion
+    }
+}
