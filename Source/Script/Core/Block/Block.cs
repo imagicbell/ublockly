@@ -10,11 +10,11 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 using Newtonsoft.Json.Linq;
-using PTGame.Blockly;
+using UBlockly;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace PTGame.Blockly
+namespace UBlockly
 {
     /***************************
      hierarchy of block:
@@ -796,8 +796,8 @@ namespace PTGame.Blockly
             // Not defined explicitly. Figure out what would look best.
             for (int i = 1; i < InputList.Count; i++)
             {
-                if (InputList[i - 1].Type == PTGame.Blockly.Blockly.DUMMY_INPUT &&
-                    InputList[i].Type == PTGame.Blockly.Blockly.DUMMY_INPUT)
+                if (InputList[i - 1].Type == UBlockly.DUMMY_INPUT &&
+                    InputList[i].Type == UBlockly.DUMMY_INPUT)
                 {
                     // Two dummy inputs in a row. Don't inline them.
                     return false;
@@ -805,8 +805,8 @@ namespace PTGame.Blockly
             }
             for (int i = 1; i < InputList.Count; i++)
             {
-                if (InputList[i - 1].Type == PTGame.Blockly.Blockly.INPUT_VALUE &&
-                    InputList[i].Type == PTGame.Blockly.Blockly.DUMMY_INPUT)
+                if (InputList[i - 1].Type == UBlockly.INPUT_VALUE &&
+                    InputList[i].Type == UBlockly.DUMMY_INPUT)
                 {
                     // Dummy input after a value inpput . Inline them.
                     return true;

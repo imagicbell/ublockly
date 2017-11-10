@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PTGame.Blockly
+namespace UBlockly
 {
     public partial class Blockly
     {
@@ -23,8 +23,10 @@ namespace PTGame.Blockly
             {"VARIABLES_HUE", "330"},
             /// {{Notranslate}} Hue value for all procedure blocks.
             {"PROCEDURES_HUE", "290"},
-            {"COROUTINE_HUE", "80"},
+            {"COROUTINE_HUE", "140"},
             {"UNITTEST_HUE", "100"},
+            {"UICLICK_HUE", "240"},
+            {"UIINPUT_HUE", "50"},
 
             /// default name - A simple, general default name for a variable, preferably short.
             /// For more context, see
@@ -1160,8 +1162,7 @@ namespace PTGame.Blockly
             
 /**********************Coroutine define***/            
             {"COROUTINE_WAIT_TITLE", "wait for"},
-            {"COROUTINE_WAIT_TOOLTIP", ""},
-            {"COROUTINE_WAIT_HELPURL", ""},
+            {"COROUTINE_FRAME", "frame"},
             
             {"TIME_UNIT_MILLISECOND", "millisecond"},
             {"TIME_UNIT_SECONDS", "second"},

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace PTGame.Blockly
+namespace UBlockly
 {
     public static class FieldFactory
     {
@@ -49,7 +49,9 @@ namespace PTGame.Blockly
                 }
                 case "field_dropdown":
                 {
-                    field = new FieldDropdown(fieldName, json["options"] as JArray);
+                    field = new FieldDropdown(fieldName);
+                    if (json.JsonDataContainsKey("options"))
+                        ((FieldDropdown) field).SetOptions(json["options"] as JArray);
                     break;
                 }
                 case "field_number":

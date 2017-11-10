@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace PTGame.Blockly.UGUI
+namespace UBlockly.UGUI
 {
     /// <summary>
     /// Node to connect output, previous, next statement to other blocks

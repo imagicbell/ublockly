@@ -4,11 +4,11 @@
  * Functions for generating c# code for blocks.
 ****************************************************************************/
 
-namespace PTGame.Blockly
+namespace UBlockly
 {
     public partial class CSharpGenerator 
     {
-        [CodeGenerator(BlockType = "coroutine_time_wait")]
+        [CodeGenerator(BlockType = "coroutine_wait_time")]
         private string Time_Wait(Block block)
         {
             string time = CSharp.Generator.ValueToCode(block, "TIME", CSharp.ORDER_NONE, "0");

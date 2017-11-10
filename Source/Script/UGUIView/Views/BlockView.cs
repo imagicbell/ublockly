@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace PTGame.Blockly.UGUI
+namespace UBlockly.UGUI
 {
     public class BlockView : BaseView, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
     {
@@ -207,7 +207,7 @@ namespace PTGame.Blockly.UGUI
             if (mutatorEntry != null)
             {
                 mutatorEntry.GetComponent<Button>().onClick.AddListener(() =>
-                    DialogFactory.Get().CreateMutatorDialog(mBlock)
+                    DialogFactory.CreateMutatorDialog(mBlock)
                 );
             }
         }

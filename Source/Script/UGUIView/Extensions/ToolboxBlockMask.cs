@@ -2,7 +2,7 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace PTGame.Blockly.UGUI
+namespace UBlockly.UGUI
 {
     public class ToolboxBlockMask : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {

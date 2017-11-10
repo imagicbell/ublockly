@@ -2,79 +2,41 @@
 using System.Linq;
 using UnityEngine;
 
-namespace PTGame.Blockly.UGUI
+namespace UBlockly.UGUI
 {
-    [CreateAssetMenu(menuName = "PTBlockly/DialogFactory", fileName = "DialogFactory")]
-    public class DialogFactory : ScriptableObject
+    public static class DialogFactory
     {
-        [Serializable]
-        public class PrefabInfo
+        public static BaseDialog CreateDialog(string dialogId, Transform parent = null)
         {
-            public string Id;
-            public GameObject Prefab;
-        }
-
-        [SerializeField] private PrefabInfo[] m_Dialogs;
-        [SerializeField] private PrefabInfo[] m_MutatorDialogs;
-
-        public BaseDialog CreateDialog(string dialogId, Transform parent = null)
-        {
-            if (m_Dialogs == null)
-                return null;
+            GameObject prefab = BlockResMgr.Get().LoadDialogPrefab(dialogId);
+            if (prefab == null)
+                throw new Exception("Can\'t find dialog prefab for " + dialogId + ", Please ensure you configure it in \"BlockResSettings\"");
 
             if (parent == null)
                 parent = BlocklyUI.UICanvas.transform;
             
-            foreach (PrefabInfo info in m_Dialogs)
-            {
-                if (info.Id.Equals(dialogId))
-                {
-                    GameObject dialogObj = GameObject.Instantiate(info.Prefab, parent, false);
-                    BaseDialog dialog = dialogObj.GetComponent<BaseDialog>();
-                    dialog.Init();
-                    return dialog;
-                }       
-            }
-            return null;
+            GameObject dialogObj = GameObject.Instantiate(prefab, parent, false);
+            BaseDialog dialog = dialogObj.GetComponent<BaseDialog>();
+            dialog.Init();
+            return dialog;
         }
         
-        public BaseDialog CreateMutatorDialog(Block block, Transform parent = null)
+        public static BaseDialog CreateMutatorDialog(Block block, Transform parent = null)
         {
-            if (m_MutatorDialogs == null)
-                return null;
             if (block.Mutator == null)
                 return null;
             
+            GameObject prefab = BlockResMgr.Get().LoadDialogPrefab(block.Mutator.MutatorId);
+            if (prefab == null)
+                throw new Exception("Can\'t find dialog prefab for " + block.Mutator.MutatorId + ", Please ensure you configure it in \"BlockResSettings\"");
+            
             if (parent == null)
                 parent = BlocklyUI.UICanvas.transform;
-
-            foreach (PrefabInfo info in m_MutatorDialogs)
-            {
-                if (info.Id.Equals(block.Mutator.MutatorId))
-                {
-                    GameObject dialogObj = GameObject.Instantiate(info.Prefab, parent, false);
-                    BaseDialog dialog = dialogObj.GetComponent<BaseDialog>();
-                    dialog.Init(block);
-                    return dialog;
-                }       
-            }
-            return null;
-        }
-        
-        private static DialogFactory mInstance = null; 
-        public static DialogFactory Get()
-        {
-            if (mInstance == null)
-                mInstance = Resources.Load<DialogFactory>("DialogFactory");
-            if (mInstance == null)
-                throw new Exception("There is no \"DialogFactory\" ScriptObject under Resources folder");
-                
-            return mInstance;
-        }
-
-        public static void Dispose()
-        {
-            mInstance = null;
+            
+            GameObject dialogObj = GameObject.Instantiate(prefab, parent, false);
+            BaseDialog dialog = dialogObj.GetComponent<BaseDialog>();
+            dialog.Init(block);
+            return dialog;
         }
     }
 }

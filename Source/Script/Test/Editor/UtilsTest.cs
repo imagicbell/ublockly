@@ -3,7 +3,7 @@ using UnityEngine;
 using NUnit.Framework;
 using UnityEditor.VersionControl;
 
-namespace PTGame.Blockly.Test
+namespace UBlockly.Test
 {
 	public class UtilsTest
 	{

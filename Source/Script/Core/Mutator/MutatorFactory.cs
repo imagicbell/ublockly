@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PTGame.Blockly
+namespace UBlockly
 {
     public static class MutatorFactory
     {
@@ -17,6 +17,7 @@ namespace PTGame.Blockly
             {"lists_create_with_item_mutator", typeof(ItemListMutator)},
             {"math_is_divisibleby_mutator", typeof(MathIsDivisibleByMutator)},
             {"index_at_mutator", typeof(IndexAtMutator)},
+            {"dropdown_options_mutator", typeof(DropdownOptionsMutator)},
             
             {"procedures_defnoreturn_mutator", typeof(ProcedureDefinitionMutator)},
             {"procedures_defreturn_mutator", typeof(ProcedureDefinitionMutator)},

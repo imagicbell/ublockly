@@ -1,4 +1,4 @@
-﻿namespace PTGame.Blockly
+﻿namespace UBlockly
 {
     public static class MsgDefine
     {

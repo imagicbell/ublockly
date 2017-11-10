@@ -3,31 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace PTGame.Blockly.UGUI
+namespace UBlockly.UGUI
 {
     public class ToolboxView : MonoBehaviour
     {
-        [SerializeField] private Button m_HideBtn;
-        [SerializeField] private GameObject m_MenuItemPrefab;
-        [SerializeField] private RectTransform m_MenuListContent;
-        [SerializeField] private GameObject m_BlockScrollList;
-        [SerializeField] private GameObject m_BlockContentPrefab;
+        [SerializeField] protected Button m_HideBtn;
+        [SerializeField] protected GameObject m_MenuItemPrefab;
+        [SerializeField] protected RectTransform m_MenuListContent;
+        [SerializeField] protected GameObject m_BlockScrollList;
+        [SerializeField] protected GameObject m_BlockContentPrefab;
 
         /// <summary>
         /// the current selected block category name
         /// </summary>
-        private string mSelectedMenu;
+        protected string mSelectedMenu;
 
         /// <summary>
         /// different scroll content for different block category
         /// </summary>
-        private Dictionary<string, GameObject> mBlockContents = new Dictionary<string, GameObject>();
+        protected Dictionary<string, GameObject> mBlockContents = new Dictionary<string, GameObject>();
         /// <summary>
         /// different toggle item for different block category
         /// </summary>
-        private Dictionary<string, Toggle> mMenuList = new Dictionary<string, Toggle>();
+        protected Dictionary<string, Toggle> mMenuList = new Dictionary<string, Toggle>();
 
-        private Workspace mWorkspace;
+        protected Workspace mWorkspace;
         
         /// <summary>
         /// Call on start, build toolbox from workspace model data
@@ -38,39 +38,31 @@ namespace PTGame.Blockly.UGUI
             mWorkspace.VariableMap.AddObserver(new VariableObserver());
             mWorkspace.ProcedureDB.AddObserver(new ProcedureObserver());
             
-            Dictionary<string, List<string>> categories = BlockFactory.Instance.GetCategories();
-            foreach (var categoryName in categories.Keys)
-            {
-                GameObject menuItem = GameObject.Instantiate(m_MenuItemPrefab, m_MenuListContent, false);
-                menuItem.name = categoryName;
-                menuItem.GetComponentInChildren<Text>().text = categoryName.ToUpperInvariant();
-                Image[] images = menuItem.GetComponentsInChildren<Image>();
-                for (int i = 0; i < images.Length; i++)
-                {
-                    try
-                    {
-                        string colorHue = Blockly.Msg[categoryName.ToUpper() + "_HUE"];
-                        images[i].color = Color.HSVToRGB(int.Parse(colorHue) / 360f, 1, 1);
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.LogErrorFormat("Color {0}_HUE is not defined.", categoryName.ToUpper());
-                        throw;
-                    }
-                }
-                menuItem.SetActive(true);
-                
-                Toggle toggle = menuItem.GetComponent<Toggle>();
-                toggle.onValueChanged.AddListener((selected) =>
-                {
-                    if (selected)
-                        SelectBlockMenu(menuItem.name);
-                });
-                mMenuList[categoryName] = toggle;
-            }
+            BuildMenu();
 
             m_HideBtn.gameObject.SetActive(false);
             m_HideBtn.onClick.AddListener(HideBlockMenu);
+        }
+
+        protected void NewMenuItem(string menuName, Color color)
+        {
+            GameObject menuItem = GameObject.Instantiate(m_MenuItemPrefab, m_MenuListContent, false);
+            menuItem.name = menuName;
+            menuItem.GetComponentInChildren<Text>().text = menuName.ToUpperInvariant();
+            Image[] images = menuItem.GetComponentsInChildren<Image>();
+            for (int i = 0; i < images.Length; i++)
+            {
+                images[i].color = color;
+            }
+            menuItem.SetActive(true);
+                
+            Toggle toggle = menuItem.GetComponent<Toggle>();
+            toggle.onValueChanged.AddListener((selected) =>
+            {
+                if (selected)
+                    SelectBlockMenu(menuItem.name);
+            });
+            mMenuList[menuName] = toggle;
         }
 
         /// <summary>
@@ -89,7 +81,7 @@ namespace PTGame.Blockly.UGUI
         {
             mWorkspace.RemoveTopBlock(block);
             
-            BlockView view = BlockViewFactory.Get().CreateView(block);
+            BlockView view = BlockViewFactory.CreateView(block);
             view.InToolbox = true;
             view.ViewTransform.SetParent(parent, false);
             ToolboxBlockMask.AddMask(view);
@@ -131,21 +123,11 @@ namespace PTGame.Blockly.UGUI
                 
                 //build new blocks
                 if (categoryName.Equals(Blockly.BLOCK_CATEGORY_NAME_VARIABLE))
-                {
                     BuildVariableBlocks();
-                }
                 else if (categoryName.Equals(Blockly.BLOCK_CATEGORY_NAME_PROCEDURE))
-                {
                     BuildProcedureBlocks();
-                }
                 else
-                {
-                    List<string> blockTypes = BlockFactory.Instance.GetCategories()[mSelectedMenu];
-                    foreach (string blockType in blockTypes)
-                    {
-                        NewBlockView(blockType, contentTrans);
-                    }  
-                }
+                    BuildBlockViewsForSelectMenu();
             }
 
             //resize the background
@@ -167,6 +149,43 @@ namespace PTGame.Blockly.UGUI
             m_BlockScrollList.SetActive(false);
             mSelectedMenu = null;
         }
+                
+        /// <summary>
+        /// Build the left menu list, child class should implement this for custom build
+        /// </summary>
+        protected virtual void BuildMenu()
+        {
+            Dictionary<string, List<string>> categories = BlockFactory.Instance.GetCategories();
+            foreach (var categoryName in categories.Keys)
+            {
+                Color color;
+                try
+                {
+                    string colorHue = Blockly.Msg[categoryName.ToUpper() + "_HUE"];
+                    color = Color.HSVToRGB(int.Parse(colorHue) / 360f, 1, 1);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogErrorFormat("Color {0}_HUE is not defined.", categoryName.ToUpper());
+                    throw;
+                }
+
+                NewMenuItem(categoryName, color);
+            }
+        }
+
+        /// <summary>
+        /// Build block views for the select menu, child class should implement this for custom build
+        /// </summary>
+        protected virtual void BuildBlockViewsForSelectMenu()
+        {
+            Transform contentTrans = mBlockContents[mSelectedMenu].transform;
+            List<string> blockTypes = BlockFactory.Instance.GetCategories()[mSelectedMenu];
+            foreach (string blockType in blockTypes)
+            {
+                NewBlockView(blockType, contentTrans);
+            }
+        }
         
         #region Variables
         
@@ -182,7 +201,7 @@ namespace PTGame.Blockly.UGUI
             obj.transform.SetParent(parent, false);
             obj.GetComponent<Button>().onClick.AddListener(() =>
             {
-                DialogFactory.Get().CreateDialog("variable_name");
+                DialogFactory.CreateDialog("variable_name");
             });
 
             List<VariableModel> allVars = mWorkspace.GetAllVariables();

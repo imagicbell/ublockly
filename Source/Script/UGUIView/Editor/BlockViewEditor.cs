@@ -1,11 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using PTGame.Blockly;
+using UBlockly;
 using UnityEditor;
 using UnityEngine;
 
-namespace PTGame.Blockly.UGUI
+namespace UBlockly.UGUI
 {
     public class BlockViewEditor
     {
@@ -19,11 +19,10 @@ namespace PTGame.Blockly.UGUI
             var blocks = BlockFactory.Instance.GetAllBlockDefinitions().Keys.Where(s => !s.StartsWith("colour"));
             //var blocks = BlockFactory.Instance.GetAllBlockDefinitions().Keys.Where(s => s.Equals("lists_create_with"));
 
-            BlockViewFactory viewFactory = ScriptableObject.CreateInstance<BlockViewFactory>();
-            string factoryPath = AssetDatabase.GetAssetPath(BlockViewFactory.Get());
-
             if (!Directory.Exists(BlockViewSettings.Get().BlockPrefabPath))
                 Directory.CreateDirectory(BlockViewSettings.Get().BlockPrefabPath);
+            
+            BlockResMgr.Get().ClearBlockViewPrefabs();
 
             try
             {
@@ -38,7 +37,7 @@ namespace PTGame.Blockly.UGUI
 
                     string path = BlockViewSettings.Get().BlockPrefabPath + obj.name + ".prefab";
                     GameObject prefab = PrefabUtility.CreatePrefab(path, obj, ReplacePrefabOptions.Default);
-                    viewFactory.AddPrefab(prefab);
+                    BlockResMgr.Get().AddBlockViewPrefab(prefab);
 
                     GameObject.DestroyImmediate(obj);
 
@@ -47,8 +46,6 @@ namespace PTGame.Blockly.UGUI
             }
             finally
             {
-                AssetDatabase.CreateAsset(viewFactory, factoryPath);
-                
                 AssetDatabase.SaveAssets();
                 Resources.UnloadUnusedAssets();
                 

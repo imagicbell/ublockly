@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace PTGame.Blockly.UGUI
+namespace UBlockly.UGUI
 {
     public class WorkspaceView : MonoBehaviour
     {
@@ -38,7 +39,7 @@ namespace PTGame.Blockly.UGUI
             mWorkspace = workspace;
             m_Toolbox.Init(workspace);
             
-            m_RunBtn.onClick.AddListener(OnRunCode);
+            m_RunBtn.onClick.AddListener(RunCode);
             
             if (workspace.TopBlocks.Count > 0)
                 BuildViews();
@@ -103,7 +104,7 @@ namespace PTGame.Blockly.UGUI
 
         private BlockView BuildBlockView(Block block)
         {
-            BlockView view = BlockViewFactory.Get().CreateView(block);
+            BlockView view = BlockViewFactory.CreateView(block);
             view.InToolbox = false;
             view.ViewTransform.SetParent(m_CodingArea, false);
             view.XY = block.XY;
@@ -136,9 +137,27 @@ namespace PTGame.Blockly.UGUI
         }
         
         #endregion
-        
-        private void OnRunCode()
+
+        private UnityEvent mRunCodeEvent = null;
+
+        public void AddRunCodeListener(UnityAction listener)
         {
+            if (mRunCodeEvent == null)
+                mRunCodeEvent = new Button.ButtonClickedEvent();
+            mRunCodeEvent.AddListener(listener);
+        }
+
+        public void RemoveRunCodeListener(UnityAction listener)
+        {
+            if (mRunCodeEvent != null)
+                mRunCodeEvent.RemoveListener(listener);
+        }
+
+        public void RunCode()
+        {
+            if (mRunCodeEvent != null)
+                mRunCodeEvent.Invoke();
+            
 //            Lua.Interpreter.Run(mWorkspace);
             CSharp.Interpreter.Run(mWorkspace);
             m_StatusView.enabled = true;
@@ -188,7 +207,6 @@ namespace PTGame.Blockly.UGUI
             UnBindModel();
             
             BlockViewSettings.Dispose();
-            BlockViewFactory.Dispose();
             Resources.UnloadUnusedAssets();
         }
     }

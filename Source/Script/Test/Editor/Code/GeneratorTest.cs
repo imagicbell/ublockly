@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace PTGame.Blockly.Test
+namespace UBlockly.Test
 {
     public class GeneratorTest
     {

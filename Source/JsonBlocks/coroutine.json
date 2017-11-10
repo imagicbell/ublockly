@@ -1,6 +1,6 @@
 [
     {
-      "type": "coroutine_time_wait",
+      "type": "coroutine_wait_time",
       "message0": "%{BKY_COROUTINE_WAIT_TITLE} %1 %2",
       "args0": [
         {
@@ -21,8 +21,21 @@
       ],
       "previousStatement": null,
       "nextStatement": null,
-      "colour": "%{BKY_COLOUR_HUE}",
-      "helpUrl": "%{BKY_COROUTINE_WAIT_HELPURL}",
-      "tooltip": "%{BKY_COROUTINE_WAIT_TOOLTIP}"
+      "colour": "%{BKY_COROUTINE_HUE}"
+    },
+    {
+      "type": "coroutine_wait_frame",
+      "message0": "%{BKY_COROUTINE_WAIT_TITLE} %1 %{BKY_COROUTINE_FRAME}",
+      "args0": [
+        {
+          "type": "input_value",
+          "name": "TIME",
+          "check": "Number"
+        }
+      ],
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": "%{BKY_COROUTINE_HUE}"
     }
+  
 ]

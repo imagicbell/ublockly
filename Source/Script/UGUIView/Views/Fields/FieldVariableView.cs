@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.UI;
 
-namespace PTGame.Blockly.UGUI
+namespace UBlockly.UGUI
 {
     public class FieldVariableView : FieldDropdownView
     {
@@ -44,7 +44,7 @@ namespace PTGame.Blockly.UGUI
                     if (text.Equals(Blockly.Msg[MsgDefine.RENAME_VARIABLE]))
                     {
                         //pop a rename panel
-                        VariableNameDialog dialog = DialogFactory.Get().CreateDialog("variable_name") as VariableNameDialog;
+                        VariableNameDialog dialog = DialogFactory.CreateDialog("variable_name") as VariableNameDialog;
                         dialog.Rename(mFieldDropdown.GetText());
                     }
                     else if (text.Equals(Blockly.Msg[MsgDefine.DELETE_VARIABLE]))

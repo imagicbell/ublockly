@@ -2,7 +2,7 @@
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace PTGame.Blockly.UGUI
+namespace UBlockly.UGUI
 {
     public static class BlocklyUI
     {

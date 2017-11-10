@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace PTGame.Blockly.UGUI
+namespace UBlockly.UGUI
 {
     public class ConnectionInputView : ConnectionView
     {

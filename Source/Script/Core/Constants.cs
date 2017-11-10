@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PTGame.Blockly
+namespace UBlockly
 {
     /**
      * @fileoverview Blockly constants.

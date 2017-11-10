@@ -4,7 +4,7 @@
  * Functions for generating c# code for blocks.
 ****************************************************************************/
 
-namespace PTGame.Blockly
+namespace UBlockly
 {
     public partial class CSharpGenerator
     {

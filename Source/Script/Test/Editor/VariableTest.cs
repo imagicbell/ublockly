@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 
-namespace PTGame.Blockly.Test
+namespace UBlockly.Test
 {
     /// <summary>
     /// test including: variableModel, variableMap

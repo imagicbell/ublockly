@@ -3,7 +3,7 @@ using UnityEngine;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace PTGame.Blockly
+namespace UBlockly
 {
     [CreateAssetMenu(menuName = "PTBlockly/BlockJsonCollection", fileName = "BlockJsonCollection")]
     public class JsonCollection : ScriptableObject

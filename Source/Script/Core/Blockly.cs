@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 
-namespace PTGame.Blockly
+namespace UBlockly
 {
     public abstract partial class Blockly
     {
@@ -25,10 +25,7 @@ namespace PTGame.Blockly
         /// </summary>
         public static void LoadAllBlocksFromJson()
         {
-            JsonCollection jsonCollection = Resources.Load<JsonCollection>("BlockJsonCollection");
-            if (jsonCollection == null)
-                throw new Exception("There is no \"BlockJsonCollection\" ScriptObject under Resources folder");
-            jsonCollection.LoadAll();
+            BlockResMgr.Get().LoadJsonDefinitions();
         }
         
         /// <summary>

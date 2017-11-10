@@ -4,7 +4,7 @@
  * Lua code generating and interpreting collection
 ****************************************************************************/
 
-namespace PTGame.Blockly
+namespace UBlockly
 {
     public static class Lua
     {

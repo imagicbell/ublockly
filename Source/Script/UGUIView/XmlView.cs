@@ -4,42 +4,49 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace PTGame.Blockly.UGUI
+namespace UBlockly.UGUI
 {
     /// <summary>
     /// Deal with Workspace - XML save and load
     /// </summary>
     public class XmlView : MonoBehaviour
     {
-        [SerializeField] private Button m_SaveBtn;
-        [SerializeField] private Button m_LoadBtn;
+        [SerializeField] protected Button m_SaveBtn;
+        [SerializeField] protected Button m_LoadBtn;
 
-        [SerializeField] private GameObject m_SavePanel;
-        [SerializeField] private InputField m_SaveNameInput;
-        [SerializeField] private Button m_SaveOkBtn;
+        [SerializeField] protected GameObject m_SavePanel;
+        [SerializeField] protected InputField m_SaveNameInput;
+        [SerializeField] protected Button m_SaveOkBtn;
 
-        [SerializeField] private GameObject m_LoadPanel;
-        [SerializeField] private RectTransform m_ScrollContent;
-        [SerializeField] private GameObject m_XmlBtnPrefab;
+        [SerializeField] protected GameObject m_LoadPanel;
+        [SerializeField] protected RectTransform m_ScrollContent;
+        [SerializeField] protected GameObject m_XmlBtnPrefab;
 
-        private string mSavePath;
-
-        private bool mIsSavePanelShow
+        protected bool mIsSavePanelShow
         {
             get { return m_SavePanel.activeInHierarchy; }
         }
 
-        private bool mIsLoadPanelShow
+        protected bool mIsLoadPanelShow
         {
             get { return m_LoadPanel.activeInHierarchy; }
+        }
+        
+        protected string mSavePath;
+
+        protected string GetSavePath()
+        {
+            if (string.IsNullOrEmpty(mSavePath))
+            {
+                mSavePath = System.IO.Path.Combine(Application.persistentDataPath, "XmlSave");
+                if (!System.IO.Directory.Exists(mSavePath))
+                    System.IO.Directory.CreateDirectory(mSavePath);
+            }
+            return mSavePath;
         }
 
         private void Awake()
         {
-            mSavePath = System.IO.Path.Combine(Application.persistentDataPath, "XmlSave");
-            if (!System.IO.Directory.Exists(mSavePath))
-                System.IO.Directory.CreateDirectory(mSavePath);
-            
             HideSavePanel();
             HideLoadPanel();
 
@@ -58,37 +65,34 @@ namespace PTGame.Blockly.UGUI
             m_SaveOkBtn.onClick.AddListener(SaveXml);
         }
 
-        private void ShowSavePanel()
+        protected virtual void ShowSavePanel()
         {
             m_SavePanel.SetActive(true);
             m_LoadPanel.SetActive(false);
         }
 
-        private void HideSavePanel()
+        protected virtual void HideSavePanel()
         {
             m_SavePanel.SetActive(false);
         }
 
-        private void ShowLoadPanel()
+        protected virtual void ShowLoadPanel()
         {
             m_LoadPanel.SetActive(true);
             m_SavePanel.SetActive(false);
 
-            string[] xmlFiles = Directory.GetFiles(mSavePath);
+            string[] xmlFiles = Directory.GetFiles(GetSavePath());
             for (int i = 0; i < xmlFiles.Length; i++)
             {
                 string fileName = Path.GetFileNameWithoutExtension(xmlFiles[i]);
                 GameObject btnXml = GameObject.Instantiate(m_XmlBtnPrefab, m_ScrollContent, false);
                 btnXml.SetActive(true);
                 btnXml.GetComponentInChildren<Text>().text = fileName;
-                btnXml.GetComponent<Button>().onClick.AddListener(() =>
-                {
-                    StartCoroutine(LoadXml(fileName));
-                });
+                btnXml.GetComponent<Button>().onClick.AddListener(() => LoadXml(fileName));
             }
         }
 
-        private void HideLoadPanel()
+        protected virtual void HideLoadPanel()
         {
             m_LoadPanel.SetActive(false);
 
@@ -98,11 +102,11 @@ namespace PTGame.Blockly.UGUI
             }
         }
 
-        private void SaveXml()
+        protected virtual void SaveXml()
         {
-            var dom = PTGame.Blockly.Xml.WorkspaceToDom(BlocklyUI.WorkspaceView.Workspace);
-            string text = PTGame.Blockly.Xml.DomToText(dom);
-            string path = mSavePath;
+            var dom = UBlockly.Xml.WorkspaceToDom(BlocklyUI.WorkspaceView.Workspace);
+            string text = UBlockly.Xml.DomToText(dom);
+            string path = GetSavePath();
             if (!string.IsNullOrEmpty(m_SaveNameInput.text))
                 path = System.IO.Path.Combine(path, m_SaveNameInput.text + ".xml");
             else
@@ -113,11 +117,16 @@ namespace PTGame.Blockly.UGUI
             HideSavePanel();
         }
 
-        IEnumerator LoadXml(string fileName)
+        protected virtual void LoadXml(string fileName)
+        {
+            StartCoroutine(AsyncLoadXml(fileName));
+        }
+        
+        IEnumerator AsyncLoadXml(string fileName)
         {
             BlocklyUI.WorkspaceView.CleanViews();
 
-            string path = System.IO.Path.Combine(mSavePath, fileName + ".xml");
+            string path = System.IO.Path.Combine(GetSavePath(), fileName + ".xml");
             string inputXml;
             if (path.Contains("://"))
             {
@@ -128,8 +137,8 @@ namespace PTGame.Blockly.UGUI
             else
                 inputXml = System.IO.File.ReadAllText(path);
 
-            var dom = PTGame.Blockly.Xml.TextToDom(inputXml);
-            PTGame.Blockly.Xml.DomToWorkspace(dom, BlocklyUI.WorkspaceView.Workspace);
+            var dom = UBlockly.Xml.TextToDom(inputXml);
+            UBlockly.Xml.DomToWorkspace(dom, BlocklyUI.WorkspaceView.Workspace);
             BlocklyUI.WorkspaceView.BuildViews();
             
             HideLoadPanel();

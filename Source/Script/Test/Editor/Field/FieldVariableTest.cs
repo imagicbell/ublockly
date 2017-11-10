@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using UnityEngine;
 
-namespace PTGame.Blockly.Test
+namespace UBlockly.Test
 {
     public class FieldVariableTest
     {

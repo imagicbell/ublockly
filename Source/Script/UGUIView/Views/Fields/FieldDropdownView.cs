@@ -3,12 +3,12 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace PTGame.Blockly.UGUI
+namespace UBlockly.UGUI
 {
     //todo: to adjust dropdown list gameobject size according to options' max size
     public class FieldDropdownView : FieldView
     {
-        [SerializeField] protected Dropdown m_Dropdown;
+        [SerializeField] protected CustomDropdown m_Dropdown;
 
         protected FieldDropdown mFieldDropdown
         {
@@ -26,7 +26,7 @@ namespace PTGame.Blockly.UGUI
         protected override void SetComponents()
         {
             if (m_Dropdown == null)
-                m_Dropdown = GetComponentInChildren<Dropdown>();
+                m_Dropdown = GetComponentInChildren<CustomDropdown>();
 
             mHorizontalMargin = m_Dropdown.captionText.rectTransform.offsetMin.x - m_Dropdown.captionText.rectTransform.offsetMax.x;
         }
@@ -40,6 +40,8 @@ namespace PTGame.Blockly.UGUI
             int option = optionTexts.FindIndex(o => o.Equals(mFieldDropdown.GetText()));
             if (option != -1)
                 m_Dropdown.value = option;
+            
+            m_Dropdown.AddShowOptionsListener(UpdateMenuWidth);
         }
 
         protected override void OnUnBindModel()
@@ -79,6 +81,24 @@ namespace PTGame.Blockly.UGUI
             
             Debug.LogFormat(">>>>> CalculateSize-Dropdown: text: {0}, width: {1}", m_Dropdown.options[m_Dropdown.value].text, width);
             return new Vector2(width, BlockViewSettings.Get().ContentHeight);
+        }
+
+        /// <summary>
+        /// dynamically update the dropdown menu width according to option texts' max width
+        /// </summary>
+        private void UpdateMenuWidth()
+        {
+            string maxOption = "";
+            foreach (var option in m_Dropdown.options)
+            {
+                if (option.text.Length > maxOption.Length)
+                    maxOption = option.text;
+            }
+
+            float width = m_Dropdown.itemText.CalculateTextWidth(maxOption);
+            RectTransform itemTextTrans = m_Dropdown.itemText.GetComponent<RectTransform>();
+            width += itemTextTrans.offsetMin.x;
+            m_Dropdown.transform.FindChild("Dropdown List").GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width);
         }
     }
 }

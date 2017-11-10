@@ -8,7 +8,7 @@
 using LuaInterface;
 #endif
 
-namespace PTGame.Blockly
+namespace UBlockly
 {
     public partial class LuaInterpreter : Interpreter
     {
