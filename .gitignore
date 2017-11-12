@@ -14,3 +14,7 @@
 **/Xcode/
 **.DS_Store
 **.userprefs
+**/JetBrains/
+**/JetBrains.meta
+
+blockly_sync.sh
