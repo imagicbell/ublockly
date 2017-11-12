@@ -12,21 +12,21 @@ namespace UBlockly
         public static Input CreateFromJson(JObject json)
         {
             string inputType = json["type"].ToString();
-            int inputTypeInt = Blockly.INPUT_VALUE;
+            Define.EConnection inputTypeInt = Define.EConnection.InputValue;
             string inputName = json["name"] != null ? json["name"].ToString() : "";
             Connection connection = null;
             switch (inputType)
             {
                 case "input_value":
-                    inputTypeInt = Blockly.INPUT_VALUE;
+                    inputTypeInt = Define.EConnection.InputValue;
                     connection = new Connection(inputTypeInt);
                     break;
                 case "input_statement":
-                    inputTypeInt = Blockly.NEXT_STATEMENT;
+                    inputTypeInt = Define.EConnection.NextStatement;
                     connection = new Connection(inputTypeInt);
                     break;
                 case "input_dummy":
-                    inputTypeInt = Blockly.DUMMY_INPUT;
+                    inputTypeInt = Define.EConnection.DummyInput;
                     break;
             }
             
@@ -34,9 +34,9 @@ namespace UBlockly
             if (json["align"] != null)
             {
                 string alignText = json["align"].ToString();
-                int align = alignText.Equals("LEFT") 
-                    ? Blockly.ALIGN_LEFT 
-                    : (alignText.Equals("RIGHT") ? Blockly.ALIGH_RIGHT : Blockly.ALIGN_CENTER);
+                Define.EAlign align = alignText.Equals("LEFT")
+                    ? Define.EAlign.Left
+                    : (alignText.Equals("RIGHT") ? Define.EAlign.Right : Define.EAlign.Center);
                 input.SetAlign(align);
             }
             if (json["check"] != null)
@@ -62,9 +62,12 @@ namespace UBlockly
         /// <param name="name">input name</param>
         /// <param name="align">input alignment</param>
         /// <param name="check">input type checks</param>
-        public static Input Create(int type, string name, int align, List<string> check)
+        public static Input Create(Define.EConnection type, string name, Define.EAlign align, List<string> check)
         {
-            Connection connection = (type == Blockly.INPUT_VALUE || type == Blockly.NEXT_STATEMENT) ? new Connection(type) : null;
+            Connection connection = null;
+            if (type == Define.EConnection.InputValue || type == Define.EConnection.NextStatement)
+                connection = new Connection(type);
+            
             Input input = new Input(type, name, connection);
             input.SetAlign(align);
             input.SetCheck(check);

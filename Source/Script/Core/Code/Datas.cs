@@ -10,20 +10,20 @@ namespace UBlockly
     /// </summary>
     public struct DataStruct
     {
-        public int Type;
+        public Define.EDataType Type;
 
         private bool mBooleanValue;
         public bool BooleanValue
         {
             get
             {
-                if (this.Type != DataTypes.Boolean)
+                if (this.Type != Define.EDataType.Boolean)
                     throw new Exception("try to GET a boolean value from a not-boolean data");
                 return mBooleanValue;
             }
             set
             {
-                if (this.Type != DataTypes.Boolean)
+                if (this.Type != Define.EDataType.Boolean)
                     throw new Exception("try to SET a boolean value from a not-boolean data");
                 mBooleanValue = value;
             }
@@ -34,13 +34,13 @@ namespace UBlockly
         {
             get
             {
-                if (this.Type != DataTypes.Number)
+                if (this.Type != Define.EDataType.Number)
                     throw new Exception("try to GET a number value from a not-number data");
                 return mNumberValue;
             }
             set
             {
-                if (this.Type != DataTypes.Number)
+                if (this.Type != Define.EDataType.Number)
                     throw new Exception("try to SET a number value from a not-number data");
                 mNumberValue = value;
             }
@@ -51,13 +51,13 @@ namespace UBlockly
         {
             get
             {
-                if (this.Type != DataTypes.String)
+                if (this.Type != Define.EDataType.String)
                     throw new Exception("try to GET a string value from a not-string data");
                 return mStringValue;
             }
             set
             {
-                if (this.Type != DataTypes.String)
+                if (this.Type != Define.EDataType.String)
                     throw new Exception("try to SET a string value from a not-string data");
                 mStringValue = value;
             }
@@ -68,13 +68,13 @@ namespace UBlockly
         {
             get
             {
-                if (this.Type != DataTypes.List)
+                if (this.Type != Define.EDataType.List)
                     throw new Exception("try to GET a list value from a not-list data");
                 return mListValue;
             }
             set
             {
-                if (this.Type != DataTypes.List)
+                if (this.Type != Define.EDataType.List)
                     throw new Exception("try to SET a list value from a not-list data");
                 mListValue = value;
             }
@@ -86,11 +86,11 @@ namespace UBlockly
             {
                 switch (this.Type)
                 {
-                    case DataTypes.Undefined: return null;
-                    case DataTypes.Boolean: return mBooleanValue;
-                    case DataTypes.Number: return mNumberValue;
-                    case DataTypes.String: return mStringValue;
-                    case DataTypes.List: return mListValue;
+                    case Define.EDataType.Undefined: return null;
+                    case Define.EDataType.Boolean: return mBooleanValue;
+                    case Define.EDataType.Number: return mNumberValue;
+                    case Define.EDataType.String: return mStringValue;
+                    case Define.EDataType.List: return mListValue;
                     default: return null;
                 }
             }
@@ -98,7 +98,7 @@ namespace UBlockly
 
         public DataStruct(bool booleanValue)
         {
-            this.Type = DataTypes.Boolean;
+            this.Type = Define.EDataType.Boolean;
             this.mBooleanValue = booleanValue;
             this.mNumberValue = Number.NaN;
             this.mStringValue = null;
@@ -107,7 +107,7 @@ namespace UBlockly
 
         public DataStruct(Number numberValue)
         {
-            this.Type = DataTypes.Number;
+            this.Type = Define.EDataType.Number;
             this.mBooleanValue = false;
             this.mNumberValue = numberValue;
             this.mStringValue = null;
@@ -116,7 +116,7 @@ namespace UBlockly
 
         public DataStruct(int intValue)
         {
-            this.Type = DataTypes.Number;
+            this.Type = Define.EDataType.Number;
             this.mBooleanValue = false;
             this.mNumberValue = new Number(intValue);
             this.mStringValue = null;
@@ -125,7 +125,7 @@ namespace UBlockly
         
         public DataStruct(float floatValue)
         {
-            this.Type = DataTypes.Number;
+            this.Type = Define.EDataType.Number;
             this.mBooleanValue = false;
             this.mNumberValue = new Number(floatValue);
             this.mStringValue = null;
@@ -134,7 +134,7 @@ namespace UBlockly
         
         public DataStruct(double doubleValue)
         {
-            this.Type = DataTypes.Number;
+            this.Type = Define.EDataType.Number;
             this.mBooleanValue = false;
             this.mNumberValue = new Number(doubleValue);
             this.mStringValue = null;
@@ -143,7 +143,7 @@ namespace UBlockly
 
         public DataStruct(string stringValue)
         {
-            this.Type = DataTypes.String;
+            this.Type = Define.EDataType.String;
             this.mBooleanValue = false;
             this.mNumberValue = Number.NaN;
             this.mStringValue = stringValue;
@@ -152,7 +152,7 @@ namespace UBlockly
         
         public DataStruct(ArrayList listValue)
         {
-            this.Type = DataTypes.List;
+            this.Type = Define.EDataType.List;
             this.mBooleanValue = false;
             this.mNumberValue = Number.NaN;
             this.mStringValue = null;
@@ -171,22 +171,22 @@ namespace UBlockly
 
         public bool IsBoolean
         {
-            get { return Type == DataTypes.Boolean; }
+            get { return Type == Define.EDataType.Boolean; }
         }
 
         public bool IsNumber
         {
-            get { return Type == DataTypes.Number; }
+            get { return Type == Define.EDataType.Number; }
         }
 
         public bool IsString
         {
-            get { return Type == DataTypes.String; }
+            get { return Type == Define.EDataType.String; }
         }
 
         public bool IsList
         {
-            get { return Type == DataTypes.List; }
+            get { return Type == Define.EDataType.List; }
         }
 
         #region override
@@ -208,11 +208,11 @@ namespace UBlockly
         {
             switch (this.Type)
             {
-                case DataTypes.Undefined: return "Undefined";
-                case DataTypes.Boolean: return mBooleanValue.ToString();
-                case DataTypes.Number: return mNumberValue.ToString();
-                case DataTypes.String: return mStringValue;
-                case DataTypes.List:
+                case Define.EDataType.Undefined: return "Undefined";
+                case Define.EDataType.Boolean: return mBooleanValue.ToString();
+                case Define.EDataType.Number: return mNumberValue.ToString();
+                case Define.EDataType.String: return mStringValue;
+                case Define.EDataType.List:
                 {
                     StringBuilder sb = new StringBuilder();
                     foreach (var e in mListValue)

@@ -9,7 +9,7 @@ namespace UBlockly.Test
         {
             var workspace = new Workspace();
             var block = new Block(workspace);
-            var input = new Input(Blockly.DUMMY_INPUT, "INPUT", block);
+            var input = new Input(Define.EConnection.DummyInput, "INPUT", block);
             var field1 = new FieldLabel("first", "#1");
             var field2 = new FieldLabel("second", "#2");
 
@@ -36,7 +36,7 @@ namespace UBlockly.Test
         {
             var workspace = new Workspace();
             var block = new Block(workspace);
-            var input = new Input(Blockly.DUMMY_INPUT, "INPUT", block);
+            var input = new Input(Define.EConnection.DummyInput, "INPUT", block);
             var labelText = "label";
             
             Assert.AreEqual(0, input.FieldRow.Count);
@@ -56,7 +56,7 @@ namespace UBlockly.Test
         {
             var workspace = new Workspace();
             var block = new Block(workspace);
-            var input = new Input(Blockly.DUMMY_INPUT, "INPUT", block);
+            var input = new Input(Define.EConnection.DummyInput, "INPUT", block);
             var prefix = new FieldLabel(null, "prefix");
             var field = new FieldLabel(null, "field");
             //field.PrefixField = prefix;
@@ -71,7 +71,7 @@ namespace UBlockly.Test
         {
             var workspace = new Workspace();
             var block = new Block(workspace);
-            var input = new Input(Blockly.DUMMY_INPUT, "INPUT", block);
+            var input = new Input(Define.EConnection.DummyInput, "INPUT", block);
             
             //todo
             
@@ -83,7 +83,7 @@ namespace UBlockly.Test
         {
             var workspace = new Workspace();
             var block = new Block(workspace);
-            var input = new Input(Blockly.DUMMY_INPUT, "INPUT", block);
+            var input = new Input(Define.EConnection.DummyInput, "INPUT", block);
 
             var before = new FieldLabel(null, "before");
             var after = new FieldLabel(null, "after");
@@ -109,7 +109,7 @@ namespace UBlockly.Test
         {
             var workspace = new Workspace();
             var block = new Block(workspace);
-            var input = new Input(Blockly.DUMMY_INPUT, "INPUT", block);
+            var input = new Input(Define.EConnection.DummyInput, "INPUT", block);
             
             var before = new FieldLabel(null, "before");
             var after = new FieldLabel(null, "after");

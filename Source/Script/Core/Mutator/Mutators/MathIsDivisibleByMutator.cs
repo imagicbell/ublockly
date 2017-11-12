@@ -65,7 +65,7 @@ namespace UBlockly
             Input divisorInput = mBlock.GetInput(DIVISOR_INPUT);
             if (divisible && divisorInput == null)
             {
-                divisorInput = InputFactory.Create(Blockly.INPUT_VALUE, DIVISOR_INPUT, Blockly.ALIGN_LEFT, CHECK);
+                divisorInput = InputFactory.Create(Define.EConnection.InputValue, DIVISOR_INPUT, Define.EAlign.Left, CHECK);
                 mBlock.AppendInput(divisorInput);
             }
             else if (!divisible && divisorInput != null)

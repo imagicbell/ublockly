@@ -194,14 +194,14 @@ namespace UBlockly
             {
                 if (updatedPrev != null)
                     throw new Exception("A block cannot have both an output connection and a previous connection.");
-                if (updatedOutput.Type != Blockly.OUTPUT_VALUE)
+                if (updatedOutput.Type != Define.EConnection.OutputValue)
                     throw new Exception("updatedOutput Connection type is not OUTPUT_VALUE");
             }
-            if (updatedPrev != null && updatedPrev.Type != Blockly.PREVIOUS_STATEMENT)
+            if (updatedPrev != null && updatedPrev.Type != Define.EConnection.PrevStatement)
             {
                 throw new Exception("updatedPrev Connection type is not PREVIOUS_STATEMENT");
             }
-            if (updatedNext != null && updatedNext.Type != Blockly.NEXT_STATEMENT)
+            if (updatedNext != null && updatedNext.Type != Define.EConnection.NextStatement)
             {
                 throw new Exception("updatedNext Connection type is not CONNECTION_TYPE_NEXT");
             }
@@ -362,13 +362,13 @@ namespace UBlockly
         /// <summary>
         /// Get output, previous, next connection by connection type
         /// </summary>
-        public Connection GetFirstClassConnection(int connectionType)
+        public Connection GetFirstClassConnection(Define.EConnection connectionType)
         {
             switch (connectionType)
             {
-                case Blockly.OUTPUT_VALUE: return OutputConnection;
-                case Blockly.PREVIOUS_STATEMENT: return PreviousConnection;
-                case Blockly.NEXT_STATEMENT: return NextConnection;
+                case Define.EConnection.OutputValue: return OutputConnection;
+                case Define.EConnection.PrevStatement: return PreviousConnection;
+                case Define.EConnection.NextStatement: return NextConnection;
             }
             throw new Exception("Block GetFirstClassConnection: Only get output, previous, next connection");
         }
@@ -796,8 +796,8 @@ namespace UBlockly
             // Not defined explicitly. Figure out what would look best.
             for (int i = 1; i < InputList.Count; i++)
             {
-                if (InputList[i - 1].Type == UBlockly.DUMMY_INPUT &&
-                    InputList[i].Type == UBlockly.DUMMY_INPUT)
+                if (InputList[i - 1].Type == Define.EConnection.DummyInput &&
+                    InputList[i].Type == Define.EConnection.DummyInput)
                 {
                     // Two dummy inputs in a row. Don't inline them.
                     return false;
@@ -805,8 +805,8 @@ namespace UBlockly
             }
             for (int i = 1; i < InputList.Count; i++)
             {
-                if (InputList[i - 1].Type == UBlockly.INPUT_VALUE &&
-                    InputList[i].Type == UBlockly.DUMMY_INPUT)
+                if (InputList[i - 1].Type == Define.EConnection.InputValue &&
+                    InputList[i].Type == Define.EConnection.DummyInput)
                 {
                     // Dummy input after a value inpput . Inline them.
                     return true;

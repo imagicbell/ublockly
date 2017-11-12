@@ -41,13 +41,13 @@ namespace UBlockly.UGUI
                     m_Dropdown.captionText.text = mFieldDropdown.GetText();
                     
                     string text = m_Dropdown.options[newOption].text;
-                    if (text.Equals(Blockly.Msg[MsgDefine.RENAME_VARIABLE]))
+                    if (text.Equals(I18n.Msg[MsgDefine.RENAME_VARIABLE]))
                     {
                         //pop a rename panel
                         VariableNameDialog dialog = DialogFactory.CreateDialog("variable_name") as VariableNameDialog;
                         dialog.Rename(mFieldDropdown.GetText());
                     }
-                    else if (text.Equals(Blockly.Msg[MsgDefine.DELETE_VARIABLE]))
+                    else if (text.Equals(I18n.Msg[MsgDefine.DELETE_VARIABLE]))
                     {
                         mField.SourceBlock.Workspace.DeleteVariable(mFieldDropdown.GetText());
                     }

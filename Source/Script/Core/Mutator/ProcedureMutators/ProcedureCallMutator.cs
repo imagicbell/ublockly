@@ -48,12 +48,12 @@ namespace UBlockly
             // Argument inputs
             for (int i = 0; i < argCount; ++i)
             {
-                Input stackInput = InputFactory.Create(Blockly.INPUT_VALUE, "ARG" + i, Blockly.ALIGH_RIGHT, null);
+                Input stackInput = InputFactory.Create(Define.EConnection.InputValue, "ARG" + i, Define.EAlign.Right, null);
                 
                 // add "with: " label
                 if (i == 0)
                 {
-                    FieldLabel withLabel = new FieldLabel("WITH", Blockly.Msg[MsgDefine.PROCEDURES_CALL_BEFORE_PARAMS]);
+                    FieldLabel withLabel = new FieldLabel("WITH", I18n.Msg[MsgDefine.PROCEDURES_CALL_BEFORE_PARAMS]);
                     stackInput.AppendField(withLabel);
                 }
                 

@@ -73,25 +73,25 @@ namespace UBlockly
                     break;
                     
                 case "LT":
-                    if (argument0.Type != DataTypes.Number)
+                    if (argument0.Type != Define.EDataType.Number)
                         throw new Exception("block logic_compare's \"<\" can't compare two strings and booleans");
                     returnData.BooleanValue = argument0.NumberValue < argument1.NumberValue;
                     break;
                     
                 case "LTE":
-                    if (argument0.Type != DataTypes.Number)
+                    if (argument0.Type != Define.EDataType.Number)
                         throw new Exception("block logic_compare's \"<=\" can't compare two strings and booleans");
                     returnData.BooleanValue = argument0.NumberValue <= argument1.NumberValue;
                     break;
                     
                 case "GT":
-                    if (argument0.Type != DataTypes.Number)
+                    if (argument0.Type != Define.EDataType.Number)
                         throw new Exception("block logic_compare's \">\" can't compare two strings and booleans");
                     returnData.BooleanValue = argument0.NumberValue > argument1.NumberValue;
                     break;
                     
                 case "GTE":
-                    if (argument0.Type != DataTypes.Number)
+                    if (argument0.Type != Define.EDataType.Number)
                         throw new Exception("block logic_compare's \">=\" can't compare two strings and booleans");
                     returnData.BooleanValue = argument0.NumberValue >= argument1.NumberValue;
                     break;
@@ -115,7 +115,7 @@ namespace UBlockly
             yield return ctor;
             DataStruct argument1 = ctor.Data;
             
-            if (argument0.Type != argument1.Type || argument0.Type != DataTypes.Boolean)
+            if (argument0.Type != argument1.Type || argument0.Type != Define.EDataType.Boolean)
                 throw new Exception("arguments of block logic_operation should be the same BOOLEAN type");
             
             DataStruct returnData = new DataStruct(false);
@@ -141,7 +141,7 @@ namespace UBlockly
             yield return ctor;
             DataStruct argument = ctor.Data;
             
-            if (argument.Type != DataTypes.Boolean)
+            if (argument.Type != Define.EDataType.Boolean)
                 throw new Exception("argument of block logic_negate should be the BOOLEAN type");
             
             ReturnData(new DataStruct(!argument.BooleanValue));
@@ -181,7 +181,7 @@ namespace UBlockly
             yield return ctor;
             DataStruct condition = ctor.Data;
             
-            if (condition.Type != DataTypes.Boolean)
+            if (condition.Type != Define.EDataType.Boolean)
                 throw new Exception("argument \"IF\" of block logic_ternary should be the BOOLEAN type");
 
             if (condition.BooleanValue)

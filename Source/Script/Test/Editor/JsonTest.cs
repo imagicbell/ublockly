@@ -108,13 +108,5 @@ namespace UBlockly.Test
             workspace.Dispose();
             Blockly.Dispose();
         }
-
-        [Test]
-        public void TestJsonCollectionLoader()
-        {
-            Blockly.LoadAllBlocksFromJson();
-            //Debug.Log(">>>>>> blocks count: " + Blocks.Instance.Count);
-            //Assert.AreEqual(Blocks.Instance.Count);
-        }
     }
 }

@@ -39,13 +39,13 @@ namespace UBlockly
                     }
                     else
                     {
-                        foreach (string[] strs in DataTypes.DB.Values)
+                        foreach (string[] strs in Define.DataTypeDB.Values)
                         {
                             if (!string.IsNullOrEmpty(strs.FirstOrDefault(s => s.ToLower().Equals(type.ToLower()))))
                                 type = strs[0];
                         }
                     }
-                    sb.Append(type + " " + mVariableNames.GetName(variable.Name, Blockly.VARIABLE_CATEGORY_NAME) + ";\n");
+                    sb.Append(type + " " + mVariableNames.GetName(variable.Name, Define.VARIABLE_CATEGORY_NAME) + ";\n");
                 }
                 mFuncMap["variables"] = new KeyValuePair<string, string>(null, sb.ToString());
             }

@@ -100,7 +100,7 @@ namespace UBlockly
             yield return ctor;
             DataStruct repeats = ctor.Data;
             
-            if (repeats.Type != DataTypes.Number)
+            if (repeats.Type != Define.EDataType.Number)
                 throw new Exception("input value \"TIMES\" of block controls_repeat_ext must be a number type");
             int repeatsInt = (int) repeats.NumberValue.Value;
             for (int i = 0; i < repeatsInt; i++)
@@ -127,7 +127,7 @@ namespace UBlockly
             yield return ctor;
             DataStruct arg = ctor.Data;
             
-            if (arg.Type != DataTypes.Boolean)
+            if (arg.Type != Define.EDataType.Boolean)
                 throw new Exception("input value \"BOOL\" of block controls_whileUntil must be a boolean type");
 
             bool condition = until ? !arg.BooleanValue : arg.BooleanValue;

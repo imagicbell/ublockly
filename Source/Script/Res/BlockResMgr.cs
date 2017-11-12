@@ -46,13 +46,14 @@ namespace UBlockly
     public delegate T AssetbundleLoad<T>(string assetName) where T : UnityEngine.Object;
     
     /// <summary>
-    /// factory to create block view
-    /// developers can change this to static class and customnly load prefabs from Assetbundles or Resources. 
+    /// manage all resources. 
+    /// This can be customized according to resources management in each project 
     /// </summary>
     [CreateAssetMenu(menuName = "PTBlockly/BlockResSettings", fileName = "BlockResSettings")]
     public class BlockResMgr : ScriptableObject
     {
         [SerializeField] private BlockResLoadType m_LoadType;
+        [SerializeField] private List<BlockTextResParam> m_I18nFiles;
         [SerializeField] private List<BlockTextResParam> m_BlockJsonFiles;
         [SerializeField] private List<BlockObjectParam> m_BlockViewPrefabs;
         [SerializeField] private List<BlockObjectParam> m_DialogPrefabs;
@@ -68,6 +69,42 @@ namespace UBlockly
         {
             mAssetbundleLoad = del;
         }
+
+        #region I18n Files
+
+        public void LoadI18n(string language)
+        {
+            if (m_I18nFiles == null || m_I18nFiles.Count == 0)
+            {
+                Debug.LogError("LoadI18n failed. Please assign i18n files to BlockResSettings.asset.");
+                return;
+            }
+
+            TextAsset textAsset = null;
+            foreach (BlockTextResParam resParam in m_I18nFiles)
+            {
+                if (language.Equals(resParam.IndexName))
+                {
+                    switch (m_LoadType)
+                    {
+                        case BlockResLoadType.Assetbundle:
+                            if (mAssetbundleLoad != null)
+                                textAsset = mAssetbundleLoad(resParam.ResName) as TextAsset;
+                            break;
+                        case BlockResLoadType.Resources:
+                            textAsset = Resources.Load<TextAsset>(resParam.ResName);
+                            break;
+                        case BlockResLoadType.Serialized:
+                            textAsset = resParam.TextFile;
+                            break;
+                    }
+                }
+            }
+            if (textAsset != null)
+                I18n.Init(textAsset.text);
+        }
+
+        #endregion
 
         #region Block Json Files
         

@@ -35,7 +35,7 @@ namespace UBlockly
         public List<Block> TopBlocks { get; private set; }
         public Dictionary<string,Block> BlockDB { get; private set; }
         public VariableMap VariableMap { get; private set; }
-        public Dictionary<int, ConnectionDB> ConnectionDBList { get; private set; }
+        public Dictionary<Define.EConnection, ConnectionDB> ConnectionDBList { get; private set; }
         public ProcedureDB ProcedureDB { get; private set; }
                 
         /// <summary>
@@ -310,11 +310,11 @@ namespace UBlockly
             var uses = this.GetVariableUses(name);
             foreach (var block in uses)
             {
-                if (string.Equals(block.Type, Blockly.DEFINE_NO_RETURN_BLOCK_TYPE) ||
-                    string.Equals(block.Type, Blockly.DEFINE_WITH_RETURN_BLOCK_TYPE))
+                if (string.Equals(block.Type, Define.DEFINE_NO_RETURN_BLOCK_TYPE) ||
+                    string.Equals(block.Type, Define.DEFINE_WITH_RETURN_BLOCK_TYPE))
                 {
                     var procedureName = block.GetFieldValue("NAME");
-                    Debug.LogError("Alert:" + Blockly.Msg[MsgDefine.CANNOT_DELETE_VARIABLE_PROCEDURE].
+                    Debug.LogError("Alert:" + I18n.Msg[MsgDefine.CANNOT_DELETE_VARIABLE_PROCEDURE].
                                        Replace("%1",name).
                                        Replace("%2",procedureName));
                     return;
@@ -326,7 +326,7 @@ namespace UBlockly
             if (uses.Count > 1)
             {
                 // Confirm before deleting multiple blocks.
-                Debug.Log("confirm:" + Blockly.Msg[MsgDefine.DELETE_VARIABLE_CONFIRMATION]
+                Debug.Log("confirm:" + I18n.Msg[MsgDefine.DELETE_VARIABLE_CONFIRMATION]
                               .Replace("%1", uses.Count.ToString()).Replace("%2", name));
                 workspace.DeleteVariableInternal(variable);
             }

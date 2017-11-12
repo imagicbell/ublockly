@@ -234,18 +234,18 @@ namespace UBlockly
             {
                 XmlNode container = null;
                 var empty = true;
-                if (input.Type == Blockly.DUMMY_INPUT)
+                if (input.Type == Define.EConnection.DummyInput)
                 {
                     continue;
                 }
                 else
                 {
                     var childBlock = input.Connection.TargetBlock;
-                    if (input.Type == Blockly.INPUT_VALUE)
+                    if (input.Type == Define.EConnection.InputValue)
                     {
                         container = XmlUtil.CreateDom("value");
                     }
-                    else if (input.Type == Blockly.NEXT_STATEMENT)
+                    else if (input.Type == Define.EConnection.NextStatement)
                     {
                         container = XmlUtil.CreateDom("statement");
                     }

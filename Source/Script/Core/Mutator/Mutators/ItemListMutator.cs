@@ -67,7 +67,7 @@ namespace UBlockly
             {
                 if (!mBlock.HasInput("ADD" + i))
                 {
-                    Input valueInput = InputFactory.Create(Blockly.INPUT_VALUE, ADD_INPUT_PREFIX + i, Blockly.ALIGN_LEFT, null);
+                    Input valueInput = InputFactory.Create(Define.EConnection.InputValue, ADD_INPUT_PREFIX + i, Define.EAlign.Left, null);
                     mBlock.AppendInput(valueInput);
                 }
             }

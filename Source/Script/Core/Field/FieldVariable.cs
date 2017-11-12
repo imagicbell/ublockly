@@ -87,13 +87,13 @@ namespace UBlockly
 
             options.Add(new FieldDropdownMenu()
             {
-                Text = Blockly.Msg[MsgDefine.RENAME_VARIABLE],
-                Value = Blockly.RENAME_VARIABLE_ID
+                Text = I18n.Msg[MsgDefine.RENAME_VARIABLE],
+                Value = MsgDefine.RENAME_VARIABLE
             });
             options.Add(new FieldDropdownMenu()
             {
-                Text = Blockly.Msg[MsgDefine.DELETE_VARIABLE],
-                Value = Blockly.DELETE_VARIABLE_ID
+                Text = I18n.Msg[MsgDefine.DELETE_VARIABLE],
+                Value = MsgDefine.DELETE_VARIABLE
             });
             return options.ToArray();
         }
@@ -102,12 +102,12 @@ namespace UBlockly
         {
             FieldDropdownMenu[] menu = GetOptions();
             string id = menu[itemIndex].Value;
-            if (id.Equals(Blockly.RENAME_VARIABLE_ID))
+            if (id.Equals(MsgDefine.RENAME_VARIABLE))
             {
                 // wait for UI
                 return;
             }
-            if (id.Equals(Blockly.DELETE_VARIABLE_ID))
+            if (id.Equals(MsgDefine.DELETE_VARIABLE))
             {
                 // wait for UI
                 return;

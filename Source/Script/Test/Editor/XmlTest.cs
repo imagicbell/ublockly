@@ -383,7 +383,7 @@ namespace UBlockly.Test
 
             var dom = Xml.WorkspaceToDom(mWorkspace);
             
-            Debug.LogError(dom.OuterXml);
+            Debug.LogFormat("<color=green>{0}</color>", dom.OuterXml);
             
             TeardownWithMockBlocks();
         }

@@ -21,7 +21,7 @@ namespace UBlockly.Test
         IEnumerator Setup()
         {
             Blockly.Dispose();
-            Blockly.LoadAllBlocksFromJson();
+            Blockly.Init();
 
             mTestUnit = "math";
 

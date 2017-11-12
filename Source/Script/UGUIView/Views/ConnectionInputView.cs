@@ -27,7 +27,7 @@ namespace UBlockly.UGUI
         {
             get
             {
-                if (ConnectionType == ConType.INPUT_VALUE)
+                if (ConnectionType == Define.EConnection.InputValue)
                     return new Vector2(BlockViewSettings.Get().ValueConnectPointRect.width, 0);
                 return Vector2.zero;
             }
@@ -41,7 +41,7 @@ namespace UBlockly.UGUI
             // only slot connection input view will accumulate the width by children's width
             Vector2 size = new Vector2(BlockViewSettings.Get().EmptyInputSlotWidth, 0);
             
-            if (ConnectionType == ConType.INPUT_VALUE)
+            if (ConnectionType == Define.EConnection.InputValue)
             {
                 // add the half circle's width
                 if (m_IsSlot)
@@ -59,7 +59,7 @@ namespace UBlockly.UGUI
                 bool addConnectPointSpace = true;
                 while (true)
                 {
-                    ConnectionView nextCon = nextView.GetConnectionView(ConType.NEXT_STATEMENT);
+                    ConnectionView nextCon = nextView.GetConnectionView(Define.EConnection.NextStatement);
                     if (nextCon == null)
                     {
                         addConnectPointSpace = false;
@@ -83,13 +83,13 @@ namespace UBlockly.UGUI
         /// </summary>
         public BlockView GetChildLastBlockView()
         {
-            if (ConnectionType == ConType.INPUT_VALUE)
+            if (ConnectionType == Define.EConnection.InputValue)
                 return mTargetBlockView;
             
             BlockView nextView = mTargetBlockView;
             while (nextView != null)
             {
-                ConnectionView nextCon = nextView.GetConnectionView(ConType.NEXT_STATEMENT);
+                ConnectionView nextCon = nextView.GetConnectionView(Define.EConnection.NextStatement);
                 if (nextCon == null) break;
                 nextView = nextCon.TargetBlockView;
             }

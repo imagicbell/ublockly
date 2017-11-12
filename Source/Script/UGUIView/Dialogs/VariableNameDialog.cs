@@ -15,12 +15,12 @@ namespace UBlockly.UGUI
         {
             mOldVarName = varName;
             mIsRename = true;
-            m_InputLabel.text = Blockly.Msg[MsgDefine.RENAME_VARIABLE];
+            m_InputLabel.text = I18n.Msg[MsgDefine.RENAME_VARIABLE];
         }
 
         protected override void OnInit()
         {
-            m_InputLabel.text = Blockly.Msg[MsgDefine.NEW_VARIABLE];
+            m_InputLabel.text = I18n.Msg[MsgDefine.NEW_VARIABLE];
 
             AddCloseEvent(() =>
             {

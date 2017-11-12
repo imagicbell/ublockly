@@ -6,25 +6,14 @@ using UnityEngine;
 
 namespace UBlockly
 {
-    public abstract partial class Blockly
+    public class Blockly
     {
         /// <summary>
-        /// Define blocks from an array of JSON block definitions, as might be generated
-        /// by the Blockly Developer Tools.
+        /// Initialize blockly model. Called very first when start blockly
         /// </summary>
-        /// <param name="jsonArray"></param>
-        [Obsolete("Only used for test case. Use BlockFactory.Instance.AddJsonDefinitions instead.")]
-        public static void DefineBlocksWithJsonArray(JArray jsonArray)
+        public static void Init()
         {
-            BlockFactory.Instance.AddJsonDefinitions(jsonArray);
-        }
-
-        /// <summary>
-        /// load all blocks defined in json
-        /// json files are configured in ScriptObject "JsonCollection"
-        /// </summary>
-        public static void LoadAllBlocksFromJson()
-        {
+            BlockResMgr.Get().LoadI18n(I18n.EN);
             BlockResMgr.Get().LoadJsonDefinitions();
         }
         
@@ -34,6 +23,18 @@ namespace UBlockly
         public static void Dispose()
         {
             BlockFactory.Instance.Clear();
+            I18n.Dispose();
+        }
+        
+        /// <summary>
+        /// Define blocks from an array of JSON block definitions, as might be generated
+        /// by the Blockly Developer Tools.
+        /// </summary>
+        /// <param name="jsonArray"></param>
+        [Obsolete("Only used for test case. Use BlockFactory.Instance.AddJsonDefinitions instead.")]
+        public static void DefineBlocksWithJsonArray(JArray jsonArray)
+        {
+            BlockFactory.Instance.AddJsonDefinitions(jsonArray);
         }
     }
 }

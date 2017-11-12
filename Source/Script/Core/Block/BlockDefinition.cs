@@ -73,7 +73,7 @@ namespace UBlockly
         {
             if (!mHasOutput) return null;
             
-            Connection connection = new Connection(Blockly.OUTPUT_VALUE);
+            Connection connection = new Connection(Define.EConnection.OutputValue);
             connection.SetCheck(mOutputChecks != null ? mOutputChecks.ToList() : null);
             return connection;
         }
@@ -82,7 +82,7 @@ namespace UBlockly
         {
             if (!mHasPreviousStatement) return null;
 
-            Connection connection = new Connection(Blockly.PREVIOUS_STATEMENT);
+            Connection connection = new Connection(Define.EConnection.PrevStatement);
             connection.SetCheck(mPreviousStatementChecks != null ? mPreviousStatementChecks.ToList() : null);
             return connection;
         }
@@ -91,7 +91,7 @@ namespace UBlockly
         {
             if (!mHasNextStatement) return null;
 
-            Connection connection = new Connection(Blockly.NEXT_STATEMENT);
+            Connection connection = new Connection(Define.EConnection.NextStatement);
             connection.SetCheck(mNextStatementChecks != null ? mNextStatementChecks.ToList() : null);
             return connection;
         }
@@ -131,12 +131,12 @@ namespace UBlockly
                         while (element != null)
                         {
                             string elementType = element["type"].ToString();
-                            if (Blockly.FIELD_TYPES.Contains(elementType))
+                            if (Define.FIELD_TYPES.Contains(elementType))
                             {
                                 fields.Add(FieldFactory.CreateFromJson(element));
                                 break;
                             }
-                            else if (Blockly.INPUT_TYPES.Contains(elementType))
+                            else if (Define.INPUT_TYPES.Contains(elementType))
                             {
                                 Input input = InputFactory.CreateFromJson(element);
                                 foreach (Field field in fields)

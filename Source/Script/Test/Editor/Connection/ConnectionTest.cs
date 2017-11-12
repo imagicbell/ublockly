@@ -23,10 +23,10 @@ namespace UBlockly.Test
                 return block;
             };
 
-            mInput = new Connection(createBlock(), Blockly.INPUT_VALUE);
-            mOutput = new Connection(createBlock(), Blockly.OUTPUT_VALUE);
-            mPrevious = new Connection(createBlock(), Blockly.PREVIOUS_STATEMENT);
-            mNext = new Connection(createBlock(), Blockly.NEXT_STATEMENT);
+            mInput = new Connection(createBlock(), Define.EConnection.InputValue);
+            mOutput = new Connection(createBlock(), Define.EConnection.OutputValue);
+            mPrevious = new Connection(createBlock(), Define.EConnection.PrevStatement);
+            mNext = new Connection(createBlock(), Define.EConnection.NextStatement);
         }
 
         void TearDown()
@@ -40,7 +40,7 @@ namespace UBlockly.Test
 
         private Func<bool> mIsMovableFn = () => true;
 
-        private Connection CreateConnection(Block sourceBlock, Vector2<int> location, int type)
+        private Connection CreateConnection(Block sourceBlock, Vector2<int> location, Define.EConnection type)
         {
             return new Connection(sourceBlock, type)
             {
@@ -71,7 +71,7 @@ namespace UBlockly.Test
         {
             Setup();
 
-            var tempConnection = new Connection(new Block() {Workspace = mWorkspace}, Blockly.OUTPUT_VALUE);
+            var tempConnection = new Connection(new Block() {Workspace = mWorkspace}, Define.EConnection.OutputValue);
             Connection.ConnectReciprocally(mInput, tempConnection);
             Assert.AreEqual(Connection.CAN_CONNECT, mInput.CanConnectWithReason(mOutput));
             
@@ -83,7 +83,7 @@ namespace UBlockly.Test
         {
             Setup();
 
-            mInput = new Connection(new Block() {Workspace = new Workspace()}, Blockly.INPUT_VALUE);
+            mInput = new Connection(new Block() {Workspace = new Workspace()}, Define.EConnection.InputValue);
             Assert.AreEqual(Connection.REASON_DIFFERENT_WORKSPACES, mInput.CanConnectWithReason(mOutput));
             
             TearDown();
@@ -134,7 +134,7 @@ namespace UBlockly.Test
         public void TestCheckConnection_Self()
         {
             Setup();
-            //mInput = new Connection(new Block() {Type = "test block"}, Blockly.INPUT_VALUE);
+            //mInput = new Connection(new Block() {Type = "test block"}, Define.EConnection.InputValue);
             try
             {
                 mInput.CheckConnection(mInput);
@@ -250,10 +250,10 @@ namespace UBlockly.Test
             Setup();
             
             Block sourceBlock = MakeSourceBlock();
-            Connection one = CreateConnection(sourceBlock, new Vector2<int>(5, 10), Blockly.INPUT_VALUE);
+            Connection one = CreateConnection(sourceBlock, new Vector2<int>(5, 10), Define.EConnection.InputValue);
 
             sourceBlock = MakeSourceBlock();
-            Connection two = CreateConnection(sourceBlock, new Vector2<int>(10, 15), Blockly.OUTPUT_VALUE);
+            Connection two = CreateConnection(sourceBlock, new Vector2<int>(10, 15), Define.EConnection.OutputValue);
 
             Assert.True(one.IsConnectionAllowed(two, 20));
 
@@ -269,20 +269,20 @@ namespace UBlockly.Test
             Setup();
             
             Block sourceBlock = MakeSourceBlock();
-            Connection one = CreateConnection(sourceBlock, new Vector2<int>(5, 10), Blockly.INPUT_VALUE);
+            Connection one = CreateConnection(sourceBlock, new Vector2<int>(5, 10), Define.EConnection.InputValue);
             
             sourceBlock = MakeSourceBlock();
-            Connection two = CreateConnection(sourceBlock, new Vector2<int>(0, 0), Blockly.OUTPUT_VALUE);
+            Connection two = CreateConnection(sourceBlock, new Vector2<int>(0, 0), Define.EConnection.OutputValue);
             
             Assert.True(one.IsConnectionAllowed(two));
             
             sourceBlock = MakeSourceBlock();
-            Connection three = CreateConnection(sourceBlock, new Vector2<int>(0, 0), Blockly.INPUT_VALUE);
+            Connection three = CreateConnection(sourceBlock, new Vector2<int>(0, 0), Define.EConnection.InputValue);
 
             Connection.ConnectReciprocally(two, three);
             Assert.False(one.IsConnectionAllowed(two));
 
-            two = CreateConnection(one.SourceBlock, new Vector2<int>(0, 0), Blockly.OUTPUT_VALUE);
+            two = CreateConnection(one.SourceBlock, new Vector2<int>(0, 0), Define.EConnection.OutputValue);
             Assert.False(one.IsConnectionAllowed(two));
             
             TearDown();
@@ -294,16 +294,16 @@ namespace UBlockly.Test
             Setup();
             
             Block sourceBlock = MakeSourceBlock();
-            Connection one = CreateConnection(sourceBlock, new Vector2<int>(0, 0), Blockly.NEXT_STATEMENT);
+            Connection one = CreateConnection(sourceBlock, new Vector2<int>(0, 0), Define.EConnection.NextStatement);
             one.SourceBlock.NextConnection = one;
             
             sourceBlock = MakeSourceBlock();
-            Connection two = CreateConnection(sourceBlock, new Vector2<int>(0, 0), Blockly.PREVIOUS_STATEMENT);
+            Connection two = CreateConnection(sourceBlock, new Vector2<int>(0, 0), Define.EConnection.PrevStatement);
             
             Assert.True(two.IsConnectionAllowed(one));
             
             sourceBlock = MakeSourceBlock();
-            Connection three = CreateConnection(sourceBlock, new Vector2<int>(0, 0), Blockly.PREVIOUS_STATEMENT);
+            Connection three = CreateConnection(sourceBlock, new Vector2<int>(0, 0), Define.EConnection.PrevStatement);
             three.SourceBlock.PreviousConnection = three;
             Connection.ConnectReciprocally(one, three);
             

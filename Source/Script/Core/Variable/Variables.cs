@@ -9,7 +9,7 @@ namespace UBlockly
         /// Constant to seperate variable names from procedures and generated functions
         /// When running generators
         /// </summary>
-        public const string NAME_TYPE = Blockly.VARIABLE_CATEGORY_NAME;
+        public const string NAME_TYPE = Define.VARIABLE_CATEGORY_NAME;
 
         /// <summary>
         /// Find all user-created variables that are in use in the workspace.

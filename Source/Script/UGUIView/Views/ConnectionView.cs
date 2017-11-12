@@ -8,24 +8,14 @@ namespace UBlockly.UGUI
     /// </summary>
     public class ConnectionView : BaseView
     {
-        public enum ConType
-        {
-            NONE = 0,
-            INPUT_VALUE = Blockly.INPUT_VALUE,
-            OUTPUT_VALUE = Blockly.OUTPUT_VALUE,
-            NEXT_STATEMENT = Blockly.NEXT_STATEMENT,
-            PREVIOUS_STATEMENT = Blockly.PREVIOUS_STATEMENT,
-            DUMMY_INPUT = Blockly.DUMMY_INPUT
-        }
-
-        [SerializeField] protected ConType m_ConnectionType;
+        [SerializeField] protected Define.EConnection m_ConnectionType;
         
         public override ViewType Type
         {
             get { return ViewType.Connection; }
         }
 
-        public virtual ConType ConnectionType
+        public virtual Define.EConnection ConnectionType
         {
             get { return m_ConnectionType; }
             set { m_ConnectionType = value; }
@@ -35,7 +25,7 @@ namespace UBlockly.UGUI
         {
             get
             {
-                if (m_ConnectionType == ConType.NEXT_STATEMENT)
+                if (m_ConnectionType == Define.EConnection.NextStatement)
                     return -BlockViewSettings.Get().StatementConnectPointRect.position;
                 return base.ChildStartXY;
             }
@@ -64,7 +54,7 @@ namespace UBlockly.UGUI
             if (mConnection == connection) return;
             if (mConnection != null) UnBindModel();
 
-            if (connection.Type != (int)m_ConnectionType)
+            if (connection.Type != m_ConnectionType)
                 throw new Exception("ConnectionView must be bound to connection with the same connection type");
             
             mConnection = connection;
@@ -195,19 +185,19 @@ namespace UBlockly.UGUI
                 RectTransform highlightTrans = mHighlightObj.GetComponent<RectTransform>();
                 highlightTrans.SetParent(ViewTransform, false);
 
-                if (ConnectionType == ConType.INPUT_VALUE)
+                if (ConnectionType == Define.EConnection.InputValue)
                 {
                     highlightTrans.localRotation = Quaternion.Euler(0, 0, -90);
                     highlightTrans.pivot = new Vector2(0, 0);
                     highlightTrans.anchorMin = highlightTrans.anchorMax = new Vector2(0, 1);
                     highlightTrans.anchoredPosition3D = new Vector2(0, -17);
                 }
-                else if (ConnectionType == ConType.OUTPUT_VALUE)
+                else if (ConnectionType == Define.EConnection.OutputValue)
                 {
                     highlightTrans.localRotation = Quaternion.Euler(0, 0, -90);
                     highlightTrans.anchoredPosition3D = Vector3.zero;
                 }
-                else if (ConnectionType == ConType.NEXT_STATEMENT && Type == ViewType.ConnectionInput)
+                else if (ConnectionType == Define.EConnection.NextStatement && Type == ViewType.ConnectionInput)
                 {
                     highlightTrans.pivot = new Vector2(0, 1);
                     highlightTrans.anchorMin = highlightTrans.anchorMax = new Vector2(0, 1);

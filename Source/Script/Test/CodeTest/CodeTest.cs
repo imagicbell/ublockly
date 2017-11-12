@@ -18,9 +18,9 @@ namespace UBlockly.Test
         IEnumerator Setup()
         {
             Blockly.Dispose();
-            
+            Blockly.Init();
+
             mWorkspace = new Workspace(new Workspace.WorkspaceOptions());
-            Blockly.LoadAllBlocksFromJson();
             yield return 0;
         }
 

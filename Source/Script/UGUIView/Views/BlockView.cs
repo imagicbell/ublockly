@@ -58,7 +58,7 @@ namespace UBlockly.UGUI
                 if (view.Type == ViewType.Connection)
                 {
                     ConnectionView conView = view as ConnectionView;
-                    conView.BindModel(mBlock.GetFirstClassConnection((int) conView.ConnectionType));
+                    conView.BindModel(mBlock.GetFirstClassConnection(conView.ConnectionType));
                 }
                 else if (view.Type == ViewType.LineGroup)
                 {
@@ -120,14 +120,14 @@ namespace UBlockly.UGUI
                 if (Childs[0].Type == ViewType.Connection)
                 {
                     // connection point' start xy is specified
-                    ConnectionView.ConType conType = ((ConnectionView) Childs[0]).ConnectionType;
+                    Define.EConnection conType = ((ConnectionView) Childs[0]).ConnectionType;
                     switch (conType)
                     {
-                        case ConnectionView.ConType.OUTPUT_VALUE:
+                        case Define.EConnection.OutputValue:
                             return BlockViewSettings.Get().ValueConnectPointRect.position;
 
-                        case ConnectionView.ConType.PREVIOUS_STATEMENT:
-                        case ConnectionView.ConType.NEXT_STATEMENT:
+                        case Define.EConnection.PrevStatement:
+                        case Define.EConnection.NextStatement:
                             return BlockViewSettings.Get().StatementConnectPointRect.position;
                     }
                 }
@@ -361,7 +361,7 @@ namespace UBlockly.UGUI
         /// Get the connection view of connectionType
         /// output, previous, next connection
         /// </summary>
-        public ConnectionView GetConnectionView(ConnectionView.ConType connectionType)
+        public ConnectionView GetConnectionView(Define.EConnection connectionType)
         {
             int i = 0;
             while (i < Childs.Count)

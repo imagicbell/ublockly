@@ -15,8 +15,8 @@ namespace UBlockly
         private const string ELSE_INPUT_NAME = "ELSE";
         private const string IF_INPUT_PREFIX = "IF";
         private const string DO_INPUT_PREFIX = "DO";
-        private static string CHECK = "Boolean";
-        private const int ALIGN = Blockly.ALIGN_LEFT;
+        private const string CHECK = "Boolean";
+        private const Define.EAlign ALIGN = Define.EAlign.Left;
         
         /// <summary>
         /// The number of else if inputs on this block.
@@ -116,12 +116,12 @@ namespace UBlockly
                 else
                 {
                     // IFi value input
-                    Input inputValue = InputFactory.Create(Blockly.INPUT_VALUE, IF_INPUT_PREFIX + i, ALIGN, new List<string>() {CHECK});
-                    inputValue.AppendField(new FieldLabel(null, Blockly.Msg[MsgDefine.CONTROLS_IF_MSG_ELSEIF]));
+                    Input inputValue = InputFactory.Create(Define.EConnection.InputValue, IF_INPUT_PREFIX + i, ALIGN, new List<string>() {CHECK});
+                    inputValue.AppendField(new FieldLabel(null, I18n.Msg[MsgDefine.CONTROLS_IF_MSG_ELSEIF]));
 
                     // DOi statement input
-                    Input inputStatement = InputFactory.Create(Blockly.NEXT_STATEMENT, DO_INPUT_PREFIX + i, ALIGN, null);
-                    inputStatement.AppendField(new FieldLabel(null, Blockly.Msg[MsgDefine.CONTROLS_IF_MSG_THEN]));
+                    Input inputStatement = InputFactory.Create(Define.EConnection.NextStatement, DO_INPUT_PREFIX + i, ALIGN, null);
+                    inputStatement.AppendField(new FieldLabel(null, I18n.Msg[MsgDefine.CONTROLS_IF_MSG_THEN]));
                     
                     newInputs.Add(inputValue);
                     newInputs.Add(inputStatement);
@@ -133,8 +133,8 @@ namespace UBlockly
             {
                 if (elseInput == null)
                 {
-                    elseInput = InputFactory.Create(Blockly.NEXT_STATEMENT, ELSE_INPUT_NAME, ALIGN, null);
-                    elseInput.AppendField(new FieldLabel(null, Blockly.Msg[MsgDefine.CONTROLS_IF_MSG_ELSE]));
+                    elseInput = InputFactory.Create(Define.EConnection.NextStatement, ELSE_INPUT_NAME, ALIGN, null);
+                    elseInput.AppendField(new FieldLabel(null, I18n.Msg[MsgDefine.CONTROLS_IF_MSG_ELSE]));
                 }
                 newInputs.Add(elseInput);
             }

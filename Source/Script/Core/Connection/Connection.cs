@@ -40,7 +40,7 @@ namespace UBlockly
                     Hidden = DB == null;
 
                     ConnectionDB dbOpposite;
-                    mSourceBlock.Workspace.ConnectionDBList.TryGetValue(Blockly.OPPOSITE_TYPE[Type], out dbOpposite);
+                    mSourceBlock.Workspace.ConnectionDBList.TryGetValue(Define.OppositeConnection(Type), out dbOpposite);
                     DBOpposite = dbOpposite;
                 }
             }
@@ -49,14 +49,14 @@ namespace UBlockly
         /// <summary>
         /// The type of the connection.
         /// </summary>
-        public int Type { get; private set; }
+        public Define.EConnection Type { get; private set; }
 
         /// <summary>
         /// Does the connection belong to a superior block (higher in the source stack)?
         /// </summary>
         public bool IsSuperior
         {
-            get { return this.Type == Blockly.INPUT_VALUE || this.Type == Blockly.NEXT_STATEMENT; }
+            get { return this.Type == Define.EConnection.InputValue || this.Type == Define.EConnection.NextStatement; }
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace UBlockly
         /// </summary>
         /// <param name="source">The block establishing this connection.</param>
         /// <param name="type">The type of the connection.</param>
-        public Connection(Block source, int type)
+        public Connection(Block source, Define.EConnection type)
         {
             Type = type;
             SourceBlock = source;
@@ -74,7 +74,7 @@ namespace UBlockly
         /// Class for a connection between blocks.
         /// </summary>
         /// <param name="type"></param>
-        public Connection(int type) : this(null, type)
+        public Connection(Define.EConnection type) : this(null, type)
         {
         }
 
@@ -207,7 +207,7 @@ namespace UBlockly
                     orphanBlock.Dispose();
                     orphanBlock = null;
                 }
-                else if (parentConnection.Type == Blockly.INPUT_VALUE)
+                else if (parentConnection.Type == Define.EConnection.InputValue)
                 {
                     //value connnections
                     if (orphanBlock.OutputConnection == null)
@@ -223,7 +223,7 @@ namespace UBlockly
                         orphanBlock = null;
                     }
                 }
-                else if (parentConnection.Type == Blockly.NEXT_STATEMENT)
+                else if (parentConnection.Type == Define.EConnection.NextStatement)
                 {
                     // Statement connections.
                     // Statement blocks may be inserted into the middle of a stack.
@@ -306,7 +306,7 @@ namespace UBlockly
             {
                 return Connection.REASON_SELF_CONNECTION;
             }
-            if (target.Type != Blockly.OPPOSITE_TYPE[this.Type])
+            if (target.Type != Define.OppositeConnection(this.Type))
             {
                 return Connection.REASON_WRONG_TYPE;
             }
@@ -370,7 +370,7 @@ namespace UBlockly
             // Don't offer to connect an already connected left (male) value plug to
             // an available right (female) value plug.  Don't offer to connect the
             // bottom of a statement block to one that's already connected.
-            if (candidate.Type == Blockly.OUTPUT_VALUE || candidate.Type == Blockly.PREVIOUS_STATEMENT)
+            if (candidate.Type == Define.EConnection.OutputValue|| candidate.Type == Define.EConnection.PrevStatement)
             {
                 if (candidate.IsConnected || this.IsConnected)
                     return false;
@@ -379,7 +379,7 @@ namespace UBlockly
             // Offering to connect the left (male) of a value block to an already
             // connected value pair is ok, we'll splice it in.
             // However, don't offer to splice into an immovable block.
-            if (candidate.Type == Blockly.INPUT_VALUE && candidate.IsConnected
+            if (candidate.Type == Define.EConnection.InputValue && candidate.IsConnected
                 && !candidate.TargetBlock.Movable && !candidate.TargetBlock.IsShadow)
             {
                 return false;
@@ -389,7 +389,7 @@ namespace UBlockly
             // stack.  But covering up a shadow block or stack of shadow blocks is fine.
             // Similarly, replacing a terminal statement with another terminal statement
             // is allowed.
-            if (this.Type == Blockly.PREVIOUS_STATEMENT && candidate.IsConnected
+            if (this.Type == Define.EConnection.PrevStatement && candidate.IsConnected
                 && this.SourceBlock.NextConnection == null && !candidate.TargetBlock.IsShadow
                 && candidate.TargetBlock.NextConnection != null)
             {
@@ -420,7 +420,7 @@ namespace UBlockly
             foreach (var input in block.InputList)
             {
                 var thisConnection = input.Connection;
-                if (thisConnection != null && thisConnection.Type == Blockly.INPUT_VALUE
+                if (thisConnection != null && thisConnection.Type == Define.EConnection.InputValue
                     && orphanBlock.OutputConnection.CheckType(thisConnection))
                 {
                     if (connection != null)

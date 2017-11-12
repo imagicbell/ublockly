@@ -14,7 +14,7 @@ namespace UBlockly
     {
         protected override DataStruct Execute(Block block)
         {
-            string varName = CSharp.VariableNames.GetName(block.GetFieldValue("VAR"), Blockly.VARIABLE_CATEGORY_NAME);
+            string varName = CSharp.VariableNames.GetName(block.GetFieldValue("VAR"), Define.VARIABLE_CATEGORY_NAME);
             return CSharp.VariableDatas.GetData(varName);
         }
     }
@@ -24,7 +24,7 @@ namespace UBlockly
     {
         protected override IEnumerator Execute(Block block)
         {
-            string varName = CSharp.VariableNames.GetName(block.GetFieldValue("VAR"), Blockly.VARIABLE_CATEGORY_NAME);
+            string varName = CSharp.VariableNames.GetName(block.GetFieldValue("VAR"), Define.VARIABLE_CATEGORY_NAME);
             CustomEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "VALUE");
             yield return ctor;
             CSharp.VariableDatas.SetData(varName, ctor.Data);

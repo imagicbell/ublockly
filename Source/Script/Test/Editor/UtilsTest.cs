@@ -52,9 +52,9 @@ namespace UBlockly.Test
 			              string.Equals(tokens[2],"1") &&
 			              string.Equals(tokens[3],"%"),"Tortune interpolations.");
 			
-			if (!Blockly.Msg.ContainsKey("STRING_REF"))
+			if (!I18n.Msg.ContainsKey("STRING_REF"))
 			{
-				Blockly.Msg.Add("STRING_REF","test string");	
+				I18n.Msg.Add("STRING_REF","test string");	
 			}
 
 			tokens = Utils.TokenizeInterpolation("%{bky_string_ref}");
@@ -63,9 +63,9 @@ namespace UBlockly.Test
 			tokens = Utils.TokenizeInterpolation("%{BKY_STRING_REF}");
 			Assert.IsTrue(string.Equals(tokens[0],"test string"),"String table reference,uppercase");
 
-			if (!Blockly.Msg.ContainsKey("WITH_PARAM"))
+			if (!I18n.Msg.ContainsKey("WITH_PARAM"))
 			{
-				Blockly.Msg.Add("WITH_PARAM","before %1 after");
+				I18n.Msg.Add("WITH_PARAM","before %1 after");
 			}
 			tokens = Utils.TokenizeInterpolation("%{bky_with_param}");
 			Assert.IsTrue(string.Equals(tokens[0], "before ") &&
@@ -105,9 +105,9 @@ namespace UBlockly.Test
 
 		void AddMsgToBlocklyMsg(string key, string content)
 		{
-			if (!Blockly.Msg.ContainsKey(key))
+			if (!I18n.Msg.ContainsKey(key))
 			{
-				Blockly.Msg.Add(key,content);
+				I18n.Msg.Add(key,content);
 			}
 			
 		}
@@ -115,9 +115,9 @@ namespace UBlockly.Test
 		[Test]
 		public void TestReplaceMessageReferences()
 		{
-			if (!Blockly.Msg.ContainsKey("STRING_REF"))
+			if (!I18n.Msg.ContainsKey("STRING_REF"))
 			{
-				Blockly.Msg.Add("STRING_REF","test string");	
+				I18n.Msg.Add("STRING_REF","test string");	
 			}
 			
 			var resultString = Utils.ReplaceMessageReferences("");

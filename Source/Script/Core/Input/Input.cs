@@ -5,7 +5,7 @@ namespace UBlockly
 {
     public class Input
     {
-        public readonly int Type;
+        public readonly Define.EConnection Type;
         public readonly string Name;
 
         public readonly Connection Connection;
@@ -49,9 +49,9 @@ namespace UBlockly
         /// <param name="name"> Language-neutral identifier which may used to find this input again</param>
         /// <param name="block"> The block containing this input.</param>
         /// <param name="connection"> Optional connection for this input</param>
-        public Input(int type, string name, Block block, Connection connection = null)
+        public Input(Define.EConnection type, string name, Block block, Connection connection = null)
         {
-            if (type != Blockly.DUMMY_INPUT && string.IsNullOrEmpty(name))
+            if (type != Define.EConnection.DummyInput && string.IsNullOrEmpty(name))
             {
                 throw new Exception("Value inputs and statement inputs must have non-empty name.");
             }
@@ -63,25 +63,25 @@ namespace UBlockly
 
             FieldRow = new List<Field>();
 
-            Align = Blockly.ALIGN_LEFT;
+            Align = Define.EAlign.Left;
         }
 
         /// <summary>
         /// Class for an input with an optional field.
         /// </summary>
-        public Input(int type, string name, Connection connection = null) : this(type, name, null, connection)
+        public Input(Define.EConnection type, string name, Connection connection = null) : this(type, name, null, connection)
         {
         }
 
         /// <summary>
         /// Alignment of input's fields (left,right or center).
         /// </summary>
-        public int Align { get; private set; }
+        public Define.EAlign Align { get; private set; }
 
         /// <summary>
         /// Change the alignment of the connection's field(s).
         /// </summary>
-        public Input SetAlign(int align)
+        public Input SetAlign(Define.EAlign align)
         {
             if (this.Align != align)
             {

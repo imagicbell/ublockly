@@ -80,7 +80,7 @@ namespace UBlockly.UGUI
                     if (inputView != null)
                     {
                         ConnectionInputView conView = inputView.GetConnectionView();
-                        if (conView != null && (conView.IsSlot || conView.ConnectionType == ConnectionView.ConType.NEXT_STATEMENT))
+                        if (conView != null && (conView.IsSlot || conView.ConnectionType == Define.EConnection.NextStatement))
                             return BlockViewSettings.Get().ContentMargin.bottom;
                     }
                 }

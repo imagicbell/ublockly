@@ -9,7 +9,6 @@ namespace UBlockly
         /// Database of connections. 
         /// Connections are stored in order of their vertical component.  
         /// This way connections in an area may be looked up quickly using a binary search.
-        /// todo: maoling refactor to dictionary<int, Connection>, or array[][]
         /// </summary>
         public ConnectionDB()
         {
@@ -233,14 +232,14 @@ namespace UBlockly
         /// <summary>
         /// Build a set of connection DBs
         /// </summary>
-        public static Dictionary<int, ConnectionDB> Build()
+        public static Dictionary<Define.EConnection, ConnectionDB> Build()
         {
             // Create for databases,one for each connection type.
-            var dbList = new Dictionary<int, ConnectionDB>();
-            dbList.Add(Blockly.INPUT_VALUE, new ConnectionDB());
-            dbList.Add(Blockly.OUTPUT_VALUE, new ConnectionDB());
-            dbList.Add(Blockly.NEXT_STATEMENT, new ConnectionDB());
-            dbList.Add(Blockly.PREVIOUS_STATEMENT, new ConnectionDB());
+            var dbList = new Dictionary<Define.EConnection, ConnectionDB>();
+            dbList.Add(Define.EConnection.InputValue, new ConnectionDB());
+            dbList.Add(Define.EConnection.OutputValue, new ConnectionDB());
+            dbList.Add(Define.EConnection.NextStatement, new ConnectionDB());
+            dbList.Add(Define.EConnection.PrevStatement, new ConnectionDB());
             return dbList;
         }
     }

@@ -67,10 +67,10 @@ namespace UBlockly
         public const string RETURN_INPUT_NAME = "RETURN";
         public const bool HAS_STATEMENTS_DEFAULT = true;
 
-        public const string DEFINE_NO_RETURN_BLOCK_TYPE = Blockly.DEFINE_NO_RETURN_BLOCK_TYPE;
-        public const string DEFINE_WITH_RETURN_BLOCK_TYPE = Blockly.DEFINE_WITH_RETURN_BLOCK_TYPE;
-        public const string CALL_NO_RETURN_BLOCK_TYPE = Blockly.CALL_NO_RETURN_BLOCK_TYPE;
-        public const string CALL_WITH_RETURN_BLOCK_TYPE = Blockly.CALL_WITH_RETURN_BLOCK_TYPE;
+        public const string DEFINE_NO_RETURN_BLOCK_TYPE = Define.DEFINE_NO_RETURN_BLOCK_TYPE;
+        public const string DEFINE_WITH_RETURN_BLOCK_TYPE = Define.DEFINE_WITH_RETURN_BLOCK_TYPE;
+        public const string CALL_NO_RETURN_BLOCK_TYPE = Define.CALL_NO_RETURN_BLOCK_TYPE;
+        public const string CALL_WITH_RETURN_BLOCK_TYPE = Define.CALL_WITH_RETURN_BLOCK_TYPE;
         public const string IF_RETURN_BLOCK_TYPE = "procedures_ifreturn";
 
         private Workspace mWorkspace;

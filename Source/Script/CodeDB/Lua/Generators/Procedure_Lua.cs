@@ -8,7 +8,7 @@ namespace UBlockly
         [CodeGenerator(BlockType = "procedures_defreturn")]
         private object Procedure_DefReturn(Block block)
         {
-            string funcName = Lua.VariableNames.GetName(block.GetFieldValue("NAME"), Blockly.PROCEDURE_CATEGORY_NAME);
+            string funcName = Lua.VariableNames.GetName(block.GetFieldValue("NAME"), Define.PROCEDURE_CATEGORY_NAME);
             string branch = Lua.Generator.StatementToCode(block, "STACK", "");
             string returnValue = Lua.Generator.ValueToCode(block, "RETURN", Lua.ORDER_NONE);
             if (!string.IsNullOrEmpty(returnValue))
@@ -18,7 +18,7 @@ namespace UBlockly
             List<string> arguments = ProcedureDB.GetProcedureArguments(block);
             for (int i = 0; i < arguments.Count; i++)
             {
-                argumentSB.Append(Lua.VariableNames.GetName(arguments[i], Blockly.VARIABLE_CATEGORY_NAME));
+                argumentSB.Append(Lua.VariableNames.GetName(arguments[i], Define.VARIABLE_CATEGORY_NAME));
                 if (i < arguments.Count - 1)
                     argumentSB.Append(", ");
             }
@@ -41,7 +41,7 @@ namespace UBlockly
         private CodeStruct Procedure_CallReturn(Block block)
         {
             // Call a procedure with a return value.
-            string funcName = Lua.VariableNames.GetName(block.GetFieldValue("NAME"), Blockly.PROCEDURE_CATEGORY_NAME);
+            string funcName = Lua.VariableNames.GetName(block.GetFieldValue("NAME"), Define.PROCEDURE_CATEGORY_NAME);
             StringBuilder argumentSB = new StringBuilder();
             List<string> arguments = ProcedureDB.GetProcedureArguments(block);
             for (int i = 0; i < arguments.Count; i++)

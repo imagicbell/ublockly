@@ -15,7 +15,7 @@ namespace UBlockly.Test
         IEnumerator Setup()
         {
             Blockly.Dispose();
-            Blockly.LoadAllBlocksFromJson();
+            Blockly.Init();
             BlocklyUI.NewWorkspace();
 
             yield return 0;

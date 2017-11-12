@@ -69,9 +69,9 @@ namespace UBlockly.UGUI
                     ConnectionView conView = AddViewComponent<ConnectionView>(child.gameObject);
                     blockView.AddChild(conView, 0);
                     
-                    if (childName.EndsWith("output")) conView.ConnectionType = ConnectionView.ConType.OUTPUT_VALUE;
-                    else if (childName.EndsWith("prev")) conView.ConnectionType = ConnectionView.ConType.PREVIOUS_STATEMENT;
-                    else if (childName.EndsWith("next")) conView.ConnectionType = ConnectionView.ConType.NEXT_STATEMENT;
+                    if (childName.EndsWith("output")) conView.ConnectionType = Define.EConnection.OutputValue;
+                    else if (childName.EndsWith("prev")) conView.ConnectionType = Define.EConnection.PrevStatement;
+                    else if (childName.EndsWith("next")) conView.ConnectionType = Define.EConnection.NextStatement;
 
                     //connection node view background color
                     Image image = child.GetComponent<Image>();
@@ -207,7 +207,7 @@ namespace UBlockly.UGUI
         public static InputView BuildInputView(Input input, LineGroupView groupView)
         {
             GameObject inputPrefab;
-            if (input.Type == (int) ConnectionView.ConType.NEXT_STATEMENT)
+            if (input.Type == Define.EConnection.NextStatement)
                 inputPrefab = BlockViewSettings.Get().PrefabInputStatement;
             else
                 inputPrefab = BlockViewSettings.Get().PrefabInputValue;
@@ -231,7 +231,7 @@ namespace UBlockly.UGUI
                 UniformRectTransform(fieldTrans);
             }
             
-            if (input.Type == (int) ConnectionView.ConType.DUMMY_INPUT)
+            if (input.Type == Define.EConnection.DummyInput)
             {
                 //dummy input doesn't need to have a connection point
                 GameObject.DestroyImmediate(conInputTrans.gameObject);
@@ -239,8 +239,8 @@ namespace UBlockly.UGUI
             else
             {
                 ConnectionInputView conInputView = AddViewComponent<ConnectionInputView>(conInputTrans.gameObject);
-                conInputView.ConnectionType = (ConnectionView.ConType) input.Type;
-                conInputView.IsSlot = input.Type == (int) ConnectionView.ConType.INPUT_VALUE && 
+                conInputView.ConnectionType = input.Type;
+                conInputView.IsSlot = input.Type == Define.EConnection.InputValue && 
                                       input.SourceBlock.InputList.Count > 1 &&
                                       input.SourceBlock.GetInputsInline();
                 inputView.AddChild(conInputView);

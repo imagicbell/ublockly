@@ -8,7 +8,7 @@ namespace UBlockly
       [CodeGenerator(BlockType = "unittest_main")]
       private string UnitTest_Main(Block block)
       {
-        string resultVar = Lua.VariableNames.GetName("unittestResults", Blockly.VARIABLE_CATEGORY_NAME);
+        string resultVar = Lua.VariableNames.GetName("unittestResults", Variables.NAME_TYPE);
         string funcName = Lua.Generator.ProvideFunction("unittest_report",
           "function " + Generator.FUNCTION_NAME_PLACEHOLDER + string.Format(@"()
               -- Create test report.
@@ -120,7 +120,7 @@ namespace UBlockly
       [CodeGenerator(BlockType = "unittest_fail")]
       private string UnitTest_Fail(Block block)
       {
-        string resultsVar = Lua.VariableNames.GetName("unittestResults", Blockly.VARIABLE_CATEGORY_NAME);
+        string resultsVar = Lua.VariableNames.GetName("unittestResults", Variables.NAME_TYPE);
         string message = Lua.Generator.ValueToCode(block, "MESSAGE", Lua.ORDER_NONE, "");
         string funcName = Lua.Generator.ProvideFunction("unittest_fail",
           "function " + Generator.FUNCTION_NAME_PLACEHOLDER + string.Format(@"(message)

@@ -22,8 +22,8 @@ namespace UBlockly.UGUI
             m_ElseIfCountText.text = mIfElseMutator.ElseIfCount.ToString();
             m_HasElseToggle.isOn = mIfElseMutator.HasElse;
 
-            m_ElseIfCountTitle.text = Blockly.Msg[MsgDefine.CONTROLS_IF_MSG_ELSEIF];
-            m_HasElseTitle.text = Blockly.Msg[MsgDefine.CONTROLS_IF_MSG_THEN];
+            m_ElseIfCountTitle.text = I18n.Msg[MsgDefine.CONTROLS_IF_MSG_ELSEIF];
+            m_HasElseTitle.text = I18n.Msg[MsgDefine.CONTROLS_IF_MSG_THEN];
             
             AddCloseEvent(() =>
             {

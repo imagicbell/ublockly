@@ -107,7 +107,7 @@ namespace UBlockly
         {
             Input descriptionInput = mBlock.InputList[0];
             List<Field> oldFields = descriptionInput.FieldRow;
-            Input input = InputFactory.Create(Blockly.DUMMY_INPUT, null, Blockly.ALIGN_LEFT, null);
+            Input input = InputFactory.Create(Define.EConnection.DummyInput, null, Define.EAlign.Left, null);
             input.SourceBlock = mBlock;
             input.AppendField(oldFields[0]);
             input.AppendField(oldFields[1]);
@@ -123,8 +123,8 @@ namespace UBlockly
             Input stackInput = mBlock.GetInput(ProcedureDB.STATEMENT_INPUT_NAME);
             if (stackInput == null)
             {
-                stackInput = InputFactory.Create(Blockly.NEXT_STATEMENT, ProcedureDB.STATEMENT_INPUT_NAME,
-                                                 Blockly.ALIGN_LEFT, null);
+                stackInput = InputFactory.Create(Define.EConnection.NextStatement, ProcedureDB.STATEMENT_INPUT_NAME,
+                                                 Define.EAlign.Left, null);
             }
             return stackInput;
         }
@@ -141,7 +141,7 @@ namespace UBlockly
             List<String> arguments = mProcedure.Arguments;
             if (arguments.Count > 0)
             {
-                sb.Append(Blockly.Msg[MsgDefine.PROCEDURES_BEFORE_PARAMS]);
+                sb.Append(I18n.Msg[MsgDefine.PROCEDURES_BEFORE_PARAMS]);
                 for (int i = 0; i < arguments.Count; ++i)
                 {
                     sb.Append(i == 0 ? " " : ", ");

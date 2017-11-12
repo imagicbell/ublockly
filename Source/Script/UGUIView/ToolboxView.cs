@@ -122,9 +122,9 @@ namespace UBlockly.UGUI
                 contentTrans = contentObj.GetComponent<RectTransform>();
                 
                 //build new blocks
-                if (categoryName.Equals(Blockly.BLOCK_CATEGORY_NAME_VARIABLE))
+                if (categoryName.Equals(Define.BLOCK_CATEGORY_NAME_VARIABLE))
                     BuildVariableBlocks();
-                else if (categoryName.Equals(Blockly.BLOCK_CATEGORY_NAME_PROCEDURE))
+                else if (categoryName.Equals(Define.BLOCK_CATEGORY_NAME_PROCEDURE))
                     BuildProcedureBlocks();
                 else
                     BuildBlockViewsForSelectMenu();
@@ -161,7 +161,7 @@ namespace UBlockly.UGUI
                 Color color;
                 try
                 {
-                    string colorHue = Blockly.Msg[categoryName.ToUpper() + "_HUE"];
+                    string colorHue = I18n.Msg[categoryName.ToUpper() + "_HUE"];
                     color = Color.HSVToRGB(int.Parse(colorHue) / 360f, 1, 1);
                 }
                 catch (Exception e)
@@ -194,7 +194,7 @@ namespace UBlockly.UGUI
         
         private void BuildVariableBlocks()
         {
-            Transform parent = mBlockContents[Blockly.BLOCK_CATEGORY_NAME_VARIABLE].transform;
+            Transform parent = mBlockContents[Define.BLOCK_CATEGORY_NAME_VARIABLE].transform;
             
             //build createVar button
             GameObject obj = GameObject.Instantiate(BlockViewSettings.Get().PrefabBtnCreateVar);
@@ -222,10 +222,10 @@ namespace UBlockly.UGUI
                 return;
 
             GameObject parentObj;
-            if (!mBlockContents.TryGetValue(Blockly.BLOCK_CATEGORY_NAME_VARIABLE, out parentObj))
+            if (!mBlockContents.TryGetValue(Define.BLOCK_CATEGORY_NAME_VARIABLE, out parentObj))
                 return;
 
-            Block block = mWorkspace.NewBlock(Blockly.VARIABLE_GET_BLOCK_TYPE);
+            Block block = mWorkspace.NewBlock(Define.VARIABLE_GET_BLOCK_TYPE);
             block.SetFieldValue("VAR", varName);
             BlockView view = NewBlockView(block, parentObj.transform);
             mVariableGetterViews[varName] = view;
@@ -245,14 +245,14 @@ namespace UBlockly.UGUI
         private void CreateVariableHelperViews()
         {
             GameObject parentObj;
-            if (!mBlockContents.TryGetValue(Blockly.BLOCK_CATEGORY_NAME_VARIABLE, out parentObj))
+            if (!mBlockContents.TryGetValue(Define.BLOCK_CATEGORY_NAME_VARIABLE, out parentObj))
                 return;
             
             string varName = mWorkspace.GetAllVariables()[0].Name;
-            List<string> blockTypes = BlockFactory.Instance.GetCategories()[Blockly.BLOCK_CATEGORY_NAME_VARIABLE];
+            List<string> blockTypes = BlockFactory.Instance.GetCategories()[Define.BLOCK_CATEGORY_NAME_VARIABLE];
             foreach (string blockType in blockTypes)
             {
-                if (!blockType.Equals(Blockly.VARIABLE_GET_BLOCK_TYPE))
+                if (!blockType.Equals(Define.VARIABLE_GET_BLOCK_TYPE))
                 {
                     Block block = mWorkspace.NewBlock(blockType);
                     block.SetFieldValue("VAR", varName);
@@ -322,12 +322,12 @@ namespace UBlockly.UGUI
         
         private void BuildProcedureBlocks()
         {
-            Transform parent = mBlockContents[Blockly.BLOCK_CATEGORY_NAME_PROCEDURE].transform;
-            List<string> blockTypes = BlockFactory.Instance.GetCategories()[Blockly.BLOCK_CATEGORY_NAME_PROCEDURE];
+            Transform parent = mBlockContents[Define.BLOCK_CATEGORY_NAME_PROCEDURE].transform;
+            List<string> blockTypes = BlockFactory.Instance.GetCategories()[Define.BLOCK_CATEGORY_NAME_PROCEDURE];
             foreach (string blockType in blockTypes)
             {
-                if (!blockType.Equals(Blockly.CALL_NO_RETURN_BLOCK_TYPE) &&
-                    !blockType.Equals(Blockly.CALL_WITH_RETURN_BLOCK_TYPE))
+                if (!blockType.Equals(Define.CALL_NO_RETURN_BLOCK_TYPE) &&
+                    !blockType.Equals(Define.CALL_WITH_RETURN_BLOCK_TYPE))
                 {
                     NewBlockView(blockType, parent);
                 }
@@ -346,10 +346,10 @@ namespace UBlockly.UGUI
                 return;
             
             GameObject parentObj;
-            if (!mBlockContents.TryGetValue(Blockly.BLOCK_CATEGORY_NAME_PROCEDURE, out parentObj))
+            if (!mBlockContents.TryGetValue(Define.BLOCK_CATEGORY_NAME_PROCEDURE, out parentObj))
                 return;
 
-            string blockType = hasReturn ? Blockly.CALL_WITH_RETURN_BLOCK_TYPE : Blockly.CALL_NO_RETURN_BLOCK_TYPE;
+            string blockType = hasReturn ? Define.CALL_WITH_RETURN_BLOCK_TYPE : Define.CALL_NO_RETURN_BLOCK_TYPE;
             Block block = mWorkspace.NewBlock(blockType);
             block.SetFieldValue("NAME", procedureInfo.Name);
             BlockView view = NewBlockView(block, parentObj.transform);

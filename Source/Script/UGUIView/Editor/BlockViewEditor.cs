@@ -13,7 +13,7 @@ namespace UBlockly.UGUI
         static void BuildBlockPrefabs()
         {
             Blockly.Dispose();
-            Blockly.LoadAllBlocksFromJson();
+            Blockly.Init();
             Workspace workspace = new Workspace();
 
             var blocks = BlockFactory.Instance.GetAllBlockDefinitions().Keys.Where(s => !s.StartsWith("colour"));

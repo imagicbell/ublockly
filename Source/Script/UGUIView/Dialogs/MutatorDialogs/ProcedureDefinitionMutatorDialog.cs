@@ -46,20 +46,20 @@ namespace UBlockly.UGUI
             if (mArgumentList == null) 
                 mArgumentList = new List<string>();
 
-            m_NameTitle.text = Blockly.Msg[MsgDefine.PROCEDURES_NAME] + ": ";
+            m_NameTitle.text = I18n.Msg[MsgDefine.PROCEDURES_NAME] + ": ";
             m_NameInput.text = mProcedureDefMutator.GetProcedureName();
             
-            if (mProcedureDefMutator.Block.Type.Equals(Blockly.DEFINE_NO_RETURN_BLOCK_TYPE))
+            if (mProcedureDefMutator.Block.Type.Equals(Define.DEFINE_NO_RETURN_BLOCK_TYPE))
             {
                 m_StatementToggle.gameObject.SetActive(false);
             }
             else
             {
-                m_StatementTitle.text = Blockly.Msg[MsgDefine.PROCEDURES_ALLOW_STATEMENTS];
+                m_StatementTitle.text = I18n.Msg[MsgDefine.PROCEDURES_ALLOW_STATEMENTS];
                 m_StatementToggle.isOn = mProcedureDefMutator.HasStatement();
             }
 
-            m_InputTitle.text = Blockly.Msg[MsgDefine.PROCEDURES_MUTATORCONTAINER_TITLE] + ": ";
+            m_InputTitle.text = I18n.Msg[MsgDefine.PROCEDURES_MUTATORCONTAINER_TITLE] + ": ";
             m_InputPrefab.m_InputField.placeholder.GetComponent<Text>().text = "Enter input name...";
 
             m_InputAddButton.onClick.AddListener(() =>

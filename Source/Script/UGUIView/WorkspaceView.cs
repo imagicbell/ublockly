@@ -195,7 +195,7 @@ namespace UBlockly.UGUI
         private void Awake()
         {
             Blockly.Dispose();
-            Blockly.LoadAllBlocksFromJson();
+            Blockly.Init();
             BlocklyUI.NewWorkspace();
         }
 

@@ -39,7 +39,7 @@ namespace UBlockly
         /// <summary>
         /// Replaces string table references in a message , if the message is a string.
         /// For example,"%{bky_my_msg}" and "%{BKY_MY_MSG}" will both be replaced with
-        /// the value in Blockly.Msg['MY_MSG'].
+        /// the value in I18n.Msg['MY_MSG'].
         /// </summary>
         public static string ReplaceMessageReferences(JObject message)
         {
@@ -52,7 +52,7 @@ namespace UBlockly
         /// <summary>
         /// Replaces string table references in a message , if the message is a string.
         /// For example,"%{bky_my_msg}" and "%{BKY_MY_MSG}" will both be replaced with
-        /// the value in Blockly.Msg['MY_MSG'].
+        /// the value in I18n.Msg['MY_MSG'].
         /// </summary>
         public static string ReplaceMessageReferences(string message)
         {
@@ -176,9 +176,9 @@ namespace UBlockly
                             // core files adn the predefined blocks in ../blocks/. These strings
                             // are defined in ../msgs/ files.
                             var bklyKey = keyUpper.StartsWith("BKY_") ? keyUpper.Substring(4) : null;
-                            if (!string.IsNullOrEmpty(bklyKey) && Blockly.Msg.ContainsKey(bklyKey))
+                            if (!string.IsNullOrEmpty(bklyKey) && I18n.Msg.ContainsKey(bklyKey))
                             {
-                                var rawValue = Blockly.Msg[bklyKey];
+                                var rawValue = I18n.Msg[bklyKey];
                                 tokens.AddRange(TokenizeInterpolation(rawValue));
                             }
                             else

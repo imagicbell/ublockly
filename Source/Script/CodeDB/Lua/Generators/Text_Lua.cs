@@ -66,7 +66,7 @@ namespace UBlockly
         private string Text_Append(Block block)
         {
             // Append to a variable in place.
-            string varName = Lua.VariableNames.GetName(block.GetFieldValue("VAR"), Blockly.VARIABLE_CATEGORY_NAME);
+            string varName = Lua.VariableNames.GetName(block.GetFieldValue("VAR"), Define.VARIABLE_CATEGORY_NAME);
             string value = Lua.Generator.ValueToCode(block, "TEXT", Lua.ORDER_CONCATENATION);
             if (string.IsNullOrEmpty(value)) value = "\'\'";
             return varName + " = " + varName + " .. " + value + "\n";

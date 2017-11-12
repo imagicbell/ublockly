@@ -13,7 +13,7 @@ namespace UBlockly
         [CodeGenerator(BlockType = "variables_get")]
         private CodeStruct Variables_Get(Block block)
         {
-            string code = Lua.VariableNames.GetName(block.GetFieldValue("VAR"), Blockly.VARIABLE_CATEGORY_NAME);
+            string code = Lua.VariableNames.GetName(block.GetFieldValue("VAR"), Define.VARIABLE_CATEGORY_NAME);
             return new CodeStruct(code, Lua.ORDER_ATOMIC);
         }
 
@@ -21,7 +21,7 @@ namespace UBlockly
         private string Variables_Set(Block block)
         {
             var arg = Lua.Generator.ValueToCode(block, "VALUE", Lua.ORDER_NONE, "0");
-            var varName = Lua.VariableNames.GetName(block.GetFieldValue("VAR"), Blockly.VARIABLE_CATEGORY_NAME);
+            var varName = Lua.VariableNames.GetName(block.GetFieldValue("VAR"), Define.VARIABLE_CATEGORY_NAME);
             return varName + " = " + arg + "\n";
         }
         
