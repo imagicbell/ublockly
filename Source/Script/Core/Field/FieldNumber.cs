@@ -1,9 +1,21 @@
 ﻿using System;
+using Newtonsoft.Json.Linq;
 
 namespace UBlockly
 {
     public sealed class FieldNumber : FieldTextInput
     {
+        [FieldCreator(FieldType = "field_number")]
+        private static FieldNumber CreateFromJson(JObject json)
+        {
+            string fieldName = json["name"].IsString() ? json["name"].ToString() : "FIELDNAME_DEFAULT";
+            return new FieldNumber(fieldName,
+                                    json["value"].ToString(),
+                                    json["min"] == null ? null : json["min"].ToString(),
+                                    json["max"] == null ? null : json["max"].ToString());
+        }
+
+
         private Number mNumber;
         
         private Number mMin;

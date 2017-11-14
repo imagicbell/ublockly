@@ -1,7 +1,16 @@
-﻿namespace UBlockly
+﻿using Newtonsoft.Json.Linq;
+
+namespace UBlockly
 {
     public sealed class FieldColour : Field
     {
+        [FieldCreator(FieldType = "field_colour")]
+        private static FieldColour CreateFromJson(JObject json)
+        {
+            string fieldName = json["name"].IsString() ? json["name"].ToString() : "FIELDNAME_DEFAULT";
+            return new FieldColour(fieldName, json["colour"].ToString());
+        }
+        
         /// <summary>
         /// Class for a colour input field.
         /// </summary>

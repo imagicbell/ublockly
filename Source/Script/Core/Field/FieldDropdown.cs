@@ -18,6 +18,16 @@ namespace UBlockly
     //todo: maoling currently not support image value
     public class FieldDropdown : Field
     {
+        [FieldCreator(FieldType = "field_dropdown")]
+        private static FieldDropdown CreateFromJson(JObject json)
+        {
+            string fieldName = json["name"].IsString() ? json["name"].ToString() : "FIELDNAME_DEFAULT";
+            FieldDropdown field = new FieldDropdown(fieldName);
+            if (json.JsonDataContainsKey("options"))
+                field.SetOptions(json["options"] as JArray);
+            return field;
+        }
+
         private FieldDropdownMenu[] mMenuOptions;
         protected Func<FieldDropdownMenu[]> mMenuGenerator;
 

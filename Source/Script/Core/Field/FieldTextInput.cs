@@ -1,7 +1,17 @@
-﻿namespace UBlockly
+﻿using Newtonsoft.Json.Linq;
+
+namespace UBlockly
 {
     public class FieldTextInput : Field
     {
+        [FieldCreator(FieldType = "field_input")]
+        private static FieldTextInput CreateFromJson(JObject json)
+        {
+            string fieldName = json["name"].IsString() ? json["name"].ToString() : "FIELDNAME_DEFAULT";
+            var text = json["text"].IsString() ? Utils.ReplaceMessageReferences(json["text"].ToString()) : "";
+            return new FieldTextInput(fieldName, text);
+        }
+        
         /// <summary>
         /// Empty constructor for inheritance use
         /// </summary>

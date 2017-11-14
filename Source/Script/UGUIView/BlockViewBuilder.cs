@@ -295,10 +295,6 @@ namespace UBlockly.UGUI
             {
                 
             }
-            else if (fieldType == typeof(FieldImage))
-            {
-                
-            }
 
             fieldObj.name = !string.IsNullOrEmpty(field.Name) ? "Field_" + field.Name : fieldObj.name.Substring(0, fieldObj.name.IndexOf("(Clone)"));
             return fieldView;

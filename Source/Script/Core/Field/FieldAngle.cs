@@ -1,9 +1,18 @@
-﻿using UnityEngine;
+﻿using Newtonsoft.Json.Linq;
+using UnityEngine;
 
 namespace UBlockly
 {
     public class FieldAngle : FieldTextInput
     {
+        [FieldCreator(FieldType = "field_angle")]
+        private static FieldAngle CreateFromJson(JObject json)
+        {
+            string fieldName = json["name"].IsString() ? json["name"].ToString() : "FIELDNAME_DEFAULT";
+            return new FieldAngle(fieldName, json["angle"].ToString());
+        }
+
+        
         private Number mAngleNumber;
         
         /// <summary>

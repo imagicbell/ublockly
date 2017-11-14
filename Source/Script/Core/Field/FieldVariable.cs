@@ -1,10 +1,19 @@
 ﻿
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace UBlockly
 {
     public sealed class FieldVariable : FieldDropdown
     {
+        [FieldCreator(FieldType = "field_variable")]
+        private static FieldVariable CreateFromJson(JObject json)
+        {
+            string fieldName = json["name"].IsString() ? json["name"].ToString() : "FIELDNAME_DEFAULT";
+            var varName = json["variable"].IsString() ? Utils.ReplaceMessageReferences(json["variable"].ToString()) : "";
+            return new FieldVariable(fieldName, varName);
+        }
+        
         /// <summary>
         /// Class for a variable's dropdown field.
         /// </summary>

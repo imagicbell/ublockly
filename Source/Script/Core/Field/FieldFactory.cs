@@ -1,10 +1,68 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Reflection;
+using Newtonsoft.Json.Linq;
 
 namespace UBlockly
 {
+    [AttributeUsage(AttributeTargets.Method, Inherited = false)]
+    public sealed class FieldCreatorAttribute : Attribute
+    {
+        [Description("mark factory method for block fields")]
+        public FieldCreatorAttribute() {}
+        
+        /// <summary>
+        /// type of field, which is the same with that defined in json definition
+        /// </summary>
+        public string FieldType { get; set; }
+    }
+    
     public static class FieldFactory
     {
+        private static Dictionary<string, MethodInfo> mFieldDict;
+        
         /// <summary>
+        /// create field from json object
+        /// </summary>
+        public static Field CreateFromJson(JObject json)
+        {
+            if (mFieldDict == null)
+            {
+                mFieldDict = new Dictionary<string, MethodInfo>();
+                Assembly assem = Assembly.GetAssembly(typeof(Field));
+                foreach (Type type in assem.GetTypes())
+                {
+                    if (type.IsSubclassOf(typeof(Field)))
+                    {
+                        MethodInfo methodInfo = type.GetMethod("CreateFromJson", BindingFlags.Static | BindingFlags.NonPublic);
+                        if (methodInfo == null)
+                            throw new Exception(string.Format(
+                                "There is no static function \"CreateFromJson\" for creating field in class {0}. Please add one",
+                                type));
+
+                        var attrs = methodInfo.GetCustomAttributes(typeof(FieldCreatorAttribute), false);
+                        if (attrs.Length == 0)
+                            throw new Exception(string.Format(
+                                "You should add a \"FieldCreatorAttribute\" to static method \"CreateFromJson\" in class {0}.",
+                                type));
+                        mFieldDict[((FieldCreatorAttribute) attrs[0]).FieldType] = methodInfo;
+                    }
+                }
+            }
+            
+            string fieldType = json["type"].ToString();
+            MethodInfo fieldCreator;
+            if (!mFieldDict.TryGetValue(fieldType, out fieldCreator))
+                throw new Exception(string.Format(
+                    "There is no static method \"CreateFromJson(JObject json)\" for type: \"{0}\". " +
+                    "You should add one in the corresponding field class, and don't forget to add a \"FieldCreatorAttribute\" to the method.",
+                    fieldType));
+
+            return fieldCreator.Invoke(null, new object[] {json}) as Field;
+        }
+        
+        /*/// <summary>
         /// create field from json object
         /// </summary>
         public static Field CreateFromJson(JObject json)
@@ -75,6 +133,6 @@ namespace UBlockly
             }
 
             return field;
-        }
+        }*/
     }
 }
