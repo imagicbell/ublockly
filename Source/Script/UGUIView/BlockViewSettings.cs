@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace UBlockly.UGUI
 {
-    [CreateAssetMenu(menuName = "PTBlockly/BlockViewSettings", fileName = "BlockViewSettings")]
+    [CreateAssetMenu(menuName = "UBlockly/BlockViewSettings", fileName = "BlockViewSettings")]
     public class BlockViewSettings : ScriptableObject
     {
         [SerializeField] public string BlockPrefabPath;

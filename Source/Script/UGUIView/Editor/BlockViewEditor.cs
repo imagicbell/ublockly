@@ -9,7 +9,7 @@ namespace UBlockly.UGUI
 {
     public class BlockViewEditor
     {
-        [MenuItem("PTBlockly/Build Block Prefabs")]
+        [MenuItem("UBlockly/Build Block Prefabs")]
         static void BuildBlockPrefabs()
         {
             Blockly.Dispose();
