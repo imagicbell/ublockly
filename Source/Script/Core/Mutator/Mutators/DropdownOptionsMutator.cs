@@ -8,6 +8,7 @@ namespace UBlockly
     /// Mutator for dynamic modifying options for field dropdown
     /// no mutation process, but record the real options to xml, and read them from xml as well.
     /// </summary>
+    [MutatorClass(MutatorId = "dropdown_options_mutator")]
     public class DropdownOptionsMutator : Mutator
     {
         private const string OPTION_NAME = "options";

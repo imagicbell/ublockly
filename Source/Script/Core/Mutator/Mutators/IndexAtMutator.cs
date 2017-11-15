@@ -12,6 +12,7 @@ namespace UBlockly
     /// mutator for index at FROM_START, FROM_END, FIRST, END...
     /// support multiple "at"s, at, at1, at2...
     /// </summary>
+    [MutatorClass(MutatorId = "index_at_mutator")]
     public class IndexAtMutator : Mutator
     {
         private static List<string> CHECK = new List<string> {"Number"}; 

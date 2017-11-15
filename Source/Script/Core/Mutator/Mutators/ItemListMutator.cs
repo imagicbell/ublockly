@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 namespace UBlockly
 {
+    [MutatorClass(MutatorId = "text_join_mutator;lists_create_with_item_mutator")]
     public class ItemListMutator : Mutator
     {
         private const string EMPTY_NAME = "EMPTY";

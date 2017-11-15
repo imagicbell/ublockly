@@ -7,6 +7,7 @@ using System.Xml;
 
 namespace UBlockly
 {
+    [MutatorClass(MutatorId = "procedures_callnoreturn_mutator;procedures_callreturn_mutator")]
     public class ProcedureCallMutator : ProcedureMutator
     {
         /// <summary>

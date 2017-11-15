@@ -81,27 +81,5 @@
     "output": null,
     "colour": "290",
     "helpUrl": "https://en.wikipedia.org/wiki/Subroutine"
-  },
-  {
-    "type": "procedures_ifreturn",
-    "message0": "if %1 return %2",
-    "args0": [
-      {
-        "type": "input_value",
-        "name": "CONDITION",
-        "check": "Boolean"
-      },
-      {
-        "type": "input_value",
-        "name": "VALUE"
-      }
-    ],
-    "mutator": "procedures_ifreturn_mutator",
-    "inputsInline": true,
-    "previousStatement": null,
-    "nextStatement": null,
-    "colour": "290",
-    "tooltip": "If a value is true, then return a second value.",
-    "helpUrl": "https://en.wikipedia.org/wiki/Subroutine"
   }
 ]

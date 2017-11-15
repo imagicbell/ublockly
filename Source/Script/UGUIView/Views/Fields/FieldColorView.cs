@@ -6,32 +6,27 @@ namespace UBlockly.UGUI
     {
         protected override Vector2 CalculateSize()
         {
-            throw new System.NotImplementedException();
+            return Vector2.one;
         }
 
         protected override void SetComponents()
         {
-            throw new System.NotImplementedException();
         }
 
         protected override void OnBindModel()
         {
-            throw new System.NotImplementedException();
         }
 
         protected override void OnUnBindModel()
         {
-            throw new System.NotImplementedException();
         }
 
         protected override void RegisterTouchEvent()
         {
-            throw new System.NotImplementedException();
         }
 
         protected override void OnValueChanged(string newValue)
         {
-            throw new System.NotImplementedException();
         }
     }
 }

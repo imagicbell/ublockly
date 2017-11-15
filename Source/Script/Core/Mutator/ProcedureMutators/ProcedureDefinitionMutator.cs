@@ -8,6 +8,7 @@ using System.Xml;
 
 namespace UBlockly
 {
+    [MutatorClass(MutatorId = "procedures_defnoreturn_mutator;procedures_defreturn_mutator")]
     public class ProcedureDefinitionMutator : ProcedureMutator
     {
         /// Sets the mutator name, including setting the associated name field on the block.

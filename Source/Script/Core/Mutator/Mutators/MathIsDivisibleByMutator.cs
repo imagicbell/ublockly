@@ -7,6 +7,7 @@ using System.Xml;
 
 namespace UBlockly
 {
+    [MutatorClass(MutatorId = "math_is_divisibleby_mutator")]
     public class MathIsDivisibleByMutator : Mutator
     {
         private const string DIVISOR_INPUT = "DIVISOR";
