@@ -1,6 +1,9 @@
-﻿namespace UBlockly.UGUI
+﻿using UnityEngine;
+using UnityEngine.UI;
+
+namespace UBlockly.UGUI
 {
-    public class FieldAngleDialog : BaseDialog
+    public class FieldAngleDialog : FieldDialog
     {
         
     }

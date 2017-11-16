@@ -13,16 +13,21 @@ namespace UBlockly.UGUI
             if (m_Button == null)
             {
                 m_Button = GetComponentInChildren<Button>(true);
-                m_Image = m_Button.GetComponentInChildren<Image>(true);
-                foreach (Transform child in m_Button.transform)
+                for (int i = 0; i < m_Button.transform.childCount; i++)
                 {
-                    child.gameObject.SetActive(child == m_Image.transform);
+                    Image image = m_Button.transform.GetChild(i).GetComponent<Image>();
+                    if (image != null)
+                        m_Image = image;
+                    else 
+                        m_Button.transform.GetChild(i).gameObject.SetActive(false);
                 }
             }
         }
 
         protected override void OnBindModel()
         {
+            m_Image.gameObject.SetActive(true);
+            
             Color color;
             ColorUtility.TryParseHtmlString(mField.GetValue(), out color);
             m_Image.color = color;

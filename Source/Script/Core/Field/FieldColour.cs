@@ -1,4 +1,6 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
 
 namespace UBlockly
@@ -9,10 +11,30 @@ namespace UBlockly
         private static FieldColour CreateFromJson(JObject json)
         {
             string fieldName = json["name"].IsString() ? json["name"].ToString() : "FIELDNAME_DEFAULT";
-            return new FieldColour(fieldName, json["colour"].ToString());
+            FieldColour field = new FieldColour(fieldName, json["colour"].ToString());
+            if (json["options"] != null)
+            {
+                JArray options = json["options"] as JArray;
+                field.mColorOptions = new string[options.Count];
+                for (int i = 0; i < options.Count; i++)
+                {
+                    field.mColorOptions[i] = (string) options[i];
+                }
+            }
+            return field;
         }
 
         private string mColor;
+        private string[] mColorOptions;
+
+        private static string[] DEFAULT_COLOR_OPTIONS =
+        {
+            "#FFFFFF", "#000000", "#FF0000", "#00FF00", "#0000FF", 
+            "#FFEB04", "#00FFFF", "#FF00FF", "#808080", "#FF851B",
+            
+            //http://clrs.cc/
+            "#7FDBFF", "#39CCCC", /*"#001F3F", "#85144B", "#B10DC9",*/ 
+        };
         
         /// <summary>
         /// Class for a colour input field.
@@ -21,7 +43,8 @@ namespace UBlockly
         /// <param name="color">The initial colour in '#rrggbb' format.</param>
         public FieldColour(string fieldName, string color) : base(fieldName)
         {
-            this.SetValue(color);
+            mColorOptions = DEFAULT_COLOR_OPTIONS;
+            mColor = color;
             //this.SetText(Field.NBSP + Field.NBSP + Field.NBSP);
         }
 
@@ -40,7 +63,18 @@ namespace UBlockly
         /// <param name="newValue">The new colour in '#rrggbb' format.</param>
         public override void SetValue(string newValue)
         {
+            if (string.IsNullOrEmpty(newValue))
+            {
+                // No change if null.
+                return;
+            }
+            
+            var oldValue = this.GetValue();
+            if (string.Equals(oldValue.ToLower(), newValue.ToLower()))
+                return;
+            
             mColor = newValue;
+            FireUpdate(mColor);
         }
 
         /// <summary>
@@ -53,6 +87,14 @@ namespace UBlockly
             if (match.Success)
                 return "#" + match.Value[1] + match.Value[2] + match.Value[3];
             return mColor;
+        }
+        
+        /// <summary>
+        /// Get the color options 
+        /// </summary>
+        public string[] GetOptions()
+        {
+            return mColorOptions;
         }
     }
 }

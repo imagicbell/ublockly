@@ -13,13 +13,21 @@ namespace UBlockly.UGUI
         [SerializeField] protected Image m_Image;
         [SerializeField] protected Button m_Button;
         
+        protected float mHorizontalMargin;
+        
         protected override void SetComponents()
         {
             if (m_Button == null)
             {
                 m_Button = GetComponentInChildren<Button>(true);
-                m_Label = m_Button.GetComponentInChildren<Text>(true);
-                m_Image = m_Button.GetComponentInChildren<Image>(true);
+                for (int i = 0; i < m_Button.transform.childCount; i++)
+                {
+                    Text text = m_Button.transform.GetChild(i).GetComponent<Text>();
+                    if (text != null)
+                        m_Label = text;
+                    else
+                        m_Image = m_Button.transform.GetChild(i).GetComponent<Image>();
+                }
             }
         }
 
@@ -31,6 +39,8 @@ namespace UBlockly.UGUI
                 m_Label.gameObject.SetActive(true);
 
                 m_Label.text = mField.GetText();
+                
+                mHorizontalMargin = Mathf.Abs(m_Label.rectTransform.offsetMin.x) + Mathf.Abs(m_Label.rectTransform.offsetMax.x);
             }
             else
             {
@@ -38,6 +48,8 @@ namespace UBlockly.UGUI
                 m_Label.gameObject.SetActive(false);
                 
                 //todo: load image
+                
+                mHorizontalMargin = Mathf.Abs(m_Image.rectTransform.offsetMin.x) + Mathf.Abs(m_Image.rectTransform.offsetMax.x);
             }
         }
 
@@ -82,6 +94,7 @@ namespace UBlockly.UGUI
             {
                 width = m_Image.mainTexture.width;
             }
+            width += mHorizontalMargin;
             Debug.LogFormat(">>>>> CalculateSize-Button: text: {0}, width: {1}", m_Label.text, width);
             return new Vector2(width, BlockViewSettings.Get().ContentHeight);
         }

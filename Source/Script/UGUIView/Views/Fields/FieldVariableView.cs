@@ -54,7 +54,7 @@ namespace UBlockly.UGUI
             UpdateMenuWidth();
             
             mObserver = new MemorySafeVariableObserver(this);
-            BlocklyUI.WorkspaceView.Workspace.VariableMap.AddObserver(mObserver);
+            mField.SourceBlock.Workspace.VariableMap.AddObserver(mObserver);
         }
 
         protected override void OnUnBindModel()

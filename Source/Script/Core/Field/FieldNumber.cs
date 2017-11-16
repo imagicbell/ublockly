@@ -12,7 +12,8 @@ namespace UBlockly
             return new FieldNumber(fieldName,
                                     json["value"].ToString(),
                                     json["min"] == null ? null : json["min"].ToString(),
-                                    json["max"] == null ? null : json["max"].ToString());
+                                    json["max"] == null ? null : json["max"].ToString(),
+                                    json["int"] != null && (bool) json["int"]);
         }
 
 
@@ -24,6 +25,9 @@ namespace UBlockly
         private Number mMax;
         public Number Max { get { return mMax; } }
 
+        private bool mIntOnly;
+        public bool IntOnly { get { return mIntOnly; } }
+
         /// <summary>
         /// Class for an editable number field.
         /// </summary>
@@ -32,7 +36,7 @@ namespace UBlockly
         /// <summary>
         /// Class for an editable number field.
         /// </summary>
-        public FieldNumber(string fieldName, string optValue, string optMin = null, string optMax = null) : base(fieldName)
+        public FieldNumber(string fieldName, string optValue, string optMin = null, string optMax = null, bool optIntOnly = false) : base(fieldName)
         {
             mNumber = new Number(!string.IsNullOrEmpty(optValue) ? optValue : "0");
             if (mNumber.IsNaN) mNumber = new Number(0);
@@ -40,6 +44,7 @@ namespace UBlockly
 
             mMin = !string.IsNullOrEmpty(optMin) ? new Number(optMin) : Number.MinValue;
             mMax = !string.IsNullOrEmpty(optMax) ? new Number(optMax) : Number.MaxValue;
+            mIntOnly = optIntOnly;
             SetValue(CallValidator(GetValue()));
         }
 
@@ -47,13 +52,14 @@ namespace UBlockly
         /// Class for an editable number field.
         /// Please input a Number value instantiated of Number Type
         /// </summary>
-        public FieldNumber(string fieldName, Number optValue, Number optMin, Number optMax) : base(fieldName)
+        public FieldNumber(string fieldName, Number optValue, Number optMin, Number optMax, bool optIntOnly = false) : base(fieldName)
         {
             mNumber = optValue.IsNaN ? new Number(0) : optValue;
             this.SetValue(mNumber.ToString());
 
             mMin = optMin.IsNaN ? Number.MinValue : optMin;
             mMax = optMax.IsNaN ? Number.MaxValue : optMax;
+            mIntOnly = optIntOnly;
             SetValue(CallValidator(GetValue()));
         }
 
