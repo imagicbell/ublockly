@@ -1,10 +1,177 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace UBlockly.UGUI
 {
+    public class FieldVariableView : FieldView
+    {
+        [SerializeField] protected Text m_Label;
+        [SerializeField] protected Button m_BtnLabel;
+        [SerializeField] protected Button m_BtnSelect;
+        [SerializeField] protected Button m_BtnRename;
+        [SerializeField] protected Button m_BtnDelete;
+        
+        protected FieldDropdown mFieldVar
+        {
+            get { return mField as FieldDropdown; }
+        }
+        
+        protected float mHorizontalMargin;
+        protected GameObject mMenuGroup;
+        
+        private MemorySafeVariableObserver mObserver;
+        
+        protected override void SetComponents()
+        {
+            if (m_BtnLabel == null)
+            {
+                m_BtnLabel = GetComponentInChildren<Button>(true);
+                m_Label = m_BtnLabel.GetComponentInChildren<Text>(true);
+            }
+
+            mMenuGroup = GetComponentInChildren<VerticalLayoutGroup>(true).gameObject;
+            if (m_BtnSelect == null)
+            {
+                Button[] buttons = mMenuGroup.GetComponentsInChildren<Button>(true);
+                m_BtnSelect = buttons[0];
+                m_BtnRename = buttons[1];
+                m_BtnDelete = buttons[2];
+            }
+            mMenuGroup.SetActive(false);
+
+            mHorizontalMargin = Mathf.Abs(m_Label.rectTransform.offsetMin.x) + Math.Abs(m_Label.rectTransform.offsetMax.x);
+        }
+
+        protected override void OnBindModel()
+        {
+            m_Label.text = mFieldVar.GetText();
+            m_BtnSelect.GetComponentInChildren<Text>().text = I18n.Msg[MsgDefine.SELECT_VARIABLE];
+            m_BtnRename.GetComponentInChildren<Text>().text = I18n.Msg[MsgDefine.RENAME_VARIABLE];
+            m_BtnDelete.GetComponentInChildren<Text>().text = I18n.Msg[MsgDefine.DELETE_VARIABLE];
+            UpdateMenuWidth();
+            
+            mObserver = new MemorySafeVariableObserver(this);
+            BlocklyUI.WorkspaceView.Workspace.VariableMap.AddObserver(mObserver);
+        }
+
+        protected override void OnUnBindModel()
+        {
+            BlocklyUI.WorkspaceView.Workspace.VariableMap.RemoveObserver(mObserver);
+        }
+
+        protected override void RegisterTouchEvent()
+        {
+            m_BtnLabel.onClick.AddListener(() =>
+            {
+                mMenuGroup.SetActive(true);
+            });
+
+            m_BtnSelect.onClick.AddListener(() =>
+            {
+                mMenuGroup.SetActive(false);
+                DialogFactory.CreateFieldDialog<FieldDropdownDialog>(mField);
+            });
+
+            m_BtnRename.onClick.AddListener(() =>
+            {
+                mMenuGroup.SetActive(false);
+                //pop a rename panel
+                VariableNameDialog dialog = DialogFactory.CreateDialog("variable_name") as VariableNameDialog;
+                dialog.Rename(m_Label.text);
+            });
+
+            m_BtnDelete.onClick.AddListener(() =>
+            {
+                mMenuGroup.SetActive(false);
+                mField.SourceBlock.Workspace.DeleteVariable(m_Label.text);
+            });
+        }
+
+        protected override void OnValueChanged(string newValue)
+        {
+            m_Label.text = newValue;
+            UpdateLayout(XY);
+        }
+        
+        protected override Vector2 CalculateSize()
+        {
+            float width = m_Label.CalculateTextWidth(m_Label.text);
+            width += mHorizontalMargin;
+            
+            Debug.LogFormat(">>>>> CalculateSize-Variable: text: {0}, width: {1}", m_Label.text, width);
+            return new Vector2(width, BlockViewSettings.Get().ContentHeight);
+        }
+        
+        /// <summary>
+        /// dynamically update the dropdown menu width according to option texts' max width
+        /// </summary>
+        private void UpdateMenuWidth()
+        {
+            string maxOption = I18n.Msg[MsgDefine.SELECT_VARIABLE];
+            if (maxOption.Length < I18n.Msg[MsgDefine.RENAME_VARIABLE].Length)
+                maxOption = I18n.Msg[MsgDefine.RENAME_VARIABLE];
+            if (maxOption.Length < I18n.Msg[MsgDefine.DELETE_VARIABLE].Length)
+                maxOption = I18n.Msg[MsgDefine.DELETE_VARIABLE];
+
+            Text texCom = m_BtnSelect.GetComponentInChildren<Text>();
+            float width = texCom.CalculateTextWidth(maxOption);
+            width += texCom.rectTransform.offsetMin.x*2;
+            mMenuGroup.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width);
+        }
+
+        private void OnVariableUpdate(VariableUpdateData updateData)
+        {
+            string oldValue = m_Label.text;
+            bool updateThis = updateData.VarName.Equals(oldValue);
+            
+            switch (updateData.Type)
+            {
+                case VariableUpdateData.Delete:
+                {
+                    if (updateThis)
+                    {
+                        // dispose the block
+                        if (!mSourceBlockView.InToolbox)
+                            mSourceBlockView.Dispose();
+                    }
+                    break;
+                }
+                case VariableUpdateData.Rename:
+                {
+                    if (updateThis)
+                    {
+                        m_Label.text = updateData.NewVarName;
+                        UpdateLayout(XY);  
+                    }
+                    break;
+                }
+            }
+        }
+        
+        private class MemorySafeVariableObserver : IObserver<VariableUpdateData>
+        {
+            private FieldVariableView mViewRef;
+
+            public MemorySafeVariableObserver(FieldVariableView viewRef)
+            {
+                mViewRef = viewRef;
+            }
+            
+            public void OnUpdated(object variableMap, VariableUpdateData args)
+            {
+                if (mViewRef == null || mViewRef.ViewTransform == null)
+                    ((VariableMap) variableMap).RemoveObserver(this);
+                else
+                    mViewRef.OnVariableUpdate(args);
+            }
+        }
+    }
+    
+    
+    /* old
     public class FieldVariableView : FieldDropdownView
     {
         private MemorySafeVariableObserver mObserver;
@@ -142,5 +309,5 @@ namespace UBlockly.UGUI
                     mViewRef.OnVariableUpdate(args);
             }
         }
-    }
+    }*/
 }

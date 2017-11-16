@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -28,11 +29,6 @@ namespace UBlockly
         }
 
         /// <summary>
-        /// Maximum characters of text to display before adding an ellipsis.
-        /// </summary>
-        protected const int MAX_DISPLAY_LENGTH = 50;
-
-        /// <summary>
         /// Name of field, Unique within each block. Static labels are usually unnamed
         /// Can't be changed different with that defined in block!!!!!
         /// </summary>
@@ -42,6 +38,11 @@ namespace UBlockly
         /// Visible text to display.
         /// </summary>
         protected string mText;
+        
+        /// <summary>
+        /// if the field content is an image, configured in block json 
+        /// </summary>
+        public bool IsImage { get; protected set; }
 
         /// <summary>
         /// Block this field is attached to. Starts as null,then in set in init.
@@ -54,11 +55,6 @@ namespace UBlockly
         protected FieldValidator mValidator;
 
         /// <summary>
-        /// None-breaking space
-        /// </summary>
-        public const char NBSP = '\u00A0';
-
-        /// <summary>
         /// Prefix labels
         /// </summary>
         public Field PrefixField;
@@ -67,6 +63,32 @@ namespace UBlockly
         /// suffix labels
         /// </summary>
         public Field SuffixField;
+
+        private string mType = null;
+        /// <summary>
+        /// Type of the field, unique for each field class, defined in block json
+        /// </summary>
+        public string Type
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(mType))
+                {
+                    Type classType = this.GetType();
+                    MethodInfo methodInfo = classType.GetMethod("CreateFromJson", BindingFlags.Static | BindingFlags.NonPublic);
+                    if (methodInfo == null)
+                        throw new Exception(string.Format(
+                            "There is no static function \"CreateFromJson\" for creating field in class {0}. Please add one", classType));
+
+                    var attrs = methodInfo.GetCustomAttributes(typeof(FieldCreatorAttribute), false);
+                    if (attrs.Length == 0)
+                        throw new Exception(string.Format(
+                            "You should add a \"FieldCreatorAttribute\" to static method \"CreateFromJson\" in class {0}.", classType));
+                    mType = ((FieldCreatorAttribute) attrs[0]).FieldType;
+                }
+                return mType;
+            }
+        }
 
         /// <summary>
         /// Attach this field to a block
@@ -129,25 +151,6 @@ namespace UBlockly
                 text = userResult;
             }
             
-            return text;
-        }
-
-        /// <summary>
-        /// Get the text from this field as displayed on screen.  
-        /// May differ from getText due to ellipsis, and other formatting.
-        /// </summary>
-        public string GetDisplayText()
-        {
-            string text = mText;
-            
-            if (string.IsNullOrEmpty(text))
-                return NBSP.ToString();
-
-            if (text.Length > MAX_DISPLAY_LENGTH)
-                text = text.Substring(0, MAX_DISPLAY_LENGTH - 2) + '\u2026';
-            text = text.Replace(' ', NBSP);
-            if (SourceBlock.RTL)
-                text += '\u200F';
             return text;
         }
 

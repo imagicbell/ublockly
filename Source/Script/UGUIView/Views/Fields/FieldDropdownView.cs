@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace UBlockly.UGUI
 {
-    //todo: to adjust dropdown list gameobject size according to options' max size
+    /* temporarily discard
     public class FieldDropdownView : FieldView
     {
         [SerializeField] protected CustomDropdown m_Dropdown;
@@ -100,5 +100,5 @@ namespace UBlockly.UGUI
             width += itemTextTrans.offsetMin.x;
             m_Dropdown.transform.FindChild("Dropdown List").GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width);
         }
-    }
+    }*/
 }

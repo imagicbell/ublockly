@@ -58,12 +58,6 @@ namespace UBlockly
         /// </summary>
         public static int WRAP = 360;
 
-        public override void SetText(string newText)
-        {
-            base.SetText(newText);
-            //todo: update render
-        }
-
         protected override string ClassValidator(string text)
         {
             if (string.IsNullOrEmpty(text))

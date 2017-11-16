@@ -20,6 +20,11 @@ namespace UBlockly.UGUI
             dialog.Init();
             return dialog;
         }
+
+        public static BaseDialog CreateDialog<T>(string dialogId, Transform parent = null) where T : BaseDialog
+        {
+            return CreateDialog(dialogId, parent) as T;
+        }
         
         public static BaseDialog CreateMutatorDialog(Block block, Transform parent = null)
         {
@@ -37,6 +42,31 @@ namespace UBlockly.UGUI
             BaseDialog dialog = dialogObj.GetComponent<BaseDialog>();
             dialog.Init(block);
             return dialog;
+        }
+
+        public static T CreateMutatorDialog<T>(Block block, Transform parent = null) where T : BaseDialog
+        {
+            return CreateMutatorDialog(block, parent) as T;
+        }
+
+        public static FieldDialog CreateFieldDialog(Field field, Transform parent = null)
+        {
+            GameObject prefab = BlockResMgr.Get().LoadDialogPrefab(field.Type);
+            if (prefab == null)
+                throw new Exception("Can\'t find dialog prefab for " + field.Type + ", Please ensure you configure it in \"BlockResSettings\"");
+            
+            if (parent == null)
+                parent = BlocklyUI.UICanvas.transform;
+            
+            GameObject dialogObj = GameObject.Instantiate(prefab, parent, false);
+            FieldDialog dialog = dialogObj.GetComponent<FieldDialog>();
+            dialog.Init(field);
+            return dialog;
+        }
+
+        public static T CreateFieldDialog<T>(Field field, Transform parent = null) where T : FieldDialog
+        {
+            return CreateFieldDialog(field, parent) as T;
         }
     }
 }

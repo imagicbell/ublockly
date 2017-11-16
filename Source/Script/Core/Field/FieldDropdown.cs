@@ -25,6 +25,8 @@ namespace UBlockly
             FieldDropdown field = new FieldDropdown(fieldName);
             if (json.JsonDataContainsKey("options"))
                 field.SetOptions(json["options"] as JArray);
+
+            field.IsImage = json.JsonDataContainsKey("image") && (bool)json["image"];
             return field;
         }
 

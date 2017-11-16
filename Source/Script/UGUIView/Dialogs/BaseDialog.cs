@@ -1,10 +1,11 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace UBlockly.UGUI
 {
-    public class BaseDialog : MonoBehaviour
+    public abstract class BaseDialog : MonoBehaviour, IPointerClickHandler
     {
         [SerializeField] private Button m_ButtonOK;
         
@@ -22,6 +23,12 @@ namespace UBlockly.UGUI
             
             m_ButtonOK.onClick.AddListener(() =>
             {
+                if (mOnCloseEvent != null)
+                {
+                    mOnCloseEvent.Invoke();
+                    mOnCloseEvent = null;
+                }
+                
                 GameObject.Destroy(this.gameObject);
             });
         }
@@ -42,14 +49,10 @@ namespace UBlockly.UGUI
         {
             mOnCloseEvent += onClose;
         }
-
-        private void OnDestroy()
+        
+        public void OnPointerClick(PointerEventData eventData)
         {
-            if (mOnCloseEvent != null)
-            {
-                mOnCloseEvent.Invoke();
-                mOnCloseEvent = null;
-            }
+            GameObject.Destroy(this.gameObject);
         }
 
         protected virtual void OnInit(){}

@@ -13,6 +13,7 @@ namespace UBlockly.UGUI
         [SerializeField] public RectOffset ContentMargin;
         [SerializeField] public Vector2 ContentSpace;
         [SerializeField] public int EmptyInputSlotWidth;
+        [SerializeField] public int ColorFieldWidth;
         
         [Tooltip("Maximum misalignment between connections for them to snap together.")]
         [SerializeField] public int ConnectSearchRange = 100;
@@ -31,11 +32,8 @@ namespace UBlockly.UGUI
 
         [SerializeField] public GameObject PrefabFieldLabel;
         [SerializeField] public GameObject PrefabFieldInput;
-        [SerializeField] public GameObject PrefabFieldDropdown;
+        [SerializeField] public GameObject PrefabFieldButton;
         [SerializeField] public GameObject PrefabFieldVariable;
-        [SerializeField] public GameObject PrefabFieldNumber;
-        [SerializeField] public GameObject PrefabFieldAngle;
-        [SerializeField] public GameObject PrefabFieldColor;
 
         [SerializeField] public GameObject PrefabBtnCreateVar;
         [SerializeField] public GameObject PrefabConnectHighlight;

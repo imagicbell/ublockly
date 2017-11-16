@@ -133,5 +133,10 @@ namespace UBlockly
             {EDataType.String, new[] {"string"}},
             {EDataType.List, new[] {"ArrayList", "list"}}
         };
+
+        /// <summary>
+        /// Configure if the field variable's dropdown options add manipulation options: rename, delete.
+        /// </summary>
+        public const bool FIELD_VARIABLE_ADD_MANIPULATION_OPTIONS = false;
     }
 }

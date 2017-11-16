@@ -94,16 +94,20 @@ namespace UBlockly
                 });
             }
 
-            options.Add(new FieldDropdownMenu()
+            if (Define.FIELD_VARIABLE_ADD_MANIPULATION_OPTIONS)
             {
-                Text = I18n.Msg[MsgDefine.RENAME_VARIABLE],
-                Value = MsgDefine.RENAME_VARIABLE
-            });
-            options.Add(new FieldDropdownMenu()
-            {
-                Text = I18n.Msg[MsgDefine.DELETE_VARIABLE],
-                Value = MsgDefine.DELETE_VARIABLE
-            });
+                options.Add(new FieldDropdownMenu()
+                {
+                    Text = I18n.Msg[MsgDefine.RENAME_VARIABLE],
+                    Value = MsgDefine.RENAME_VARIABLE
+                });
+                options.Add(new FieldDropdownMenu()
+                {
+                    Text = I18n.Msg[MsgDefine.DELETE_VARIABLE],
+                    Value = MsgDefine.DELETE_VARIABLE
+                });
+            }
+
             return options.ToArray();
         }
 

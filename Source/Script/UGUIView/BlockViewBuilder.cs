@@ -259,41 +259,30 @@ namespace UBlockly.UGUI
             {
                 fieldObj = GameObject.Instantiate(BlockViewSettings.Get().PrefabFieldLabel);
                 fieldView = AddViewComponent<FieldLabelView>(fieldObj);
-                
             }
             else if (fieldType == typeof(FieldTextInput))
             {
                 fieldObj = GameObject.Instantiate(BlockViewSettings.Get().PrefabFieldInput);
                 fieldView = AddViewComponent<FieldInputView>(fieldObj);
             }
-            else if (fieldType == typeof(FieldDropdown))
-            {
-                fieldObj = GameObject.Instantiate(BlockViewSettings.Get().PrefabFieldDropdown);
-                fieldView = AddViewComponent<FieldDropdownView>(fieldObj);
-            }
             else if (fieldType == typeof(FieldVariable))
             {
                 fieldObj = GameObject.Instantiate(BlockViewSettings.Get().PrefabFieldVariable);
                 fieldView = AddViewComponent<FieldVariableView>(fieldObj);
             }
-            else if (fieldType == typeof(FieldNumber))
-            {
-                fieldObj = GameObject.Instantiate(BlockViewSettings.Get().PrefabFieldNumber);
-                fieldView = AddViewComponent<FieldNumberView>(fieldObj);
-            }
-            else if (fieldType == typeof(FieldAngle))
-            {
-                fieldObj = GameObject.Instantiate(BlockViewSettings.Get().PrefabFieldAngle);
-                fieldView = AddViewComponent<FieldAngleView>(fieldObj);
-            }
             else if (fieldType == typeof(FieldColour))
             {
-                fieldObj = GameObject.Instantiate(BlockViewSettings.Get().PrefabFieldColor);
+                fieldObj = GameObject.Instantiate(BlockViewSettings.Get().PrefabFieldButton);
                 fieldView = AddViewComponent<FieldColorView>(fieldObj);
             }
             else if (fieldType == typeof(FieldCheckbox))
             {
-                
+
+            }
+            else
+            {
+                fieldObj = GameObject.Instantiate(BlockViewSettings.Get().PrefabFieldButton);
+                fieldView = AddViewComponent<FieldButtonView>(fieldObj);
             }
 
             fieldObj.name = !string.IsNullOrEmpty(field.Name) ? "Field_" + field.Name : fieldObj.name.Substring(0, fieldObj.name.IndexOf("(Clone)"));

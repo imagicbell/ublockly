@@ -41,10 +41,5 @@ namespace UBlockly
             
             base.SetValue(newValue);
         }
-
-        public override void Dispose()
-        {
-            base.Dispose();
-        }
     }
 }

@@ -4,6 +4,7 @@
     {
         public const string ADD_COMMENT = "ADD_COMMENT ";
         public const string CANNOT_DELETE_VARIABLE_PROCEDURE = "CANNOT_DELETE_VARIABLE_PROCEDURE";
+        public const string SELECT_VARIABLE = "SELECT_VARIABLE";
 
         public const string CHANGE_VALUE_TITLE = "CHANGE_VALUE_TITLE";
         public const string CLEAN_UP = "CLEAN_UP";

@@ -22,10 +22,5 @@ namespace UBlockly
         {
             this.SetValue(text);
         }
-
-        public override void Dispose()
-        {
-            base.Dispose();
-        }
     }
 }

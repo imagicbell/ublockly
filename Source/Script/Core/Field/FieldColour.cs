@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.Text.RegularExpressions;
+using Newtonsoft.Json.Linq;
 
 namespace UBlockly
 {
@@ -10,6 +11,8 @@ namespace UBlockly
             string fieldName = json["name"].IsString() ? json["name"].ToString() : "FIELDNAME_DEFAULT";
             return new FieldColour(fieldName, json["colour"].ToString());
         }
+
+        private string mColor;
         
         /// <summary>
         /// Class for a colour input field.
@@ -20,6 +23,36 @@ namespace UBlockly
         {
             this.SetValue(color);
             //this.SetText(Field.NBSP + Field.NBSP + Field.NBSP);
+        }
+
+        /// <summary>
+        /// Return the current colour.
+        /// </summary>
+        /// <returns>Current colour in '#rrggbb' format.</returns>
+        public override string GetValue()
+        {
+            return mColor;
+        }
+
+        /// <summary>
+        /// Set the colour.
+        /// </summary>
+        /// <param name="newValue">The new colour in '#rrggbb' format.</param>
+        public override void SetValue(string newValue)
+        {
+            mColor = newValue;
+        }
+
+        /// <summary>
+        /// Get the text from this field.  Used when the block is collapsed.
+        /// </summary>
+        public override string GetText()
+        {
+            Regex rgx = new Regex(@"/^#(.)\1(.)\2(.)\3$/");
+            Match match = rgx.Match(mColor);
+            if (match.Success)
+                return "#" + match.Value[1] + match.Value[2] + match.Value[3];
+            return mColor;
         }
     }
 }
