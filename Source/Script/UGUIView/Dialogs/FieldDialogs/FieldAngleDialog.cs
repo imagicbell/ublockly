@@ -8,17 +8,23 @@ namespace UBlockly.UGUI
     {
         [SerializeField] private Image m_ImgPointer;
 
+        private FieldAngle mFieldAngle
+        {
+            get { return mField as FieldAngle; }
+        }
+        
         private Camera mCamera;
         private RectTransform mRotateAnchor;
+        private int mOriAngle;
 
         protected override void OnInit()
         {
-            int angle;
             string angleStr = mField.GetValue();
-            if (!int.TryParse(angleStr, out angle))
-                angle = (int) float.Parse(angleStr);
+            if (!int.TryParse(angleStr, out mOriAngle))
+                mOriAngle = (int) float.Parse(angleStr);
 
-            Rotate(ValidateAngle(angle));
+            mOriAngle = ValidateAngle(mOriAngle);
+            Rotate(mOriAngle);
             
             AddCloseEvent(() =>
             {
@@ -63,8 +69,16 @@ namespace UBlockly.UGUI
             Vector3 normal = Vector3.Cross(offset, dir);
             if (normal.z < 0)
                 angle = -angle;
+
+            //don't want to call mField.CallValidator(), as it need to transfer to string first
+            int angleDegree = (int) (angle * Mathf.Rad2Deg) % 360;
+            if (angleDegree < 0)
+                angleDegree += 360;
             
-            int angleDegree = (int) (angle * Mathf.Rad2Deg);
+            //consider gap
+            int interval = (angleDegree - mOriAngle) / (int) mFieldAngle.Gap.Value;
+            angleDegree = mOriAngle + interval * (int) mFieldAngle.Gap.Value;
+            
             Rotate(angleDegree);
         }
     }
