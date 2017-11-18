@@ -20,6 +20,7 @@
     "UNITTEST_HUE": "100",
     "UICLICK_HUE": "240",
     "UIINPUT_HUE": "50",
+    "PAINT_HUE": "220",
 
     /// default name - A simple: general default name for a variable: preferably short.
     "VARIABLES_DEFAULT_NAME": "item",
@@ -1100,5 +1101,17 @@
     "TIME_UNIT_MILLISECOND": "millisecond",
     "TIME_UNIT_SECONDS": "second",
     "TIME_UNIT_MINUTES": "minute",
-    "TIME_UNIT_TOO_HIGH": "too high to count"
+    "TIME_UNIT_TOO_HIGH": "too high to count",
+    
+/**********************Paint Game********/
+    "PAINT_PIXEL": "Pixels",
+    "PAINT_DEGREE": "Degree",
+    "PAINT_SETCOLOR": "Set Color",
+    
+    "MOVE_FORWARD": "Move Forward",
+    "MOVE_BACKWARD": "Move Backward",
+    "TURN_RIGHT": "Turn Right",
+    "TURN_LEFT": "Turn Left",
+    "JUMP_FORWARD": "Jump Forward",
+    "JUMP_BACKWARD": "Jump Backward"
 }

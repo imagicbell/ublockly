@@ -7,6 +7,7 @@ namespace UBlockly.UGUI
     public class FieldAngleDialog : FieldDialog
     {
         [SerializeField] private Image m_ImgPointer;
+        [SerializeField] private Text m_LabelAngle;
 
         private FieldAngle mFieldAngle
         {
@@ -16,23 +17,27 @@ namespace UBlockly.UGUI
         private Camera mCamera;
         private RectTransform mRotateAnchor;
         private int mOriAngle;
+        private int mGap;
 
         protected override void OnInit()
         {
             string angleStr = mField.GetValue();
             if (!int.TryParse(angleStr, out mOriAngle))
-                mOriAngle = (int) float.Parse(angleStr);
+                mOriAngle = Mathf.RoundToInt(float.Parse(angleStr));
 
             mOriAngle = ValidateAngle(mOriAngle);
             Rotate(mOriAngle);
+
+            mGap = Mathf.RoundToInt(mFieldAngle.Gap.Value);
             
             AddCloseEvent(() =>
             {
-                int imgAngle = (int)m_ImgPointer.rectTransform.localRotation.eulerAngles.z;
+                int imgAngle = Mathf.RoundToInt(m_ImgPointer.rectTransform.localRotation.eulerAngles.z);
                 imgAngle = ValidateAngle(imgAngle);
                 mField.SetValue(imgAngle.ToString());
             });
 
+            UIEventListener.Get(m_ImgPointer.gameObject).onBeginDrag = OnDragPointer;
             UIEventListener.Get(m_ImgPointer.gameObject).onDrag = OnDragPointer;
             UIEventListener.Get(m_ImgPointer.gameObject).onEndDrag = OnDragPointer;
 
@@ -53,6 +58,7 @@ namespace UBlockly.UGUI
         private void Rotate(int angle)
         {
             m_ImgPointer.rectTransform.localRotation = Quaternion.Euler(0, 0, angle);
+            m_LabelAngle.text = ValidateAngle(angle).ToString();
         }
 
         private void OnDragPointer(PointerEventData evtData)
@@ -71,14 +77,17 @@ namespace UBlockly.UGUI
                 angle = -angle;
 
             //don't want to call mField.CallValidator(), as it need to transfer to string first
-            int angleDegree = (int) (angle * Mathf.Rad2Deg) % 360;
+            int angleDegree = Mathf.RoundToInt(angle * Mathf.Rad2Deg) % 360;
             if (angleDegree < 0)
                 angleDegree += 360;
             
             //consider gap
-            int interval = (angleDegree - mOriAngle) / (int) mFieldAngle.Gap.Value;
-            angleDegree = mOriAngle + interval * (int) mFieldAngle.Gap.Value;
-            
+            if (mFieldAngle.Gap.Value > 0)
+            {
+                int interval = (angleDegree - mOriAngle) / mGap;
+                angleDegree = mOriAngle + interval * mGap;
+            }
+
             Rotate(angleDegree);
         }
     }
