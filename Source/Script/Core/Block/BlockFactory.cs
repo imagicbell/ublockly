@@ -16,8 +16,6 @@ namespace UBlockly
             get { return mInstance ?? (mInstance = new BlockFactory()); }
         }
 
-        private BlockFactory(){}
-        
         private Dictionary<string, BlockDefinition> mDefinitions = new Dictionary<string, BlockDefinition>();
 
         public Dictionary<string, BlockDefinition> GetAllBlockDefinitions()
@@ -56,9 +54,9 @@ namespace UBlockly
         /// <summary>
         /// Loads and adds block definitions from a JSON array in an input stream.
         /// </summary>
-        /// <param name="jsonArray"></param>
-        public void AddJsonDefinitions(JArray jsonArray)
+        public void AddJsonDefinitions(string jsonText)
         {
+            JArray jsonArray = JArray.Parse(jsonText);
             for (int i = 0; i < jsonArray.Count; i++)
             {
                 JObject element = jsonArray[i] as JObject;

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Newtonsoft.Json.Linq;
 
 namespace UBlockly
 {
@@ -80,11 +79,11 @@ namespace UBlockly
                 return;
             }
 
-            TextAsset textAsset = null;
             foreach (BlockTextResParam resParam in m_I18nFiles)
             {
                 if (language.Equals(resParam.IndexName))
                 {
+                    TextAsset textAsset = null;
                     switch (m_LoadType)
                     {
                         case BlockResLoadType.Assetbundle:
@@ -98,10 +97,10 @@ namespace UBlockly
                             textAsset = resParam.TextFile;
                             break;
                     }
+                    if (textAsset != null)
+                        I18n.AddI18nFile(textAsset.text);
                 }
             }
-            if (textAsset != null)
-                I18n.Init(textAsset.text);
         }
 
         #endregion
@@ -131,7 +130,7 @@ namespace UBlockly
                 }
 
                 if (textAsset != null)
-                    BlockFactory.Instance.AddJsonDefinitions(JArray.Parse(textAsset.text));
+                    BlockFactory.Instance.AddJsonDefinitions(textAsset.text);
             }
         }
 

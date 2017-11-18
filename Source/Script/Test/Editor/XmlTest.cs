@@ -303,7 +303,7 @@ namespace UBlockly.Test
         [Test]
         public void TestBlockToDomFieldToDomNotAFieldVariable()
         {
-            BlockFactory.Instance.AddJsonDefinitions(JArray.Parse(@"[{
+            BlockFactory.Instance.AddJsonDefinitions(@"[{
                 'type':'field_angle_test_block',
                 'message0':'%1',
                 'args0':[
@@ -313,7 +313,7 @@ namespace UBlockly.Test
                         'angle':90
                     }
                 ],
-            }]"));
+            }]");
             SetupWithMockBlocks();
             var block = BlockFactory.Instance.CreateBlock(mWorkspace, "field_angle_test_block");
             var xmlDom = Xml.BlockToDom(block);

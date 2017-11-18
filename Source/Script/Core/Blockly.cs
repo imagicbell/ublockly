@@ -34,7 +34,7 @@ namespace UBlockly
         [Obsolete("Only used for test case. Use BlockFactory.Instance.AddJsonDefinitions instead.")]
         public static void DefineBlocksWithJsonArray(JArray jsonArray)
         {
-            BlockFactory.Instance.AddJsonDefinitions(jsonArray);
+            BlockFactory.Instance.AddJsonDefinitions(jsonArray.ToString());
         }
     }
 }

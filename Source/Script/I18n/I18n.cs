@@ -19,9 +19,11 @@ namespace UBlockly
             }
         }
 
-        public static void Init(string text)
+        public static void AddI18nFile(string text)
         {
-            mMsg = new Dictionary<string, string>();
+            if (mMsg == null)
+                mMsg = new Dictionary<string, string>();
+            
             JObject jobj = JObject.Parse(text);
             foreach (KeyValuePair<string, JToken> pair in jobj)
             {
