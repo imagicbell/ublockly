@@ -3,13 +3,27 @@ using UnityEngine;
 
 namespace UBlockly.UGUI
 {
+    public enum ConnectionInputViewType
+    {
+        Value = 0,    //value input on the end of one line group
+        ValueSlot,    //value slot on anywhere of the line group. Can't exist the same time with "Value" on one linegroup
+        Statement,    //Statement input on the end of one line group
+    }
+    
     public class ConnectionInputView : ConnectionView
     {
         [SerializeField] private bool m_IsSlot = true;
+        [SerializeField] private ConnectionInputViewType m_ConnectionInputViewType;
 
         public override ViewType Type
         {
             get { return ViewType.ConnectionInput; }
+        }
+
+        public ConnectionInputViewType ConnectionInputViewType
+        {
+            get { return m_ConnectionInputViewType; }
+            set { m_ConnectionInputViewType = value; }
         }
 
         /// <summary>
@@ -19,15 +33,15 @@ namespace UBlockly.UGUI
         /// </summary>
         public bool IsSlot
         {
-            get { return m_IsSlot; }
-            set { m_IsSlot = value; }
+            get { return m_ConnectionInputViewType == ConnectionInputViewType.ValueSlot; }
         }
 
         public override Vector2 ChildStartXY
         {
             get
             {
-                if (ConnectionType == Define.EConnection.InputValue)
+                if (m_ConnectionInputViewType == ConnectionInputViewType.Value ||
+                    m_ConnectionInputViewType == ConnectionInputViewType.ValueSlot)
                     return new Vector2(BlockViewSettings.Get().ValueConnectPointRect.width, 0);
                 return Vector2.zero;
             }
@@ -35,46 +49,48 @@ namespace UBlockly.UGUI
 
         protected override Vector2 CalculateSize()
         {
-            if (mTargetBlockView == null)
-                return new Vector2(BlockViewSettings.Get().EmptyInputSlotWidth, BlockViewSettings.Get().ContentHeight);
-
-            // only slot connection input view will accumulate the width by children's width
-            Vector2 size = new Vector2(BlockViewSettings.Get().EmptyInputSlotWidth, 0);
-            
-            if (ConnectionType == Define.EConnection.InputValue)
+            switch (m_ConnectionInputViewType)
             {
-                // add the half circle's width
-                if (m_IsSlot)
-                    size.x = BlockViewSettings.Get().ValueConnectPointRect.width + mTargetBlockView.Width;
-                size.y = mTargetBlockView.Height;
-            }
-            else
-            {
-                // input_statement
-                // calculate the input size by adding all child statement blocks' size
-                size.x = mTargetBlockView.Width;
-                size.y += mTargetBlockView.Height;
-
-                BlockView nextView = mTargetBlockView;
-                bool addConnectPointSpace = true;
-                while (true)
+                case ConnectionInputViewType.Value:
                 {
-                    ConnectionView nextCon = nextView.GetConnectionView(Define.EConnection.NextStatement);
-                    if (nextCon == null)
-                    {
-                        addConnectPointSpace = false;
-                        break;
-                    }
-                    nextView = nextCon.TargetBlockView;
-                    if (nextView == null) break;
-
-                    size.x = Mathf.Min(size.x, nextView.Width);
-                    size.y += nextView.Height;
+                    //width is not concerned
+                    return new Vector2(0, BlockViewSettings.Get().ContentHeight);
                 }
-                if (addConnectPointSpace)
-                    size.y += BlockViewSettings.Get().StatementConnectPointRect.height;
+                case ConnectionInputViewType.ValueSlot:
+                {
+                    if (mTargetBlockView == null)
+                        return new Vector2(BlockViewSettings.Get().MinUnitWidth, BlockViewSettings.Get().ContentHeight);
+                    Vector2 size = new Vector2(BlockViewSettings.Get().ValueConnectPointRect.width + mTargetBlockView.Width, mTargetBlockView.Height);
+                    return size;
+                }
+                case ConnectionInputViewType.Statement:
+                {
+                    // calculate the height by adding all child statement blocks' height
+                    // todo: width is calculated by aliging right
+                    Vector2 size = new Vector2(Size.x, 0);
+                    
+                    bool addConnectPointSpace = true;
+                    BlockView nextView = mTargetBlockView;
+                    while (nextView != null)
+                    {
+                        ConnectionView nextCon = nextView.GetConnectionView(Define.EConnection.NextStatement);
+                        if (nextCon == null)
+                        {
+                            addConnectPointSpace = false;
+                            break;
+                        }
+                        
+                        size.y += nextView.Height;
+                        nextView = nextCon.TargetBlockView;
+                    }
+                    if (addConnectPointSpace)
+                        size.y += BlockViewSettings.Get().StatementConnectPointRect.height;
+
+                    size.y += BlockViewSettings.Get().ContentMargin.bottom;
+                    break;
+                }
             }
-            return size;
+            return Vector2.zero;
         }
 
         /// <summary>

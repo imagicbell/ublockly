@@ -102,7 +102,7 @@ namespace UBlockly.UGUI
             width += mHorizontalMargin;
             
             Debug.LogFormat(">>>>> CalculateSize-Variable: text: {0}, width: {1}", m_Label.text, width);
-            return new Vector2(width, BlockViewSettings.Get().ContentHeight);
+            return ValidateSize(new Vector2(width, BlockViewSettings.Get().ContentHeight));
         }
         
         /// <summary>

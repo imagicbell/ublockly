@@ -58,7 +58,7 @@ namespace UBlockly.UGUI
         protected override Vector2 CalculateSize()
         {
             //size is unchanged
-            return new Vector2(BlockViewSettings.Get().ColorFieldWidth, BlockViewSettings.Get().ContentHeight);
+            return ValidateSize(new Vector2(BlockViewSettings.Get().ColorFieldWidth, BlockViewSettings.Get().ContentHeight));
         }
     }
 }

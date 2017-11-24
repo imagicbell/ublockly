@@ -54,9 +54,8 @@ namespace UBlockly.UGUI
             BlockView blockView = AddViewComponent<BlockView>(blockObj);
             
             //block view's background image
-            Image bgImage = blockObj.GetComponent<Image>();
-            bgImage.color = Color.HSVToRGB(block.ColorHue / 360f, 1, 1);
-            bgImage.type = Image.Type.Sliced;
+            blockView.BgImage.color = Color.HSVToRGB(block.ColorHue / 360f, 1, 1);
+            blockView.BgImage.type = Image.Type.Sliced;
             
             //block view's childs: connection, lineGroup
             Transform mutatorEntry = null;
@@ -75,7 +74,7 @@ namespace UBlockly.UGUI
 
                     //connection node view background color
                     Image image = child.GetComponent<Image>();
-                    if (image != null) image.color = bgImage.color;
+                    if (image != null) image.color = blockView.BgImage.color;
                 }
                 else if (childName.Equals("linegroup"))
                 {
@@ -176,7 +175,7 @@ namespace UBlockly.UGUI
                 }
                 if (needBuild)
                 {
-                    InputView inputView = BuildInputView(input, groupView);
+                    InputView inputView = BuildInputView(input, groupView, blockView);
                     groupView.AddChild(inputView, newLine ? 0 : i);
                     if (Application.isPlaying)
                     {
@@ -204,13 +203,26 @@ namespace UBlockly.UGUI
             }
         }
 
-        public static InputView BuildInputView(Input input, LineGroupView groupView)
+        public static InputView BuildInputView(Input input, LineGroupView groupView, BlockView blockView)
         {
             GameObject inputPrefab;
+            ConnectionInputViewType viewType;
             if (input.Type == Define.EConnection.NextStatement)
+            {
                 inputPrefab = BlockViewSettings.Get().PrefabInputStatement;
+                viewType = ConnectionInputViewType.Statement;
+            }
+            else if (input.SourceBlock.InputList.Count > 1 && input.SourceBlock.GetInputsInline())
+            {
+                inputPrefab = BlockViewSettings.Get().PrefabInputValueSlot;
+                viewType = ConnectionInputViewType.ValueSlot;
+            }
             else
+            {
                 inputPrefab = BlockViewSettings.Get().PrefabInputValue;
+                viewType = ConnectionInputViewType.Value;
+            }
+            
             GameObject inputObj = GameObject.Instantiate(inputPrefab);
             inputObj.name = "Input_" + (!string.IsNullOrEmpty(input.Name) ? input.Name : "");
             RectTransform inputTrans = inputObj.GetComponent<RectTransform>();
@@ -240,10 +252,12 @@ namespace UBlockly.UGUI
             {
                 ConnectionInputView conInputView = AddViewComponent<ConnectionInputView>(conInputTrans.gameObject);
                 conInputView.ConnectionType = input.Type;
-                conInputView.IsSlot = input.Type == Define.EConnection.InputValue && 
-                                      input.SourceBlock.InputList.Count > 1 &&
-                                      input.SourceBlock.GetInputsInline();
+                conInputView.ConnectionInputViewType = viewType;
                 inputView.AddChild(conInputView);
+
+                if (viewType != ConnectionInputViewType.ValueSlot)
+                    conInputTrans.GetComponentInChildren<Image>().color = blockView.BgImage.color;
+                else conInputTrans.GetComponentInChildren<Image>().color = Color.white;//todo: background color?
             }
 
             return inputView;

@@ -9,10 +9,10 @@ namespace UBlockly.UGUI
         [SerializeField] public string BlockPrefabPath;
         
         [Tooltip("Basic block height, without margin.")]
-        [SerializeField] public int BlockHeight = 60;        
+        [SerializeField] public int BlockHeight = 60;
+        [SerializeField] public int MinUnitWidth = 40;
         [SerializeField] public RectOffset ContentMargin;
         [SerializeField] public Vector2 ContentSpace;
-        [SerializeField] public int EmptyInputSlotWidth;
         [SerializeField] public int ColorFieldWidth;
         
         [Tooltip("Maximum misalignment between connections for them to snap together.")]
@@ -28,6 +28,7 @@ namespace UBlockly.UGUI
         [SerializeField] public GameObject PrefabRootPrevNext;
 
         [SerializeField] public GameObject PrefabInputValue;
+        [SerializeField] public GameObject PrefabInputValueSlot;
         [SerializeField] public GameObject PrefabInputStatement;
 
         [SerializeField] public GameObject PrefabFieldLabel;

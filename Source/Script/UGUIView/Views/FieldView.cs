@@ -56,6 +56,12 @@ namespace UBlockly.UGUI
             SetComponents();
         }
 
+        protected Vector2 ValidateSize(Vector2 size)
+        {
+            size.x = Mathf.Max(BlockViewSettings.Get().MinUnitWidth, size.x);
+            return size;
+        }
+
         protected abstract void SetComponents();
         protected abstract void OnBindModel();
         protected abstract void OnUnBindModel();

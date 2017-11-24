@@ -9,6 +9,8 @@ namespace UBlockly.UGUI
 {
     public class BlockView : BaseView, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
     {
+        [SerializeField] private CustomMeshImage m_BgImage;  
+        
         public override ViewType Type
         {
             get { return ViewType.Block; }
@@ -18,7 +20,12 @@ namespace UBlockly.UGUI
         {
             get { return mBlock.Type; }
         }
-        
+
+        public CustomMeshImage BgImage
+        {
+            get { return m_BgImage; }
+        }
+
         private Block mBlock;
         public Block Block { get { return mBlock; } }
 
@@ -30,13 +37,12 @@ namespace UBlockly.UGUI
         }
 
         private MemorySafeBlockObserver mBlockObserver;
-        private CustomMeshImage mBgImage;
-
+        
         public override void InitComponents()
         {
             base.InitComponents();
-            mBgImage = GetComponent<CustomMeshImage>();
-            if (mBgImage == null)
+            m_BgImage = GetComponent<CustomMeshImage>();
+            if (m_BgImage == null)
                 throw new Exception("the background image of BlockView must be a \"CustomMeshImage\"");
         }
 
@@ -158,7 +164,7 @@ namespace UBlockly.UGUI
             }
             
             //update image mesh
-            mBgImage.SetDrawDimensions(dimensions.ToArray());
+            m_BgImage.SetDrawDimensions(dimensions.ToArray());
             return size;
         }
 

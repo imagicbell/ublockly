@@ -38,7 +38,7 @@ namespace UBlockly.UGUI
         {
             int width = m_TextUI.CalculateTextWidth(m_TextUI.text);
             Debug.LogFormat(">>>>> CalculateSize-Label: text: {0}, width: {1}", m_TextUI.text, width);
-            return new Vector2(width, BlockViewSettings.Get().ContentHeight);
+            return ValidateSize(new Vector2(width, BlockViewSettings.Get().ContentHeight));
         }
     }
 }
