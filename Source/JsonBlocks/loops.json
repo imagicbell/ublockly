@@ -63,20 +63,17 @@
       {
         "type": "input_value",
         "name": "FROM",
-        "check": "Number",
-        "align": "RIGHT"
+        "check": "Number"
       },
       {
         "type": "input_value",
         "name": "TO",
-        "check": "Number",
-        "align": "RIGHT"
+        "check": "Number"
       },
       {
         "type": "input_value",
         "name": "BY",
-        "check": "Number",
-        "align": "RIGHT"
+        "check": "Number"
       }
     ],
     "message1": "%{BKY_CONTROLS_REPEAT_INPUT_DO} %1",

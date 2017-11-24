@@ -136,6 +136,8 @@ namespace UBlockly.UGUI
                 for (int i = Childs.Count - 1; i >= 0; i--)
                 {
                     InputView inputView = Childs[i] as InputView;
+                    if (i < Childs.Count - 1)
+                        startX -= BlockViewSettings.Get().ContentSpace.x;
                     startX -= inputView.Width;
                     inputView.XY = new Vector2(startX, inputView.XY.y);
                 }

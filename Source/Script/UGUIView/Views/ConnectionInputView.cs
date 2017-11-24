@@ -53,7 +53,7 @@ namespace UBlockly.UGUI
                 case ConnectionInputViewType.Value:
                 {
                     //width is not concerned
-                    return new Vector2(0, BlockViewSettings.Get().ContentHeight);
+                    return new Vector2(BlockViewSettings.Get().ValueConnectPointRect.width, BlockViewSettings.Get().ContentHeight);
                 }
                 case ConnectionInputViewType.ValueSlot:
                 {

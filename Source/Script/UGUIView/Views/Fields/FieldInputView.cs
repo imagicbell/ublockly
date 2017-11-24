@@ -52,7 +52,7 @@ namespace UBlockly.UGUI
             width += mHorizontalMargin;
 
             Debug.LogFormat(">>>>> CalculateSize-TextInput: text: {0}, width: {1}", m_InputField.text, width);
-            return ValidateSize(new Vector2(width, BlockViewSettings.Get().ContentHeight));
+            return new Vector2(width, BlockViewSettings.Get().ContentHeight);
         }
     }
 }

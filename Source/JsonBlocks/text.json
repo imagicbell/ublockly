@@ -168,9 +168,9 @@
         "type": "field_dropdown",
         "name": "WHERE2",
         "options": [
-          ["%{BKY_TEXT_GET_SUBSTRING_START_FROM_START}", "FROM_START" ],
-          ["%{BKY_TEXT_GET_SUBSTRING_START_FROM_END}", "FROM_END" ],
-          ["%{BKY_TEXT_GET_SUBSTRING_START_LAST}", "LAST" ]
+          ["%{BKY_TEXT_GET_SUBSTRING_END_FROM_START}", "FROM_START" ],
+          ["%{BKY_TEXT_GET_SUBSTRING_END_FROM_END}", "FROM_END" ],
+          ["%{BKY_TEXT_GET_SUBSTRING_END_LAST}", "LAST" ]
         ]
       },
       {

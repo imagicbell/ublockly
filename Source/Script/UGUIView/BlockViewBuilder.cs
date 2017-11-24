@@ -142,8 +142,12 @@ namespace UBlockly.UGUI
             //2. build new inputviews
             for (int i = 0; i < block.InputList.Count; i++)
             {
+                Input input = block.InputList[i];
+                
                 // build new line group view 
-                bool newLine = !inputsInline && i > 0;
+                bool newLine = i > 0 &&
+                               (!inputsInline ||
+                                input.Connection != null && input.Connection.Type == Define.EConnection.NextStatement);
                 if (newLine)
                 {
                     groupView = blockView.GetLineGroup(i);
@@ -152,7 +156,6 @@ namespace UBlockly.UGUI
                 }
 
                 // build input view
-                Input input = block.InputList[i];
                 bool needBuild = true;
                 foreach (InputView view in oldInputViews)
                 {

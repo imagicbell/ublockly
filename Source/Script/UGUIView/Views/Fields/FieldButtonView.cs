@@ -96,7 +96,7 @@ namespace UBlockly.UGUI
             }
             width += mHorizontalMargin;
             Debug.LogFormat(">>>>> CalculateSize-Button: text: {0}, width: {1}", m_Label.text, width);
-            return ValidateSize(new Vector2(width, BlockViewSettings.Get().ContentHeight));
+            return new Vector2(width, BlockViewSettings.Get().ContentHeight);
         }
     }
 }

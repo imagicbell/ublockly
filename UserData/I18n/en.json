@@ -605,7 +605,7 @@
     "TEXT_GET_SUBSTRING_HELPURL": "https://github.com/google/blockly/wiki/Text#extracting-a-region-of-text",
     /// block text - Precedes a piece of text from which a portion should be extracted.
     /// [[File:Blockly-get-substring.png]]
-    "TEXT_GET_SUBSTRING_INPUT_IN_TEXT": "in text %1 get substring from %2 %3 %4 to %5 %6 %7",
+    "TEXT_GET_SUBSTRING_INPUT_IN_TEXT": "in text %1 %2 %3 %4 %5 %6 %7",
     /// dropdown - Indicates that the following number specifies the position (relative to the start
     /// position) of the beginning of the region of text that should be obtained from the preceding
     /// piece of text.  See [https://github.com/google/blockly/wiki/Text#extracting-a-region-of-text

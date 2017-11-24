@@ -54,7 +54,7 @@ namespace UBlockly.UGUI
         
         protected override void OnPopulateMesh(VertexHelper toFill)
         {
-            if (m_DrawDimensions == null || m_DrawDimensions.Length < 2)
+            if (m_DrawDimensions == null)
             {
                 base.OnPopulateMesh(toFill);
             }
@@ -80,7 +80,7 @@ namespace UBlockly.UGUI
 
                 Rect pixelAdjustedRect = this.GetPixelAdjustedRect();
                 Vector4 adjustedBorders = this.GetAdjustedBorders(border, pixelAdjustedRect);
-                
+
 //                Debug.Log(">>>>>>  this.GetPixelAdjustedRect():  " + pixelAdjustedRect);
 //                Debug.Log(">>>>>>  DataUtility.GetOuterUV(this.overrideSprite): " + outerUV);
 //                Debug.Log(">>>>>>  DataUtility.GetInnerUV(this.overrideSprite): " + innerUV);
@@ -89,11 +89,11 @@ namespace UBlockly.UGUI
 //                {
 //                    Debug.Log(">>>>>>  m_DrawDimensions " + i + ": " + m_DrawDimensions[i]);
 //                }
-                
+
                 RectTransform rectTrans = GetComponent<RectTransform>();
                 float xFactor = pixelAdjustedRect.width / rectTrans.rect.width;
                 float yFactor = pixelAdjustedRect.height / rectTrans.rect.height;
-                
+
                 for (int i = 0; i < m_DrawDimensions.Length; i++)
                 {
                     Vector4 dimension = m_DrawDimensions[i];
@@ -104,17 +104,17 @@ namespace UBlockly.UGUI
 
                     int xCount = 3;
                     int yCount;
-                    
+
                     mVert_X[0] = dimension.x;
                     mVert_X[1] = dimension.x + border.x;
                     mVert_X[2] = dimension.z - border.z;
                     mVert_X[3] = dimension.z;
-                    
+
                     mUV_X[0] = outerUV.x;
                     mUV_X[1] = innerUV.x;
                     mUV_X[2] = innerUV.z;
                     mUV_X[3] = outerUV.z;
-                    
+
                     if (i == 0)
                     {
                         //6 quads
@@ -134,7 +134,7 @@ namespace UBlockly.UGUI
                         mVert_Y[0] = dimension.y;
                         mVert_Y[1] = dimension.y + border.y;
                         mVert_Y[2] = dimension.w;
-                        
+
                         mUV_Y[0] = outerUV.y;
                         mUV_Y[1] = innerUV.y;
                         mUV_Y[2] = innerUV.w;
@@ -149,10 +149,10 @@ namespace UBlockly.UGUI
 
                         mUV_Y[0] = innerUV.y;
                         mUV_Y[1] = innerUV.w;
-                        
+
                         yCount = 1;
                     }
-                    
+
                     Vector4 dim, uv;
                     for (int yMin = 0; yMin < yCount; yMin++)
                     {

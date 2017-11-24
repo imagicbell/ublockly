@@ -242,7 +242,7 @@
   },
   {
     "type": "lists_getSublist",
-    "message0": "%{BKY_LISTS_INLIST} %1 %2 %3 %4 to %5 %6 %7",
+    "message0": "%{BKY_LISTS_INLIST} %1 %2 %3 %4 %5 %6 %7",
     "args0": [
       {
         "type": "input_value",
@@ -269,8 +269,8 @@
         "type": "field_dropdown",
         "name": "WHERE2",
         "options": [
-          ["%{BKY_LISTS_GET_SUBLIST_START_FROM_START}", "FROM_START"],
-          ["%{BKY_LISTS_GET_SUBLIST_START_FROM_END}", "FROM_END"],
+          ["%{BKY_LISTS_GET_SUBLIST_END_FROM_START}", "FROM_START"],
+          ["%{BKY_LISTS_GET_SUBLIST_END_FROM_END}", "FROM_END"],
           ["%{BKY_LISTS_GET_SUBLIST_END_LAST}", "LAST"]
         ]
       },

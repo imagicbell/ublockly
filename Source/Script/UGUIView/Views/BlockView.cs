@@ -319,7 +319,7 @@ namespace UBlockly.UGUI
         public void OnPointerClick(PointerEventData eventData)
         {
             //todo: background outline
-            if (!eventData.dragging)
+            if (!eventData.dragging && !InToolbox) 
                 BlocklyUI.WorkspaceView.CloneBlockView(this, XYInCodingArea + BlockViewSettings.Get().BumpAwayOffset);
         }
         
