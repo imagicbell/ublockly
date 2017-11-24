@@ -5,9 +5,8 @@ namespace UBlockly
 {
     public class Input
     {
+        public string Name { get; private set; }
         public readonly Define.EConnection Type;
-        public readonly string Name;
-
         public readonly Connection Connection;
         public readonly List<Field> FieldRow;
         
@@ -71,6 +70,12 @@ namespace UBlockly
         /// </summary>
         public Input(Define.EConnection type, string name, Connection connection = null) : this(type, name, null, connection)
         {
+        }
+
+        public void SetName(string newName)
+        {
+            if (string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(newName))
+                Name = newName;
         }
 
         /// <summary>

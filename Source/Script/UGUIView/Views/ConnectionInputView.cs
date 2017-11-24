@@ -12,7 +12,6 @@ namespace UBlockly.UGUI
     
     public class ConnectionInputView : ConnectionView
     {
-        [SerializeField] private bool m_IsSlot = true;
         [SerializeField] private ConnectionInputViewType m_ConnectionInputViewType;
 
         public override ViewType Type
@@ -65,6 +64,9 @@ namespace UBlockly.UGUI
                 }
                 case ConnectionInputViewType.Statement:
                 {
+                    if (mTargetBlockView == null)
+                        return new Vector2(Size.x, BlockViewSettings.Get().ContentHeight + BlockViewSettings.Get().ContentMargin.bottom);
+                    
                     // calculate the height by adding all child statement blocks' height
                     // todo: width is calculated by aliging right
                     Vector2 size = new Vector2(Size.x, 0);
@@ -87,7 +89,7 @@ namespace UBlockly.UGUI
                         size.y += BlockViewSettings.Get().StatementConnectPointRect.height;
 
                     size.y += BlockViewSettings.Get().ContentMargin.bottom;
-                    break;
+                    return size;
                 }
             }
             return Vector2.zero;

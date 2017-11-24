@@ -50,7 +50,7 @@ namespace UBlockly.UGUI
         [SerializeField] private BaseView m_Parent;
         [SerializeField] private BaseView m_Previous;
         [SerializeField] private BaseView m_Next;
-        [SerializeField] private List<BaseView> m_Childs;    //can't use LinkedList because of unserializable, and slow on indexing
+        [SerializeField] private List<BaseView> m_Childs = new List<BaseView>();    //can't use LinkedList because of unserializable, and slow on indexing
 
         public RectTransform ViewTransform
         {
@@ -84,18 +84,25 @@ namespace UBlockly.UGUI
 
         public bool HasChild()
         {
-            return m_Childs != null && m_Childs.Count > 0;
+            return m_Childs.Count > 0;
         }
-                
+
+        public BaseView FirstChild
+        {
+            get { return HasChild() ? m_Childs[0] : null; }
+        }
+
+        public BaseView LastChild
+        {
+            get { return HasChild() ? m_Childs[m_Childs.Count - 1] : null; }
+        }
+
         /// <summary>
         /// Add child view to this view, default add at last
         /// Iterate through all the next views, and add them as well
         /// </summary>
         public void AddChild(BaseView childView, int index = -1)
         {
-            if (m_Childs == null)
-                m_Childs = new List<BaseView>();
-
             if (m_Childs.Contains(childView))
                 return;
 
@@ -225,7 +232,7 @@ namespace UBlockly.UGUI
         public BaseView GetTopmostChild(bool untilConnection = true)
         {
             BaseView curView = this;
-            while (curView.m_Childs != null && curView.m_Childs.Count > 0 && curView.m_Childs[0].Type != ViewType.Block)
+            while (curView.HasChild() && curView.m_Childs[0].Type != ViewType.Block)
             {
                 curView = curView.m_Childs[0];
             }

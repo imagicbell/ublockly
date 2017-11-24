@@ -17,7 +17,7 @@ namespace UBlockly
         private const string IF_INPUT_PREFIX = "IF";
         private const string DO_INPUT_PREFIX = "DO";
         private const string CHECK = "Boolean";
-        private const Define.EAlign ALIGN = Define.EAlign.Left;
+        private const Define.EAlign ALIGN = Define.EAlign.Right;
         
         /// <summary>
         /// The number of else if inputs on this block.

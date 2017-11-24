@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace UBlockly.UGUI
 {
@@ -80,7 +81,7 @@ namespace UBlockly.UGUI
                     if (inputView != null)
                     {
                         ConnectionInputView conView = inputView.GetConnectionView();
-                        if (conView != null && (conView.IsSlot || conView.ConnectionType == Define.EConnection.NextStatement))
+                        if (conView != null && conView.IsSlot)
                             return BlockViewSettings.Get().ContentMargin.bottom;
                     }
                 }
@@ -102,15 +103,56 @@ namespace UBlockly.UGUI
             Vector2 size = Vector2.zero;
             for (int i = 0; i < Childs.Count; i++)
             {
-                size.x += Childs[i].Width;
-                if (i < Childs.Count - 1)
-                    size.x += BlockViewSettings.Get().ContentSpace.x;
+                //calculate x: get the last child's right, as input view may align right
+                if (i == Childs.Count - 1)
+                    size.x = Childs[i].XY.x + Childs[i].Width;
                 
-                size.y = Mathf.Max(size.y, Childs[i].Size.y);
+                size.y = Mathf.Max(size.y, Childs[i].Height);
             }
 
-            size.x += mMarginLeft + mMarginRight;
+            size.x += mMarginRight;
             size.y += mMarginTop + mMarginBottom;
+            return size;
+        }
+
+        /// <summary>
+        /// update all child inputviews to align right
+        /// </summary>
+        /// <param name="width"></param>
+        public void UpdateAlignRight(float width)
+        {
+            if (Mathf.Approximately(this.Width, width))
+                return;
+            this.Width = width;
+            
+            ConnectionInputView conView = ((InputView) LastChild).GetConnectionView();
+            if (conView != null && conView.ConnectionInputViewType == ConnectionInputViewType.Statement)
+            {
+                conView.Width = width - (LastChild.XY.x + conView.XY.x);
+            }
+            else
+            {
+                float startX = this.XY.x + width;
+                for (int i = Childs.Count - 1; i >= 0; i--)
+                {
+                    InputView inputView = Childs[i] as InputView;
+                    startX -= inputView.Width;
+                    inputView.XY = new Vector2(startX, inputView.XY.y);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get the size for drawing background
+        /// </summary>
+        public Vector2 GetDrawSize()
+        {
+            //I know it is a little bit awkward here...
+            //but to make it seem prettier...maybe refactor later
+            Vector2 size = Size;
+            ConnectionInputView conView = ((InputView) LastChild).GetConnectionView();
+            if (conView != null && !conView.IsSlot)
+                size.x -= conView.Width;
             return size;
         }
     }

@@ -9,7 +9,7 @@ namespace UBlockly.UGUI
 {
     public class BlockView : BaseView, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
     {
-        [SerializeField] private CustomMeshImage m_BgImage;  
+        [SerializeField] private CustomMeshImage m_BgImage;
         
         public override ViewType Type
         {
@@ -25,7 +25,7 @@ namespace UBlockly.UGUI
         {
             get { return m_BgImage; }
         }
-
+        
         private Block mBlock;
         public Block Block { get { return mBlock; } }
 
@@ -41,9 +41,12 @@ namespace UBlockly.UGUI
         public override void InitComponents()
         {
             base.InitComponents();
-            m_BgImage = GetComponent<CustomMeshImage>();
             if (m_BgImage == null)
-                throw new Exception("the background image of BlockView must be a \"CustomMeshImage\"");
+            {
+                m_BgImage = GetComponent<CustomMeshImage>();
+                if (m_BgImage == null)
+                    throw new Exception("the background image of BlockView must be a \"CustomMeshImage\"");
+            }
         }
 
         public void BindModel(Block block)
@@ -143,11 +146,10 @@ namespace UBlockly.UGUI
 
         protected override Vector2 CalculateSize()
         {
+            bool alignRight = false;
+            
             //accumulate all child lineGroups' size
-            //collect all child lineGroups' vertices for custom drawing
-            Vector2 oriSize = Size;
             Vector2 size = Vector2.zero;
-            List<Vector4> dimensions = new List<Vector4>();
             for (int i = 0; i < Childs.Count; i++)
             {
                 LineGroupView groupView = Childs[i] as LineGroupView;
@@ -157,9 +159,26 @@ namespace UBlockly.UGUI
                     size.y += groupView.Size.y;
                     if (i < Childs.Count - 1)
                         size.y += BlockViewSettings.Get().ContentSpace.y;
+
+                    if (((InputView) groupView.LastChild).AlignRight)
+                        alignRight = true;
+                }
+            }
+
+            //accumulate all child lineGroups' size
+            //collect all child lineGroups' vertices for custom drawing
+            List<Vector4> dimensions = new List<Vector4>();
+            for (int i = 0; i < Childs.Count; i++)
+            {
+                LineGroupView groupView = Childs[i] as LineGroupView;
+                if (groupView != null)
+                {
+                    if (alignRight)
+                        groupView.UpdateAlignRight(size.x);
                     
                     //linegroup's anchor and pivot both are top-left
-                    dimensions.Add(new Vector4(groupView.XY.x, groupView.XY.y - groupView.Height, groupView.XY.x + groupView.Width, groupView.XY.y));
+                    Vector2 drawSize = groupView.GetDrawSize();
+                    dimensions.Add(new Vector4(groupView.XY.x, groupView.XY.y - drawSize.y, groupView.XY.x + drawSize.x, groupView.XY.y));
                 }
             }
             

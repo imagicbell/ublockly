@@ -5,6 +5,14 @@ namespace UBlockly.UGUI
 {
     public class InputView : BaseView
     {
+        [SerializeField] private bool m_AlignRight = false;
+        
+        public bool AlignRight
+        {
+            get { return m_AlignRight; }
+            set { m_AlignRight = value; }
+        }
+        
         public override ViewType Type
         {
             get { return ViewType.Input; }
@@ -12,7 +20,7 @@ namespace UBlockly.UGUI
 
         private Input mInput;
         public Input Input { get { return mInput; } }
-        
+
         /// <summary>
         /// Check if this input group has a connection
         /// return false when it is a dummy input
@@ -28,21 +36,21 @@ namespace UBlockly.UGUI
         /// </summary>
         public ConnectionInputView GetConnectionView()
         {
-            return Childs[Childs.Count - 1] as ConnectionInputView;
+            return Childs.Count > 0 ? Childs[Childs.Count - 1] as ConnectionInputView : null;
         }
-        
+
         public void BindModel(Input input)
         {
             if (mInput == input) return;
             if (mInput != null) UnBindModel();
-            
+
             mInput = input;
 
             for (int i = 0; i < Childs.Count; i++)
             {
                 var view = Childs[i];
                 if (view.Type == ViewType.Field)
-                    ((FieldView)view).BindModel(mInput.FieldRow[i]);
+                    ((FieldView) view).BindModel(mInput.FieldRow[i]);
                 else if (view.Type == ViewType.ConnectionInput)
                     ((ConnectionInputView) view).BindModel(mInput.Connection);
             }
@@ -67,10 +75,11 @@ namespace UBlockly.UGUI
             Vector2 size = Vector2.zero;
             for (int i = 0; i < Childs.Count; i++)
             {
-                size.x += Childs[i].Width;
-                if (i < Childs.Count - 1)
-                    size.x += BlockViewSettings.Get().ContentSpace.x;
-
+                //calculate x: get the last child's right
+                if (i == Childs.Count - 1)
+                {
+                    size.x = Childs[i].XY.x + Childs[i].Width;
+                }
                 size.y = Mathf.Max(size.y, Childs[i].Height);
             }
             return size;

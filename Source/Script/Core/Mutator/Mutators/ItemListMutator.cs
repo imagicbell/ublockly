@@ -15,6 +15,8 @@ namespace UBlockly
         private int mItemCount = 2;
         public int ItemCount { get { return mItemCount; } }
 
+        private string mLabelText;
+
         public override bool NeedEditor
         {
             get { return true; }
@@ -45,12 +47,16 @@ namespace UBlockly
 
         protected override void OnAttached()
         {
+            Input defaultInput = mBlock.InputList[0];
+            defaultInput.SetName(EMPTY_NAME);
+            FieldLabel field = defaultInput.FieldRow[0] as FieldLabel;
+            mLabelText = field.GetText();
             UpdateInternal();
         }
 
         private void UpdateInternal()
         {
-            /* currently reserve the dummy input, it will only show the Label Field on UI
+            // currently reserve the dummy input, it will only show the Label Field on UI
             Input emptyInput = mBlock.GetInput(EMPTY_NAME);
             if (mItemCount > 0 && emptyInput != null)
             {
@@ -58,29 +64,35 @@ namespace UBlockly
             }
             else if (mItemCount == 0 && emptyInput == null)
             {
-                emptyInput = InputFactory.Create(Blockly.DUMMY_INPUT, EMPTY_NAME, Blockly.ALIGN_LEFT, null);
+                emptyInput = InputFactory.Create(Define.EConnection.DummyInput, EMPTY_NAME, Define.EAlign.Right, null);
+                emptyInput.AppendField(new FieldLabel(null, mLabelText));
                 mBlock.AppendInput(emptyInput);
-            }*/
+            }
 
             //add new inputs
             int i = 0;
             for (i = 0; i < mItemCount; i++)
             {
-                if (!mBlock.HasInput("ADD" + i))
+                Input addInput = mBlock.GetInput("ADD" + i);
+                if (addInput == null)
                 {
-                    Input valueInput = InputFactory.Create(Define.EConnection.InputValue, ADD_INPUT_PREFIX + i, Define.EAlign.Left, null);
-                    mBlock.AppendInput(valueInput);
+                    addInput = InputFactory.Create(Define.EConnection.InputValue, ADD_INPUT_PREFIX + i, Define.EAlign.Right, null);
+                    mBlock.AppendInput(addInput);
+                }
+                if (i == 0)
+                {
+                    addInput.AppendField(new FieldLabel(null, mLabelText));
                 }
             }
 
             // remove deleted inputs
             while (true)
             {
-                Input atInput = mBlock.GetInput("ADD" + i);
-                if (atInput == null)
+                Input addInput = mBlock.GetInput("ADD" + i);
+                if (addInput == null)
                     break;
 
-                mBlock.RemoveInput(atInput);
+                mBlock.RemoveInput(addInput);
                 i++;
             }
         }

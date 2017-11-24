@@ -16,8 +16,8 @@ namespace UBlockly.UGUI
             Blockly.Init();
             Workspace workspace = new Workspace();
 
-            var blocks = BlockFactory.Instance.GetAllBlockDefinitions().Keys.Where(s => !s.StartsWith("colour"));
-            //var blocks = BlockFactory.Instance.GetAllBlockDefinitions().Keys.Where(s => s.Equals("lists_create_with"));
+            var blocks = BlockFactory.Instance.GetAllBlockDefinitions().Keys;
+//            var blocks = BlockFactory.Instance.GetAllBlockDefinitions().Keys.Where(s => s.Equals("lists_create_with"));
 
             if (!Directory.Exists(BlockViewSettings.Get().BlockPrefabPath))
                 Directory.CreateDirectory(BlockViewSettings.Get().BlockPrefabPath);

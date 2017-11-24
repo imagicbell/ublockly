@@ -111,7 +111,6 @@ namespace UBlockly.UGUI
                         throw new Exception("ConnectionView- OnConnectStateUpdated: Only Superior can accept the \"Connected\" message.");
                     
                     // this superior connection is connected to a child connection
-                    mTargetBlockView = BlocklyUI.WorkspaceView.GetBlockView(mConnection.TargetBlock);
                     OnAttached();
                     break;
                 }
@@ -122,7 +121,6 @@ namespace UBlockly.UGUI
                     
                     // this superior connection is disconnected to a child connection
                     OnDetached();
-                    mTargetBlockView = null;
                     break;
                 }
                 case Connection.UpdateState.BumpedAway:
@@ -149,6 +147,8 @@ namespace UBlockly.UGUI
 
         protected virtual void OnAttached()
         {
+            mTargetBlockView = BlocklyUI.WorkspaceView.GetBlockView(mConnection.TargetBlock);
+            
             // attach a child block view
             AddChild(mTargetBlockView); 
             mTargetBlockView.XY = ChildStartXY;
@@ -159,8 +159,10 @@ namespace UBlockly.UGUI
         {
             // detach a child block view
             RemoveChild(mTargetBlockView);
+            BlockView detachedView = mTargetBlockView;
+            mTargetBlockView = null;
             UpdateLayout(XY);
-            mTargetBlockView.SetOrphan();
+            detachedView.SetOrphan();
         }
 
         public bool SearchClosest(int searchLimit, ref Connection closest, ref int closestRadius)

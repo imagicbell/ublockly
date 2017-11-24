@@ -232,6 +232,7 @@ namespace UBlockly.UGUI
             Transform conInputTrans = inputTrans.GetChild(0);
 
             InputView inputView = AddViewComponent<InputView>(inputObj);
+            inputView.AlignRight = input.Align == Define.EAlign.Right;
             
             // build child field views of this input view 
             List<Field> fields = input.FieldRow;
@@ -242,7 +243,7 @@ namespace UBlockly.UGUI
                 RectTransform fieldTrans = fieldView.GetComponent<RectTransform>();
                 UniformRectTransform(fieldTrans);
             }
-            
+
             if (input.Type == Define.EConnection.DummyInput)
             {
                 //dummy input doesn't need to have a connection point
@@ -255,9 +256,11 @@ namespace UBlockly.UGUI
                 conInputView.ConnectionInputViewType = viewType;
                 inputView.AddChild(conInputView);
 
+                Image img = conInputTrans.GetComponentInChildren<Image>();
+                img.raycastTarget = false;
                 if (viewType != ConnectionInputViewType.ValueSlot)
-                    conInputTrans.GetComponentInChildren<Image>().color = blockView.BgImage.color;
-                else conInputTrans.GetComponentInChildren<Image>().color = Color.white;//todo: background color?
+                    img.color = blockView.BgImage.color;
+                else img.color = Color.white; //todo: background color?
             }
 
             return inputView;
