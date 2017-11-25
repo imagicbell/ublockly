@@ -143,8 +143,12 @@ namespace UBlockly.UGUI
                 {
                     if (updateThis)
                     {
-                        m_Label.text = updateData.NewVarName;
-                        UpdateLayout(XY);  
+                        if (!mSourceBlockView.InToolbox ||
+                            BlockFactory.Instance.GetCategoryOfBlockType(mSourceBlockView.BlockType) == Define.BLOCK_CATEGORY_NAME_VARIABLE)
+                        {
+                            m_Label.text = updateData.NewVarName;
+                            UpdateLayout(XY);
+                        }
                     }
                     break;
                 }

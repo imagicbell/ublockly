@@ -285,7 +285,7 @@ namespace UBlockly.UGUI
                 case VariableUpdateData.Delete:
                 {
                     DeleteVariableGetterView(updateData.VarName);
-                    
+
                     //change variable helper view
                     List<VariableModel> allVars = mWorkspace.GetAllVariables();
                     if (allVars.Count == 0)
@@ -301,6 +301,17 @@ namespace UBlockly.UGUI
                                 view.Block.SetFieldValue("VAR", allVars[0].Name);
                             }
                         }
+                    }
+                    break;
+                }
+                case VariableUpdateData.Rename:
+                {
+                    BlockView view;
+                    mVariableGetterViews.TryGetValue(updateData.VarName, out view);
+                    if (view != null)
+                    {
+                        mVariableGetterViews.Remove(updateData.VarName);
+                        mVariableGetterViews[updateData.NewVarName] = view;
                     }
                     break;
                 }

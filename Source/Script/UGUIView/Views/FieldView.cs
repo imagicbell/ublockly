@@ -11,11 +11,16 @@ namespace UBlockly.UGUI
 
         protected Field mField;
         public Field Field { get { return mField; } }
-        
-        protected BlockView mSourceBlockView;
-        public BlockView SourceBlockView
+
+        protected BlockView mSourceBlockView
         {
-            get { return mSourceBlockView; }
+            get
+            {
+                BaseView view = this;
+                while (view != null && view.Type != ViewType.Block)
+                    view = view.Parent;
+                return view as BlockView;
+            }
         }
 
         private MemorySafeFieldObserver mFieldObserver;
@@ -30,9 +35,6 @@ namespace UBlockly.UGUI
 
             if (Application.isPlaying)
             {
-                if (mField.SourceBlock != null)
-                    mSourceBlockView = BlocklyUI.WorkspaceView.GetBlockView(mField.SourceBlock);
-                
                 mFieldObserver = new MemorySafeFieldObserver(this);
                 mField.AddObserver(mFieldObserver);
 
