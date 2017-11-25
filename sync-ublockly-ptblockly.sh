@@ -19,7 +19,7 @@ done
 
 git add .
 if [[ $1 = "-m" ]]; then
-    git commit -m $2
+    git commit -m "$2"
     git push
 fi
 
