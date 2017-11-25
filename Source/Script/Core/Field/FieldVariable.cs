@@ -133,7 +133,7 @@ namespace UBlockly
                 if (variable != null)
                 {
                     string text = this.CallValidator(variable.Name);
-                    if (!string.IsNullOrEmpty(text) && !mText.Equals(text))
+                    if (!string.IsNullOrEmpty(text) && !text.Equals(mText))
                         SetValue(text);
                 }
             }

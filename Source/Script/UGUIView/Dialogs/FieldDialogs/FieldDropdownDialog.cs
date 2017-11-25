@@ -30,7 +30,9 @@ namespace UBlockly.UGUI
                 
                 itemObj.GetComponentInChildren<Text>().text = option.Text;
                 Toggle toggle = itemObj.GetComponent<Toggle>();
-                toggle.isOn = mFieldDropdown.GetText().Equals(option.Text);
+                if (!string.IsNullOrEmpty(mFieldDropdown.GetText()))
+                    toggle.isOn = mFieldDropdown.GetText().Equals(option.Text);
+                else toggle.isOn = false;
                 
                 mToggleItems.Add(toggle);
             }
