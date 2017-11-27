@@ -264,6 +264,7 @@ namespace UBlockly.UGUI
                 if (viewType != ConnectionInputViewType.ValueSlot)
                     img.color = blockView.BgImage.color;
                 else img.color = Color.white; //todo: background color?
+                conInputView.BgImage = img;
             }
 
             return inputView;

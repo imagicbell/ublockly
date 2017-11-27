@@ -16,7 +16,7 @@
     "VARIABLES_HUE": "330",
     /// (Notranslate) Hue value for all procedure blocks.
     "PROCEDURES_HUE": "290",
-    "COROUTINE_HUE": "140",
+    "COROUTINE_HUE": "310",
 
     /// default name - A simple: general default name for a variable: preferably short.
     "VARIABLES_DEFAULT_NAME": "item",

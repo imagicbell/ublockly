@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace UBlockly.UGUI
 {
@@ -13,6 +14,7 @@ namespace UBlockly.UGUI
     public class ConnectionInputView : ConnectionView
     {
         [SerializeField] private ConnectionInputViewType m_ConnectionInputViewType;
+        [SerializeField] private Image m_BgImage;
 
         public override ViewType Type
         {
@@ -23,6 +25,11 @@ namespace UBlockly.UGUI
         {
             get { return m_ConnectionInputViewType; }
             set { m_ConnectionInputViewType = value; }
+        }
+
+        public Image BgImage
+        {
+            set { m_BgImage = value; }
         }
 
         /// <summary>
@@ -53,7 +60,12 @@ namespace UBlockly.UGUI
                 case ConnectionInputViewType.Value:
                 {
                     //width is not concerned
-                    return new Vector2(BlockViewSettings.Get().ValueConnectPointRect.width, BlockViewSettings.Get().ContentHeight);
+                    Vector2 size = new Vector2(BlockViewSettings.Get().ValueConnectPointRect.width, 0);
+                    if (mTargetBlockView == null)
+                        size.y = BlockViewSettings.Get().ContentHeight;
+                    else
+                        size.y = mTargetBlockView.Height;
+                    return size;
                 }
                 case ConnectionInputViewType.ValueSlot:
                 {
@@ -112,6 +124,13 @@ namespace UBlockly.UGUI
                 nextView = nextCon.TargetBlockView;
             }
             return nextView;
+        }
+
+        protected override void OnAttached()
+        {
+            base.OnAttached();
+            //move background image to first
+            m_BgImage.transform.SetAsFirstSibling();
         }
     }
 }
