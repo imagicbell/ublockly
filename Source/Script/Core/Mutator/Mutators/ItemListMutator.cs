@@ -81,7 +81,8 @@ namespace UBlockly
                 }
                 if (i == 0)
                 {
-                    addInput.AppendField(new FieldLabel(null, mLabelText));
+                    if (mBlock.GetField("Title") == null)
+                        addInput.AppendField(new FieldLabel("Title", mLabelText));
                 }
             }
 

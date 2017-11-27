@@ -164,8 +164,7 @@ namespace UBlockly.UGUI
                         alignRight = true;
                 }
             }
-
-            //accumulate all child lineGroups' size
+            
             //collect all child lineGroups' vertices for custom drawing
             List<Vector4> dimensions = new List<Vector4>();
             for (int i = 0; i < Childs.Count; i++)
@@ -319,8 +318,8 @@ namespace UBlockly.UGUI
         public void OnPointerClick(PointerEventData eventData)
         {
             //todo: background outline
-            if (!eventData.dragging && !InToolbox) 
-                BlocklyUI.WorkspaceView.CloneBlockView(this, XYInCodingArea + BlockViewSettings.Get().BumpAwayOffset);
+            /*if (!eventData.dragging && !InToolbox) 
+                BlocklyUI.WorkspaceView.CloneBlockView(this, XYInCodingArea + BlockViewSettings.Get().BumpAwayOffset);*/
         }
         
         #endregion

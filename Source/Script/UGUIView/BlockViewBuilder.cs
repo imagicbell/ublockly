@@ -259,12 +259,10 @@ namespace UBlockly.UGUI
                 conInputView.ConnectionInputViewType = viewType;
                 inputView.AddChild(conInputView);
 
-                Image img = conInputTrans.GetComponentInChildren<Image>();
-                img.raycastTarget = false;
+                conInputView.BgImage.raycastTarget = false;
                 if (viewType != ConnectionInputViewType.ValueSlot)
-                    img.color = blockView.BgImage.color;
-                else img.color = Color.white; //todo: background color?
-                conInputView.BgImage = img;
+                    conInputView.BgImage.color = blockView.BgImage.color;
+                else conInputView.BgImage.color = Color.white; //todo: background color?
             }
 
             return inputView;

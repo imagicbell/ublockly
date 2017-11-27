@@ -15,6 +15,7 @@ namespace UBlockly.UGUI
     {
         [SerializeField] private ConnectionInputViewType m_ConnectionInputViewType;
         [SerializeField] private Image m_BgImage;
+        [SerializeField] private Vector2 m_ImageMeshOffset;
 
         public override ViewType Type
         {
@@ -27,11 +28,6 @@ namespace UBlockly.UGUI
             set { m_ConnectionInputViewType = value; }
         }
 
-        public Image BgImage
-        {
-            set { m_BgImage = value; }
-        }
-
         /// <summary>
         /// Check if this is a slot input connection view
         /// if true, the block height will expand to BlockViewSettings.Height
@@ -42,6 +38,22 @@ namespace UBlockly.UGUI
             get { return m_ConnectionInputViewType == ConnectionInputViewType.ValueSlot; }
         }
 
+        public Image BgImage
+        {
+            get { return m_BgImage; }
+        }
+
+        public override void InitComponents()
+        {
+            base.InitComponents();
+            if (m_BgImage == null)
+            {
+                m_BgImage = GetComponent<Image>();
+                if (m_BgImage == null)
+                    throw new Exception("the background image of ConnectionInputView must be a \"CustomMeshImage\"");
+            }
+        }
+       
         public override Vector2 ChildStartXY
         {
             get
@@ -77,11 +89,10 @@ namespace UBlockly.UGUI
                 case ConnectionInputViewType.Statement:
                 {
                     if (mTargetBlockView == null)
-                        return new Vector2(Size.x, BlockViewSettings.Get().ContentHeight + BlockViewSettings.Get().ContentMargin.bottom);
+                        return new Vector2(70, BlockViewSettings.Get().ContentHeight + BlockViewSettings.Get().ContentMargin.bottom);
                     
                     // calculate the height by adding all child statement blocks' height
-                    // todo: width is calculated by aliging right
-                    Vector2 size = new Vector2(Size.x, 0);
+                    Vector2 size = new Vector2(70, 0);
                     
                     bool addConnectPointSpace = true;
                     BlockView nextView = mTargetBlockView;
@@ -107,6 +118,15 @@ namespace UBlockly.UGUI
             return Vector2.zero;
         }
 
+        protected internal override void OnSizeUpdated()
+        {
+            if (m_BgImage is CustomMeshImage)
+            {
+                Vector4 drawDimension = new Vector4(m_ImageMeshOffset.x, -Height, Width, m_ImageMeshOffset.y);
+                ((CustomMeshImage)m_BgImage).SetDrawDimensions(new[] {drawDimension});    
+            }
+        }
+
         /// <summary>
         /// INPUT_VALUE: mTargetBlockView
         /// NEXT_STATEMENT: the last block view of the target statement block views chain
@@ -124,13 +144,6 @@ namespace UBlockly.UGUI
                 nextView = nextCon.TargetBlockView;
             }
             return nextView;
-        }
-
-        protected override void OnAttached()
-        {
-            base.OnAttached();
-            //move background image to first
-            m_BgImage.transform.SetAsFirstSibling();
         }
     }
 }

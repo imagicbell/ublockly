@@ -277,9 +277,7 @@ namespace UBlockly.UGUI
                 if (m_ViewTransform.anchoredPosition != value)
                 {
                     m_ViewTransform.anchoredPosition = value;
-                    
-                    if (Application.isPlaying)
-                        OnXYUpdated();
+                    OnXYUpdated();
                 }
             }
         }
@@ -307,8 +305,19 @@ namespace UBlockly.UGUI
             get { return m_ViewTransform.rect.size; }
             set
             {
-                Width = value.x;
-                Height = value.y;
+                bool changed = false;
+                if (!Mathf.Approximately(m_ViewTransform.rect.width, value.x))
+                {
+                    changed = true;
+                    m_ViewTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, value.x);
+                }
+                if (!Mathf.Approximately(m_ViewTransform.rect.height, value.y))
+                {
+                    changed = true;
+                    m_ViewTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, value.y);
+                }
+                if (changed)
+                    OnSizeUpdated();
             }
         }
 
@@ -318,9 +327,13 @@ namespace UBlockly.UGUI
             set
             {
                 if (!Mathf.Approximately(m_ViewTransform.rect.width, value))
+                {
                     m_ViewTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, value);
+                    if (Application.isPlaying)
+                        OnSizeUpdated();
+                }
             }
-        } 
+        }
 
         public float Height
         {
@@ -328,7 +341,11 @@ namespace UBlockly.UGUI
             set
             {
                 if (!Mathf.Approximately(m_ViewTransform.rect.height, value))
+                {
                     m_ViewTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, value);
+                    if (Application.isPlaying)
+                        OnSizeUpdated();
+                }
             }
         }
 
@@ -429,6 +446,11 @@ namespace UBlockly.UGUI
         /// called when position is changed
         /// </summary>
         protected internal virtual void OnXYUpdated(){}
+        
+        /// <summary>
+        /// called when size is updated
+        /// </summary>
+        protected internal virtual void OnSizeUpdated(){}
         
         public virtual void InitComponents()
         {

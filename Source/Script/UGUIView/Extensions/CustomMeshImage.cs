@@ -16,7 +16,6 @@ namespace UBlockly.UGUI
         private float[] mVert_Y = new float[3];
         private float[] mUV_X = new float[4];
         private float[] mUV_Y = new float[3];
-        
 
         /// <summary>
         /// Set local draw dimensions
@@ -54,32 +53,32 @@ namespace UBlockly.UGUI
         
         protected override void OnPopulateMesh(VertexHelper toFill)
         {
-            if (m_DrawDimensions == null)
+            if (m_DrawDimensions == null || m_DrawDimensions.Length == 0)
             {
                 base.OnPopulateMesh(toFill);
+                return;
+            }
+            
+            toFill.Clear();
+
+            Vector4 outerUV;
+            Vector4 innerUV;
+            Vector4 border;
+            if ((UnityEngine.Object) this.overrideSprite != (UnityEngine.Object) null)
+            {
+                outerUV = DataUtility.GetOuterUV(this.overrideSprite);
+                innerUV = DataUtility.GetInnerUV(this.overrideSprite);
+                border = this.overrideSprite.border / this.pixelsPerUnit;
             }
             else
             {
-                toFill.Clear();
+                outerUV = Vector4.zero;
+                innerUV = Vector4.zero;
+                border = Vector4.zero;
+            }
 
-                Vector4 outerUV;
-                Vector4 innerUV;
-                Vector4 border;
-                if ((UnityEngine.Object) this.overrideSprite != (UnityEngine.Object) null)
-                {
-                    outerUV = DataUtility.GetOuterUV(this.overrideSprite);
-                    innerUV = DataUtility.GetInnerUV(this.overrideSprite);
-                    border = this.overrideSprite.border / this.pixelsPerUnit;
-                }
-                else
-                {
-                    outerUV = Vector4.zero;
-                    innerUV = Vector4.zero;
-                    border = Vector4.zero;
-                }
-
-                Rect pixelAdjustedRect = this.GetPixelAdjustedRect();
-                Vector4 adjustedBorders = this.GetAdjustedBorders(border, pixelAdjustedRect);
+            Rect pixelAdjustedRect = this.GetPixelAdjustedRect();
+            Vector4 adjustedBorders = this.GetAdjustedBorders(border, pixelAdjustedRect);
 
 //                Debug.Log(">>>>>>  this.GetPixelAdjustedRect():  " + pixelAdjustedRect);
 //                Debug.Log(">>>>>>  DataUtility.GetOuterUV(this.overrideSprite): " + outerUV);
@@ -90,80 +89,79 @@ namespace UBlockly.UGUI
 //                    Debug.Log(">>>>>>  m_DrawDimensions " + i + ": " + m_DrawDimensions[i]);
 //                }
 
-                RectTransform rectTrans = GetComponent<RectTransform>();
-                float xFactor = pixelAdjustedRect.width / rectTrans.rect.width;
-                float yFactor = pixelAdjustedRect.height / rectTrans.rect.height;
+            RectTransform rectTrans = GetComponent<RectTransform>();
+            float xFactor = pixelAdjustedRect.width / rectTrans.rect.width;
+            float yFactor = pixelAdjustedRect.height / rectTrans.rect.height;
 
-                for (int i = 0; i < m_DrawDimensions.Length; i++)
+            for (int i = 0; i < m_DrawDimensions.Length; i++)
+            {
+                Vector4 dimension = m_DrawDimensions[i];
+                dimension.x *= xFactor;
+                dimension.y *= yFactor;
+                dimension.z *= xFactor;
+                dimension.w *= yFactor;
+
+                int xCount = 3;
+                int yCount;
+
+                mVert_X[0] = dimension.x;
+                mVert_X[1] = dimension.x + border.x;
+                mVert_X[2] = dimension.z - border.z;
+                mVert_X[3] = dimension.z;
+
+                mUV_X[0] = outerUV.x;
+                mUV_X[1] = innerUV.x;
+                mUV_X[2] = innerUV.z;
+                mUV_X[3] = outerUV.z;
+
+                if (i == 0)
                 {
-                    Vector4 dimension = m_DrawDimensions[i];
-                    dimension.x *= xFactor;
-                    dimension.y *= yFactor;
-                    dimension.z *= xFactor;
-                    dimension.w *= yFactor;
+                    //6 quads
+                    mVert_Y[0] = dimension.y;
+                    mVert_Y[1] = dimension.w - border.w;
+                    mVert_Y[2] = dimension.w;
 
-                    int xCount = 3;
-                    int yCount;
+                    mUV_Y[0] = innerUV.y;
+                    mUV_Y[1] = innerUV.w;
+                    mUV_Y[2] = outerUV.w;
 
-                    mVert_X[0] = dimension.x;
-                    mVert_X[1] = dimension.x + border.x;
-                    mVert_X[2] = dimension.z - border.z;
-                    mVert_X[3] = dimension.z;
+                    yCount = 2;
+                }
+                else if (i == m_DrawDimensions.Length - 1)
+                {
+                    //6 quads
+                    mVert_Y[0] = dimension.y;
+                    mVert_Y[1] = dimension.y + border.y;
+                    mVert_Y[2] = dimension.w;
 
-                    mUV_X[0] = outerUV.x;
-                    mUV_X[1] = innerUV.x;
-                    mUV_X[2] = innerUV.z;
-                    mUV_X[3] = outerUV.z;
+                    mUV_Y[0] = outerUV.y;
+                    mUV_Y[1] = innerUV.y;
+                    mUV_Y[2] = innerUV.w;
 
-                    if (i == 0)
+                    yCount = 2;
+                }
+                else
+                {
+                    //3 quads
+                    mVert_Y[0] = dimension.y;
+                    mVert_Y[1] = dimension.w;
+
+                    mUV_Y[0] = innerUV.y;
+                    mUV_Y[1] = innerUV.w;
+
+                    yCount = 1;
+                }
+
+                Vector4 dim, uv;
+                for (int yMin = 0; yMin < yCount; yMin++)
+                {
+                    int yMax = yMin + 1;
+                    for (int xMin = 0; xMin < xCount; xMin++)
                     {
-                        //6 quads
-                        mVert_Y[0] = dimension.y;
-                        mVert_Y[1] = dimension.w - border.w;
-                        mVert_Y[2] = dimension.w;
-
-                        mUV_Y[0] = innerUV.y;
-                        mUV_Y[1] = innerUV.w;
-                        mUV_Y[2] = outerUV.w;
-
-                        yCount = 2;
-                    }
-                    else if (i == m_DrawDimensions.Length - 1)
-                    {
-                        //6 quads
-                        mVert_Y[0] = dimension.y;
-                        mVert_Y[1] = dimension.y + border.y;
-                        mVert_Y[2] = dimension.w;
-
-                        mUV_Y[0] = outerUV.y;
-                        mUV_Y[1] = innerUV.y;
-                        mUV_Y[2] = innerUV.w;
-
-                        yCount = 2;
-                    }
-                    else
-                    {
-                        //3 quads
-                        mVert_Y[0] = dimension.y;
-                        mVert_Y[1] = dimension.w;
-
-                        mUV_Y[0] = innerUV.y;
-                        mUV_Y[1] = innerUV.w;
-
-                        yCount = 1;
-                    }
-
-                    Vector4 dim, uv;
-                    for (int yMin = 0; yMin < yCount; yMin++)
-                    {
-                        int yMax = yMin + 1;
-                        for (int xMin = 0; xMin < xCount; xMin++)
-                        {
-                            int xMax = xMin + 1;
-                            dim = new Vector4(mVert_X[xMin], mVert_Y[yMin], mVert_X[xMax], mVert_Y[yMax]);
-                            uv = new Vector4(mUV_X[xMin], mUV_Y[yMin], mUV_X[xMax], mUV_Y[yMax]);
-                            AddQuad(toFill, dim, uv);
-                        }
+                        int xMax = xMin + 1;
+                        dim = new Vector4(mVert_X[xMin], mVert_Y[yMin], mVert_X[xMax], mVert_Y[yMax]);
+                        uv = new Vector4(mUV_X[xMin], mUV_Y[yMin], mUV_X[xMax], mUV_Y[yMax]);
+                        AddQuad(toFill, dim, uv);
                     }
                 }
             }
