@@ -13,9 +13,9 @@ namespace UBlockly.UGUI
         [SerializeField] private Vector4[] m_DrawDimensions;
 
         private float[] mVert_X = new float[4];
-        private float[] mVert_Y = new float[3];
+        private float[] mVert_Y = new float[4];
         private float[] mUV_X = new float[4];
-        private float[] mUV_Y = new float[3];
+        private float[] mUV_Y = new float[4];
 
         /// <summary>
         /// Set local draw dimensions
@@ -114,42 +114,60 @@ namespace UBlockly.UGUI
                 mUV_X[2] = innerUV.z;
                 mUV_X[3] = outerUV.z;
 
-                if (i == 0)
+                if (m_DrawDimensions.Length == 1)
                 {
-                    //6 quads
-                    mVert_Y[0] = dimension.y;
-                    mVert_Y[1] = dimension.w - border.w;
-                    mVert_Y[2] = dimension.w;
-
-                    mUV_Y[0] = innerUV.y;
-                    mUV_Y[1] = innerUV.w;
-                    mUV_Y[2] = outerUV.w;
-
-                    yCount = 2;
-                }
-                else if (i == m_DrawDimensions.Length - 1)
-                {
-                    //6 quads
+                    //9 quads
                     mVert_Y[0] = dimension.y;
                     mVert_Y[1] = dimension.y + border.y;
-                    mVert_Y[2] = dimension.w;
+                    mVert_Y[2] = dimension.w - border.w;
+                    mVert_Y[3] = dimension.w;
 
                     mUV_Y[0] = outerUV.y;
                     mUV_Y[1] = innerUV.y;
                     mUV_Y[2] = innerUV.w;
+                    mUV_Y[3] = outerUV.w;
 
-                    yCount = 2;
+                    yCount = 3;
                 }
                 else
                 {
-                    //3 quads
-                    mVert_Y[0] = dimension.y;
-                    mVert_Y[1] = dimension.w;
+                    if (i == 0)
+                    {
+                        //6 quads
+                        mVert_Y[0] = dimension.y;
+                        mVert_Y[1] = dimension.w - border.w;
+                        mVert_Y[2] = dimension.w;
 
-                    mUV_Y[0] = innerUV.y;
-                    mUV_Y[1] = innerUV.w;
+                        mUV_Y[0] = innerUV.y;
+                        mUV_Y[1] = innerUV.w;
+                        mUV_Y[2] = outerUV.w;
 
-                    yCount = 1;
+                        yCount = 2;
+                    }
+                    else if (i == m_DrawDimensions.Length - 1)
+                    {
+                        //6 quads
+                        mVert_Y[0] = dimension.y;
+                        mVert_Y[1] = dimension.y + border.y;
+                        mVert_Y[2] = dimension.w;
+
+                        mUV_Y[0] = outerUV.y;
+                        mUV_Y[1] = innerUV.y;
+                        mUV_Y[2] = innerUV.w;
+
+                        yCount = 2;
+                    }
+                    else
+                    {
+                        //3 quads
+                        mVert_Y[0] = dimension.y;
+                        mVert_Y[1] = dimension.w;
+
+                        mUV_Y[0] = innerUV.y;
+                        mUV_Y[1] = innerUV.w;
+
+                        yCount = 1;
+                    }
                 }
 
                 Vector4 dim, uv;
