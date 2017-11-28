@@ -11,6 +11,13 @@ cp -a "$SOURCE_PATH/." "$TARGET_PATH/"
 rm -rf "$TARGET_PATH"/Script/Test
 mv "$TARGET_PATH"/../Test "$TARGET_PATH"/Script
 
+#sync data
+SOURCE_DATA_PATH="/Users/$USER/Desktop/MSpace/UBlockly/UserData"
+TARGET_DATA_PATH="/Users/$USER/Desktop/PTProjects/Blockly/PTBlockly/Blockly/Assets/PTGameData/PTBlockly"
+
+rm -rf "$TARGET_DATA_PATH"/I18n/*
+cp -a "$SOURCE_DATA_PATH"/I18n/. "$TARGET_DATA_PATH"/I18n
+
 cd "$TARGET_PATH"
 find . -type f -name "*.cs" | while read filename; do
     sed -i '' 's/\"UBlockly/\"PTBlockly/g' "$filename"
