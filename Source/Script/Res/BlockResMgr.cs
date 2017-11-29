@@ -40,11 +40,6 @@ namespace UBlockly
     }
     
     /// <summary>
-    /// delegate for loading asset from Assetbundle 
-    /// </summary>
-    public delegate T AssetbundleLoad<T>(string assetName) where T : UnityEngine.Object;
-    
-    /// <summary>
     /// manage all resources. 
     /// This can be customized according to resources management in each project 
     /// </summary>
@@ -62,11 +57,32 @@ namespace UBlockly
             get { return m_LoadType; }
         }
 
-        private AssetbundleLoad<UnityEngine.Object> mAssetbundleLoad;
+        private Func<string, UnityEngine.Object> mABSyncLoad;
+        private Action<string, Action<UnityEngine.Object>> mABASyncLoad;
+        private Action<string> mABUnload;
 
-        public void SetAssetbundleLoadDelegate(AssetbundleLoad<UnityEngine.Object> del)
+        /// <summary>
+        /// Set the delegate for synchronously loading object from assetbundles
+        /// </summary>
+        public void SetAssetbundleSyncLoadDelegate(Func<string, UnityEngine.Object> del)
         {
-            mAssetbundleLoad = del;
+            mABSyncLoad = del;
+        }
+
+        /// <summary>
+        /// Set the delegate for asynchronously loading object from assetbundles
+        /// </summary>
+        public void SetAssetbundleASyncLoadDelegate(Action<string, Action<UnityEngine.Object>> del)
+        {
+            mABASyncLoad = del;
+        }
+
+        /// <summary>
+        /// Set the delegate for unloading object from assetbundle
+        /// </summary>
+        public void SetAssetbundleUnloadDelegate(Action<string> del)
+        {
+            mABUnload = del;
         }
 
         #region I18n Files
@@ -87,8 +103,8 @@ namespace UBlockly
                     switch (m_LoadType)
                     {
                         case BlockResLoadType.Assetbundle:
-                            if (mAssetbundleLoad != null)
-                                textAsset = mAssetbundleLoad(resParam.ResName) as TextAsset;
+                            if (mABSyncLoad != null)
+                                textAsset = mABSyncLoad(resParam.ResName) as TextAsset;
                             break;
                         case BlockResLoadType.Resources:
                             textAsset = Resources.Load<TextAsset>(resParam.ResName);
@@ -118,8 +134,8 @@ namespace UBlockly
                 switch (m_LoadType)
                 {
                     case BlockResLoadType.Assetbundle:
-                        if (mAssetbundleLoad != null)
-                            textAsset = mAssetbundleLoad(resParam.ResName) as TextAsset;
+                        if (mABSyncLoad != null)
+                            textAsset = mABSyncLoad(resParam.ResName) as TextAsset;
                         break;
                     case BlockResLoadType.Resources:
                         textAsset = Resources.Load<TextAsset>(resParam.ResName);
@@ -151,8 +167,8 @@ namespace UBlockly
             switch (m_LoadType)
             {
                 case BlockResLoadType.Assetbundle:
-                    if (mAssetbundleLoad != null)
-                        blockPrefab = mAssetbundleLoad(resParam.ResName) as GameObject;
+                    if (mABSyncLoad != null)
+                        blockPrefab = mABSyncLoad(resParam.ResName) as GameObject;
                     break;
                 case BlockResLoadType.Resources:
                     blockPrefab = Resources.Load<GameObject>(resParam.ResName);
@@ -162,6 +178,19 @@ namespace UBlockly
                     break;
             }
             return blockPrefab;
+        }
+
+        public void UnloadBlockViewPrefab(string blockType)
+        {
+            if (m_BlockViewPrefabs == null || m_BlockViewPrefabs.Count == 0)
+                return;
+
+            BlockObjectParam resParam = m_BlockViewPrefabs.Find(o => o.IndexName.Equals(blockType));
+            if (resParam == null)
+                return;
+
+            if (m_LoadType == BlockResLoadType.Assetbundle && mABUnload != null)
+                mABUnload(resParam.ResName);
         }
 
         public void AddBlockViewPrefab(GameObject blockPrefab)
@@ -204,8 +233,8 @@ namespace UBlockly
             switch (m_LoadType)
             {
                 case BlockResLoadType.Assetbundle:
-                    if (mAssetbundleLoad != null)
-                        dialogPrefab = mAssetbundleLoad(resParam.ResName) as GameObject;
+                    if (mABSyncLoad != null)
+                        dialogPrefab = mABSyncLoad(resParam.ResName) as GameObject;
                     break;
                 case BlockResLoadType.Resources:
                     dialogPrefab = Resources.Load<GameObject>(resParam.ResName);
@@ -216,8 +245,34 @@ namespace UBlockly
             }
             return dialogPrefab;
         }
-        
+
+        public void UnloadDialogPrefab(string dialogId)
+        {
+            if (m_DialogPrefabs == null || m_DialogPrefabs.Count == 0)
+                return;
+
+            BlockObjectParam resParam = m_DialogPrefabs.Find(o => o.IndexName.Equals(dialogId));
+            if (resParam == null)
+                return;
+
+            if (m_LoadType == BlockResLoadType.Assetbundle && mABUnload != null)
+                mABUnload(resParam.ResName);
+        }
+
         #endregion
+
+        public Texture2D LoadTexture(string texName)
+        {
+            if (mABSyncLoad != null)
+                return mABSyncLoad(texName) as Texture2D;
+            return Resources.Load<Texture2D>(texName);
+        }
+
+        public void UnloadTexture(string texName)
+        {
+            if (mABUnload != null)
+                mABUnload(texName);
+        }
 
         private static BlockResMgr mInstance = null; 
         public static BlockResMgr Get()

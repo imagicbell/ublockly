@@ -157,5 +157,14 @@ namespace UBlockly
         /// Usually either 360 (for 0 to 359.9) or 180 (for -179.9 to 180).
         /// </summary>
         public static int FIELD_ANGLE_WRAP = 360;
+
+        /// <summary>
+        /// Default width for field image
+        /// </summary>
+        public static int FIELD_IMAGE_WIDTH_DEFAULT = 30;
+        /// <summary>
+        /// Default height for field image
+        /// </summary>
+        public static int FIELD_IMAGE_HEIGHT_DEFAULT = 30;
     }
 }

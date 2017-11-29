@@ -10,7 +10,7 @@ namespace UBlockly.UGUI
     public class FieldButtonView : FieldView
     {
         [SerializeField] protected Text m_Label;
-        [SerializeField] protected Image m_Image;
+        [SerializeField] protected RawImage m_Image;
         [SerializeField] protected Button m_Button;
         
         protected float mHorizontalMargin;
@@ -26,7 +26,7 @@ namespace UBlockly.UGUI
                     if (text != null)
                         m_Label = text;
                     else
-                        m_Image = m_Button.transform.GetChild(i).GetComponent<Image>();
+                        m_Image = m_Button.transform.GetChild(i).GetComponent<RawImage>();
                 }
             }
         }
@@ -46,8 +46,8 @@ namespace UBlockly.UGUI
             {
                 m_Image.gameObject.SetActive(true);
                 m_Label.gameObject.SetActive(false);
-                
-                //todo: load image
+
+                m_Image.texture = BlockResMgr.Get().LoadTexture(mField.GetValue());
                 
                 mHorizontalMargin = Mathf.Abs(m_Image.rectTransform.offsetMin.x) + Mathf.Abs(m_Image.rectTransform.offsetMax.x);
             }
@@ -57,7 +57,7 @@ namespace UBlockly.UGUI
         {
             if (mField.IsImage)
             {
-                //todo: unload image
+                BlockResMgr.Get().UnloadTexture(mField.GetValue());
             }
         }
 
@@ -78,7 +78,11 @@ namespace UBlockly.UGUI
             }
             else
             {
-                //todo: unload old and load new 
+                if (!string.Equals(m_Image.texture.name, newValue))
+                {
+                    BlockResMgr.Get().UnloadTexture(m_Image.texture.name);
+                    m_Image.texture = BlockResMgr.Get().LoadTexture(newValue);
+                }
             }
             UpdateLayout(XY);
         }

@@ -5,7 +5,7 @@ namespace UBlockly.UGUI
 {
     public class FieldColorView : FieldView
     {
-        [SerializeField] protected Image m_Image;
+        [SerializeField] protected RawImage m_Image;
         [SerializeField] protected Button m_Button;
         
         protected override void SetComponents()
@@ -15,7 +15,7 @@ namespace UBlockly.UGUI
                 m_Button = GetComponentInChildren<Button>(true);
                 for (int i = 0; i < m_Button.transform.childCount; i++)
                 {
-                    Image image = m_Button.transform.GetChild(i).GetComponent<Image>();
+                    RawImage image = m_Button.transform.GetChild(i).GetComponent<RawImage>();
                     if (image != null)
                         m_Image = image;
                     else 

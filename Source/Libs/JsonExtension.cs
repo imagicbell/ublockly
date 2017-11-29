@@ -11,10 +11,20 @@ public static class JsonExtension
 		if (!self.IsObject()) return false;
 		return self[key] != null;
 	}
-
+	
 	public static bool IsNullOrUndefined(this JToken self)
 	{
 		return self == null || self.Type == JTokenType.Null || self.Type == JTokenType.Undefined || self.Type == JTokenType.None;
+	}
+
+	public static bool IsBool(this JToken self)
+	{
+		return self != null && self.Type == JTokenType.Boolean;
+	}
+
+	public static bool IsInt(this JToken self)
+	{
+		return self != null && self.Type == JTokenType.Integer;
 	}
 
 	public static bool IsString(this JToken self)

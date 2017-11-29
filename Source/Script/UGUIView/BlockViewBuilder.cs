@@ -294,6 +294,11 @@ namespace UBlockly.UGUI
                 fieldObj = GameObject.Instantiate(BlockViewSettings.Get().PrefabFieldButton);
                 fieldView = AddViewComponent<FieldColorView>(fieldObj);
             }
+            else if (fieldType == typeof(FieldImage))
+            {
+                fieldObj = GameObject.Instantiate(BlockViewSettings.Get().PrefabFieldImage);
+                fieldView = AddViewComponent<FieldImageView>(fieldObj);
+            }
             else if (fieldType == typeof(FieldCheckbox))
             {
 

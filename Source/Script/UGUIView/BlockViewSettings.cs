@@ -33,6 +33,7 @@ namespace UBlockly.UGUI
 
         [SerializeField] public GameObject PrefabFieldLabel;
         [SerializeField] public GameObject PrefabFieldInput;
+        [SerializeField] public GameObject PrefabFieldImage;
         [SerializeField] public GameObject PrefabFieldButton;
         [SerializeField] public GameObject PrefabFieldVariable;
 

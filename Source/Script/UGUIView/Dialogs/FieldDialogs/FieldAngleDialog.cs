@@ -51,7 +51,11 @@ namespace UBlockly.UGUI
         private int ValidateAngle(int angle)
         {
             if (Define.FIELD_ANGLE_CLOCKWISE)
+            {
                 angle = 90 - angle;
+                if (angle < 0)
+                    angle += 360;
+            }
             return angle;
         }
 
