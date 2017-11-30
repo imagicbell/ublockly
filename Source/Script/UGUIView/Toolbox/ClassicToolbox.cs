@@ -39,6 +39,8 @@ namespace UBlockly.UGUI
                 {
                     if (selected)
                         ShowBlockCategory(menuItem.name);
+                    else 
+                        HideBlockCategory();
                 });
                 mMenuList[category.CategoryName] = toggle;
             }
