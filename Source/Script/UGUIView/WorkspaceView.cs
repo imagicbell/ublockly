@@ -10,7 +10,6 @@ namespace UBlockly.UGUI
         [SerializeField] private BaseToolbox m_Toolbox;
         [SerializeField] private RectTransform m_CodingArea;
         [SerializeField] private Button m_RunBtn;
-        [SerializeField] private Toggle m_Bin;
         [SerializeField] private BlockStatusView m_StatusView;
  
         public BaseToolbox Toolbox
@@ -37,7 +36,11 @@ namespace UBlockly.UGUI
                 UnBindModel();
             
             mWorkspace = workspace;
-            m_Toolbox.Init(workspace, ToolboxConfig.Load("classic"));
+
+            RectTransform codingAreaTrans = m_CodingArea.GetComponentInParent<ScrollRect>().transform as RectTransform;
+            codingAreaTrans.offsetMin = new Vector2(((RectTransform) m_Toolbox.transform).sizeDelta.x, codingAreaTrans.offsetMin.y);
+            
+            m_Toolbox.Init(workspace, ToolboxConfig.Load("default"));
             
             m_RunBtn.onClick.AddListener(RunCode);
             
@@ -163,32 +166,6 @@ namespace UBlockly.UGUI
             m_StatusView.enabled = true;
         }
         
-        /// <summary>
-        /// Check current block move is over bin rect
-        /// </summary>
-        public bool OverBin()
-        {
-            RectTransform toggleTrans = m_Bin.transform as RectTransform;
-            if (RectTransformUtility.RectangleContainsScreenPoint(toggleTrans, UnityEngine.Input.mousePosition, BlocklyUI.UICanvas.worldCamera))
-            {
-                if (!m_Bin.isOn) m_Bin.isOn = true;
-                return true;
-            }
-            else
-            {
-                if (m_Bin.isOn) m_Bin.isOn = false;
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// reset bin status
-        /// </summary>
-        public void ResetBin()
-        {
-            m_Bin.isOn = false;
-        }
-
         /// <summary>
         /// todo: entry
         /// </summary>

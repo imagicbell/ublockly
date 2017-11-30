@@ -88,7 +88,7 @@ namespace UBlockly.UGUI
                 mConnection.DB.RemoveConnection(mConnection);
             
             //update Connection's location for connection search
-            Vector2 relative = XYInCodingArea;
+            Vector2 relative = BlocklyUI.WorkspaceView.CodingArea.InverseTransformPoint(ViewTransform.position);
             mConnection.Location.x = (int) relative.x;
             mConnection.Location.y = (int) relative.y;
 

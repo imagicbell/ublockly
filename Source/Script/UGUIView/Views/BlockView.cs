@@ -295,7 +295,7 @@ namespace UBlockly.UGUI
             }
             
             // check over bin
-            BlocklyUI.WorkspaceView.OverBin();
+            BlocklyUI.WorkspaceView.Toolbox.CheckBin(this);
         }
 
         public void OnEndDrag(PointerEventData eventData)
@@ -306,12 +306,8 @@ namespace UBlockly.UGUI
                 mClosestConnection.Connect(mAttachingConnection);
                 mClosestConnection.FireUpdate(Connection.UpdateState.UnHighlight);
             }
-            else if (BlocklyUI.WorkspaceView.OverBin())
-            {
-                // check dispose this view
-                Dispose();
-            }
-            BlocklyUI.WorkspaceView.ResetBin();
+            // check over bin
+            BlocklyUI.WorkspaceView.Toolbox.FinishCheckBin(this);
         }
         
         public void OnPointerClick(PointerEventData eventData)

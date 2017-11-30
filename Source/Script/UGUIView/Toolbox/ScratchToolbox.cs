@@ -1,25 +1,22 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace UBlockly.UGUI
 {
-    public class ClassicToolbox : BaseToolbox
+    public class ScratchToolbox : BaseToolbox
     {
         [SerializeField] protected GameObject m_MenuItemPrefab;
         [SerializeField] protected RectTransform m_MenuListContent;
         [SerializeField] protected GameObject m_BlockScrollList;
         [SerializeField] protected GameObject m_BlockContentPrefab;
         [SerializeField] protected GameObject m_BinArea;
-        
+
         protected override void Build()
         {
             BuildMenu();
+            mMenuList[mConfig.BlockCategoryList[0].CategoryName].isOn = true;
         }
-        
-        /// <summary>
-        /// Build the left menu list, child class should implement this for custom build
-        /// </summary>
+
         protected virtual void BuildMenu()
         {
             foreach (var category in mConfig.BlockCategoryList)
@@ -42,6 +39,14 @@ namespace UBlockly.UGUI
                 });
                 mMenuList[category.CategoryName] = toggle;
             }
+            
+            //layout the BlockScrollList
+            GridLayoutGroup layoutGroup = m_MenuListContent.GetComponent<GridLayoutGroup>();
+            int lineCount = Mathf.CeilToInt(mConfig.BlockCategoryList.Count / 2.0f);
+            float height = layoutGroup.padding.vertical + (lineCount - 1) * layoutGroup.spacing.y + lineCount * layoutGroup.cellSize.y;
+            Vector2 offset = ((RectTransform) m_BlockScrollList.transform).offsetMax;
+            offset.y = m_MenuListContent.anchoredPosition.y - height;
+            ((RectTransform) m_BlockScrollList.transform).offsetMax = offset;
         }
         
         public void ShowBlockCategory(string categoryName)
@@ -82,13 +87,9 @@ namespace UBlockly.UGUI
                     BuildBlockViewsForActiveCategory();
             }
 
-            //resize the background
-            LayoutRebuilder.ForceRebuildLayoutImmediate(contentTrans);
-            m_BlockScrollList.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, LayoutUtility.GetPreferredWidth(contentTrans));
-            
             m_BlockScrollList.GetComponent<ScrollRect>().content = contentTrans;
         }
-
+        
         public void HideBlockCategory()
         {
             if (string.IsNullOrEmpty(mActiveCategory))

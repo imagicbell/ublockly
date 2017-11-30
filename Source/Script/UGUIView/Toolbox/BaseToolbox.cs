@@ -350,5 +350,20 @@ namespace UBlockly.UGUI
         }
         
         #endregion
+        
+        #region Bin
+
+        /// <summary>
+        /// Check the block view is over the bin area, preparing dropped in bin
+        /// </summary>
+        public abstract bool CheckBin(BlockView blockView);
+        
+        /// <summary>
+        /// Finish the check. 
+        /// If the block view is over bin, drop it. 
+        /// </summary>
+        public abstract void FinishCheckBin(BlockView blockView);
+
+        #endregion
     }
 }

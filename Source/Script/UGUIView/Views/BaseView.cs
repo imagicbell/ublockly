@@ -292,14 +292,6 @@ namespace UBlockly.UGUI
             set { XY = value - 0.5f * new Vector2(Width, -Height); }
         }
 
-        /// <summary>
-        /// local position relative to coding area 
-        /// </summary>
-        public Vector2 XYInCodingArea
-        {
-            get { return BlocklyUI.WorkspaceView.CodingArea.InverseTransformPoint(m_ViewTransform.position); }
-        }
-
         public Vector2 Size
         {
             get { return m_ViewTransform.rect.size; }
