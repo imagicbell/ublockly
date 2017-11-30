@@ -78,11 +78,6 @@ namespace UBlockly
         public Vector2 XY { get; set; }
         
         /// <summary>
-        /// The hex color string 
-        /// </summary>
-        public int ColorHue { get; set; }
-
-        /// <summary>
         /// Check if the block in Right to Left direction
         /// </summary>
         public bool RTL

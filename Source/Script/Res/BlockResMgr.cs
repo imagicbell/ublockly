@@ -49,12 +49,21 @@ namespace UBlockly
         [SerializeField] private BlockResLoadType m_LoadType;
         [SerializeField] private List<BlockTextResParam> m_I18nFiles;
         [SerializeField] private List<BlockTextResParam> m_BlockJsonFiles;
+        [SerializeField] private List<BlockTextResParam> m_ToolboxFiles;
+
+        [SerializeField] public string m_BlockViewPrefabPath;
         [SerializeField] private List<BlockObjectParam> m_BlockViewPrefabs;
+        
         [SerializeField] private List<BlockObjectParam> m_DialogPrefabs;
 
         public BlockResLoadType LoadType
         {
             get { return m_LoadType; }
+        }
+
+        public string BlockViewPrefabPath
+        {
+            get { return m_BlockViewPrefabPath; }
         }
 
         private Func<string, UnityEngine.Object> mABSyncLoad;
@@ -114,7 +123,11 @@ namespace UBlockly
                             break;
                     }
                     if (textAsset != null)
+                    {
                         I18n.AddI18nFile(textAsset.text);
+                        if (m_LoadType == BlockResLoadType.Assetbundle && mABUnload != null)
+                            mABUnload(resParam.ResName);
+                    }
                 }
             }
         }
@@ -146,8 +159,53 @@ namespace UBlockly
                 }
 
                 if (textAsset != null)
+                {
                     BlockFactory.Instance.AddJsonDefinitions(textAsset.text);
+                    if (m_LoadType == BlockResLoadType.Assetbundle && mABUnload != null)
+                        mABUnload(resParam.ResName);
+                }
             }
+        }
+
+        #endregion
+        
+        #region Toolbox Config Files
+
+        public UGUI.ToolboxConfig LoadToolboxConfig(string configName)
+        {
+            if (m_ToolboxFiles == null || m_ToolboxFiles.Count == 0)
+                return null;
+
+            UGUI.ToolboxConfig toolboxConfig = null;
+            TextAsset textAsset = null;
+            foreach (BlockTextResParam resParam in m_ToolboxFiles)
+            {
+                if (string.Equals(configName, resParam.IndexName))
+                {
+                    switch (m_LoadType)
+                    {
+                        case BlockResLoadType.Assetbundle:
+                            if (mABSyncLoad != null)
+                                textAsset = mABSyncLoad(resParam.ResName) as TextAsset;
+                            break;
+                        case BlockResLoadType.Resources:
+                            textAsset = Resources.Load<TextAsset>(resParam.ResName);
+                            break;
+                        case BlockResLoadType.Serialized:
+                            textAsset = resParam.TextFile;
+                            break;
+                    }
+
+                    if (textAsset != null)
+                    {
+                        toolboxConfig = JsonUtility.FromJson<UGUI.ToolboxConfig>(textAsset.text);
+                        if (m_LoadType == BlockResLoadType.Assetbundle && mABUnload != null)
+                            mABUnload(resParam.ResName);
+                    }    
+                    break;
+                }
+            }
+            return toolboxConfig;
         }
 
         #endregion

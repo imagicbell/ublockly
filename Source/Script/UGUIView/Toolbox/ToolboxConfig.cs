@@ -18,11 +18,11 @@ namespace UBlockly.UGUI
             return category;
         }
 
-        public static ToolboxConfig ParseFromJson(string jsonText)
+        public static ToolboxConfig Load(string configName)
         {
-            ToolboxConfig config = JsonUtility.FromJson<ToolboxConfig>(jsonText);
+            ToolboxConfig config = BlockResMgr.Get().LoadToolboxConfig(configName);
             if (config == null)
-                throw new Exception("Can\'t parse ToolboxConfig from json text:\n" + jsonText);
+                throw new Exception("Can\'t load ToolboxConfig: " + configName);
             
             foreach (var category in config.BlockCategoryList)
             {
@@ -40,8 +40,9 @@ namespace UBlockly.UGUI
         public string BlockTypePrefix;
         public List<string> BlockList;
 
-
         [NonSerialized] private bool mInited = false;
+        
+        public Color Color { get; private set; }
 
         public void Init()
         {
@@ -51,6 +52,10 @@ namespace UBlockly.UGUI
             {
                 BlockList.AddRange(BlockFactory.Instance.GetBlockTypesOfPrefix(BlockTypePrefix));
             }
+
+            Color color;
+            ColorUtility.TryParseHtmlString(ColorHex, out color);
+            Color = color;
         }
     }
 }

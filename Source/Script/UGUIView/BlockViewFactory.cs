@@ -39,6 +39,9 @@ namespace UBlockly.UGUI
                 
                 // BlockViewBuilder.BuildBlockView will do both "BuildInputViews" and "BuildLayout"
             }
+
+            blockView.ChangeBgColor(BlocklyUI.WorkspaceView.Toolbox.GetColorOfBlockView(blockView));
+            
             return blockView;
         }
     }

@@ -54,8 +54,7 @@ namespace UBlockly.UGUI
             BlockView blockView = AddViewComponent<BlockView>(blockObj);
             
             //block view's background image
-            blockView.BgImage.color = Color.HSVToRGB(block.ColorHue / 360f, 1, 1);
-            blockView.BgImage.type = Image.Type.Sliced;
+            blockView.AddBgImage(blockObj.GetComponent<Image>());
             
             //block view's childs: connection, lineGroup
             Transform mutatorEntry = null;
@@ -74,7 +73,7 @@ namespace UBlockly.UGUI
 
                     //connection node view background color
                     Image image = child.GetComponent<Image>();
-                    if (image != null) image.color = blockView.BgImage.color;
+                    if (image != null) blockView.AddBgImage(image);
                 }
                 else if (childName.Equals("linegroup"))
                 {
@@ -102,6 +101,9 @@ namespace UBlockly.UGUI
 
             //block view's layout, build from the very first field
             blockView.BuildLayout();
+            
+            //default background color
+            blockView.ChangeBgColor(Color.blue);
             
             return blockObj;
         }
@@ -261,8 +263,7 @@ namespace UBlockly.UGUI
 
                 conInputView.BgImage.raycastTarget = false;
                 if (viewType != ConnectionInputViewType.ValueSlot)
-                    conInputView.BgImage.color = blockView.BgImage.color;
-                else conInputView.BgImage.color = Color.white; //todo: background color?
+                    blockView.AddBgImage(conInputView.BgImage);
             }
 
             return inputView;

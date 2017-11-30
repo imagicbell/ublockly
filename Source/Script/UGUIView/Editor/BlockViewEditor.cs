@@ -19,8 +19,8 @@ namespace UBlockly.UGUI
             var blocks = BlockFactory.Instance.GetAllBlockDefinitions().Keys;
 //            var blocks = BlockFactory.Instance.GetAllBlockDefinitions().Keys.Where(s => s.Equals("lists_create_with"));
 
-            if (!Directory.Exists(BlockViewSettings.Get().BlockPrefabPath))
-                Directory.CreateDirectory(BlockViewSettings.Get().BlockPrefabPath);
+            if (!Directory.Exists(BlockResMgr.Get().BlockViewPrefabPath))
+                Directory.CreateDirectory(BlockResMgr.Get().BlockViewPrefabPath);
             
             BlockResMgr.Get().ClearBlockViewPrefabs();
 
@@ -35,7 +35,7 @@ namespace UBlockly.UGUI
                     Block block = workspace.NewBlock(name);
                     GameObject obj = BlockViewBuilder.BuildBlockView(block);
 
-                    string path = BlockViewSettings.Get().BlockPrefabPath + obj.name + ".prefab";
+                    string path = BlockResMgr.Get().BlockViewPrefabPath + obj.name + ".prefab";
                     GameObject prefab = PrefabUtility.CreatePrefab(path, obj, ReplacePrefabOptions.Default);
                     BlockResMgr.Get().AddBlockViewPrefab(prefab);
 

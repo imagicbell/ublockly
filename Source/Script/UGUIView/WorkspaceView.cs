@@ -37,7 +37,7 @@ namespace UBlockly.UGUI
                 UnBindModel();
             
             mWorkspace = workspace;
-            m_Toolbox.Init(workspace, ToolboxConfig.ParseFromJson(BlockViewSettings.Get().ToolboxConfig.text));
+            m_Toolbox.Init(workspace, ToolboxConfig.Load("classic"));
             
             m_RunBtn.onClick.AddListener(RunCode);
             

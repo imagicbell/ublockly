@@ -13,8 +13,6 @@ namespace UBlockly
         private string mTypeName;
         public string TypeName { get { return mTypeName; } }
 
-        private int mColor;
-
         private bool mHasOutput;
         private bool mHasPreviousStatement;
         private bool mHasNextStatement;
@@ -57,7 +55,6 @@ namespace UBlockly
                 mPreviousStatementChecks = mHasPreviousStatement ? ParseChecks(mJson, "previousStatement") : null;
                 mNextStatementChecks = mHasNextStatement ? ParseChecks(mJson, "nextStatement") : null;
 
-                mColor = ParseColor(mJson, "colour");
                 mInputsInlineDefault = ParseInputsInline(mJson, "inputsInline");
 
                 mMutatorName = mJson["mutator"] != null ? mJson["mutator"].ToString() : null;
@@ -191,11 +188,6 @@ namespace UBlockly
         public bool GetInputsInlineDefault()
         {
             return mInputsInlineDefault;
-        }
-
-        public int GetHueColor()
-        {
-            return mColor;
         }
 
         private string[] ParseChecks(JObject json, string key)

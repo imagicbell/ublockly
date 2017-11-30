@@ -6,9 +6,6 @@ namespace UBlockly.UGUI
     [CreateAssetMenu(menuName = "UBlockly/BlockViewSettings", fileName = "BlockViewSettings")]
     public class BlockViewSettings : ScriptableObject
     {
-        [SerializeField] public TextAsset ToolboxConfig;
-        [SerializeField] public string BlockPrefabPath;
-        
         [Tooltip("Basic block height, without margin.")]
         [SerializeField] public int BlockHeight = 60;
         [SerializeField] public int MinUnitWidth = 40;

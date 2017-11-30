@@ -9,7 +9,7 @@ namespace UBlockly.UGUI
 {
     public class BlockView : BaseView, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
     {
-        [SerializeField] private CustomMeshImage m_BgImage;
+        [SerializeField] private List<Image> m_BgImages = new List<Image>();
         
         public override ViewType Type
         {
@@ -21,34 +21,13 @@ namespace UBlockly.UGUI
             get { return mBlock.Type; }
         }
 
-        public CustomMeshImage BgImage
-        {
-            get { return m_BgImage; }
-        }
-        
         private Block mBlock;
         public Block Block { get { return mBlock; } }
 
-        private bool mInToolbox;
-        public bool InToolbox
-        {
-            get { return mInToolbox; }
-            set { mInToolbox = value; }
-        }
-
-        private MemorySafeBlockObserver mBlockObserver;
+        public bool InToolbox { get; set; }
         
-        public override void InitComponents()
-        {
-            base.InitComponents();
-            if (m_BgImage == null)
-            {
-                m_BgImage = GetComponent<CustomMeshImage>();
-                if (m_BgImage == null)
-                    throw new Exception("the background image of BlockView must be a \"CustomMeshImage\"");
-            }
-        }
-
+        private MemorySafeBlockObserver mBlockObserver;
+            
         public void BindModel(Block block)
         {
             if (mBlock == block) return;
@@ -182,7 +161,7 @@ namespace UBlockly.UGUI
             }
             
             //update image mesh
-            m_BgImage.SetDrawDimensions(dimensions.ToArray());
+            ((CustomMeshImage)m_BgImages[0]).SetDrawDimensions(dimensions.ToArray());
             return size;
         }
 
@@ -219,7 +198,27 @@ namespace UBlockly.UGUI
             BaseView startView = this.GetLineGroup(0).GetTopmostChild();
             startView.UpdateLayout(startView.HeaderXY);
         }
-        
+
+        /// <summary>
+        /// Add the background image which needs to keep the same background color
+        /// </summary>
+        public void AddBgImage(Image image)
+        {
+            if (image != null && !m_BgImages.Contains(image))
+                m_BgImages.Add(image);
+        }
+
+        /// <summary>
+        /// Change the color of the background images
+        /// </summary>
+        public void ChangeBgColor(Color color)
+        {
+            foreach (Image bg in m_BgImages)
+            {
+                bg.color = color;
+            }
+        }
+
         #endregion
 
         #region UI Interactions

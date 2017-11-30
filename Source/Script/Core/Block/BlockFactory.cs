@@ -23,26 +23,6 @@ namespace UBlockly
             return mDefinitions;
         }
 
-        /*private Dictionary<string, List<string>> mCategories = new Dictionary<string, List<string>>();
-
-        public Dictionary<string, List<string>> GetCategories()
-        {
-            return mCategories;
-        }
-
-        /// <summary>
-        /// get the category name for block type
-        /// </summary>
-        public string GetCategoryOfBlockType(string blockType)
-        {
-            foreach (string category in mCategories.Keys)
-            {
-                if (mCategories[category].Contains(blockType))
-                    return category;
-            }
-            return null;
-        }*/
-
         private Dictionary<string, List<string>> mPrefixCategories = new Dictionary<string, List<string>>();
 
         /// <summary>
@@ -116,10 +96,8 @@ namespace UBlockly
                 Connection next = definition.CreateNextStatementConnection();
                 Mutator mutator = definition.CreateMutator();
                 bool inputsInline = definition.GetInputsInlineDefault();
-                int colorHue = definition.GetHueColor();
                 
                 block.Reshape(inputs, output, prev, next);
-                block.ColorHue = colorHue;
 
                 if (mutator != null) block.SetMutator(mutator);
                 if (inputsInline) block.SetInputsInline(true);

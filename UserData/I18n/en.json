@@ -10,26 +10,6 @@
     "COLOR": "Color",
     "COROUTINE": "Coroutines",
     
-    
-    /// (Notranslate) Hue value for all logic blocks.
-    "LOGIC_HUE": "210",
-    "CONTROLS_HUE": "190",
-    /// (Notranslate) Hue value for all loop blocks.
-    "LOOPS_HUE": "200",
-    /// (Notranslate) Hue value for all math blocks.
-    "MATH_HUE": "230",
-    /// (Notranslate) Hue value for all text blocks.
-    "TEXT_HUE": "40",
-    /// (Notranslate) Hue value for all list blocks.
-    "LISTS_HUE": "260",
-    /// (Notranslate) Hue value for all colour blocks.
-    "COLOUR_HUE": "20",
-    /// (Notranslate) Hue value for all variable blocks.
-    "VARIABLES_HUE": "330",
-    /// (Notranslate) Hue value for all procedure blocks.
-    "PROCEDURES_HUE": "290",
-    "COROUTINE_HUE": "310",
-
     /// default name - A simple: general default name for a variable: preferably short.
     "VARIABLES_DEFAULT_NAME": "item",
     /// button text - Button that sets a calendar to today's date.\n(Identical|Today)

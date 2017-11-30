@@ -82,7 +82,25 @@ namespace UBlockly.UGUI
             }
             return null;
         }
-        
+
+        /// <summary>
+        /// Get the background color for block view
+        /// </summary>
+        public Color GetColorOfBlockView(BlockView view)
+        {
+            foreach (var category in mConfig.BlockCategoryList)
+            {
+                foreach (string type in category.BlockList)
+                {
+                    if (string.Equals(view.BlockType, type))
+                    {
+                        return category.Color;
+                    }  
+                }
+            }
+            return Color.white;
+        }
+
         #region Variables
         
         protected Dictionary<string, BlockView> mVariableGetterViews = new Dictionary<string, BlockView>();
@@ -95,6 +113,7 @@ namespace UBlockly.UGUI
             //build createVar button
             GameObject obj = GameObject.Instantiate(BlockViewSettings.Get().PrefabBtnCreateVar);
             obj.transform.SetParent(parent, false);
+            obj.GetComponentInChildren<Image>().color = mConfig.GetBlockCategory(Define.VARIABLE_CATEGORY_NAME).Color;
             obj.GetComponent<Button>().onClick.AddListener(() =>
             {
                 DialogFactory.CreateDialog("variable_name");
