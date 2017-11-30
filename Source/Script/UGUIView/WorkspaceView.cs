@@ -7,13 +7,13 @@ namespace UBlockly.UGUI
 {
     public class WorkspaceView : MonoBehaviour
     {
-        [SerializeField] private ToolboxView m_Toolbox;
+        [SerializeField] private BaseToolbox m_Toolbox;
         [SerializeField] private RectTransform m_CodingArea;
         [SerializeField] private Button m_RunBtn;
         [SerializeField] private Toggle m_Bin;
         [SerializeField] private BlockStatusView m_StatusView;
  
-        public ToolboxView Toolbox
+        public BaseToolbox Toolbox
         {
             get { return m_Toolbox; }
         }
@@ -37,7 +37,7 @@ namespace UBlockly.UGUI
                 UnBindModel();
             
             mWorkspace = workspace;
-            m_Toolbox.Init(workspace);
+            m_Toolbox.Init(workspace, ToolboxConfig.ParseFromJson(BlockViewSettings.Get().ToolboxConfig.text));
             
             m_RunBtn.onClick.AddListener(RunCode);
             

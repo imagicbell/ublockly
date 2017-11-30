@@ -77,9 +77,7 @@ namespace UBlockly.UGUI
             }
             
             mDraggedBlockView.OnEndDrag(eventData);
-            mDraggedBlockView = null;
-            
-            BlocklyUI.WorkspaceView.Toolbox.HideBlockMenu();
+            mDraggedBlockView = null;            
         }
     }
 }

@@ -1,0 +1,50 @@
+{
+     "Style": "classic",
+     "BlockCategoryList": [
+          {
+               "CategoryName": "VARIABLE",
+               "ColorHex": "#8a9fc6",
+               "BlockTypePrefix": "variables"
+          },
+          {
+               "CategoryName": "PROCEDURE",
+               "ColorHex": "#a64c79",
+               "BlockTypePrefix": "procedures"
+          },
+          {
+               "CategoryName": "LOGIC",
+               "ColorHex": "#47574d",
+               "BlockTypePrefix": "logic"
+          },
+          {
+               "CategoryName": "CONTROL",
+               "ColorHex": "#669966",
+               "BlockTypePrefix": "controls"
+          },
+          {
+               "CategoryName": "COROUTINE",
+               "ColorHex": "#00a4e3",
+               "BlockTypePrefix": "coroutine"
+          },
+          {
+               "CategoryName": "MATH",
+               "ColorHex": "#4668a5",
+               "BlockTypePrefix": "math"
+          },
+          {
+               "CategoryName": "TEXT",
+               "ColorHex": "#f6546a",
+               "BlockTypePrefix": "text"
+          },
+          {
+               "CategoryName": "LIST",
+               "ColorHex": "#ff8b42",
+               "BlockTypePrefix": "lists"
+          },
+          {
+               "CategoryName": "COLOR",
+               "ColorHex": "#b42695",
+               "BlockTypePrefix": "colour"
+          }
+     ]
+}

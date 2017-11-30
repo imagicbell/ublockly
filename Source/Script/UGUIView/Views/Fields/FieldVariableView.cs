@@ -144,7 +144,7 @@ namespace UBlockly.UGUI
                     if (updateThis)
                     {
                         if (!mSourceBlockView.InToolbox ||
-                            BlockFactory.Instance.GetCategoryOfBlockType(mSourceBlockView.BlockType) == Define.BLOCK_CATEGORY_NAME_VARIABLE)
+                            BlocklyUI.WorkspaceView.Toolbox.GetCategoryNameOfBlockView(mSourceBlockView) == Define.VARIABLE_CATEGORY_NAME)
                         {
                             m_Label.text = updateData.NewVarName;
                             UpdateLayout(XY);

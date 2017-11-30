@@ -33,6 +33,9 @@ namespace UBlockly.UGUI
             mConfig = config;
             
             Build();
+            
+            mWorkspace.VariableMap.AddObserver(new VariableObserver(this));
+            mWorkspace.ProcedureDB.AddObserver(new ProcedureObserver(this));
         }
         
         /// <summary>
@@ -61,6 +64,24 @@ namespace UBlockly.UGUI
             
             return view;
         }
+
+        /// <summary>
+        /// Get the category name for block view
+        /// </summary>
+        public string GetCategoryNameOfBlockView(BlockView view)
+        {
+            foreach (var category in mConfig.BlockCategoryList)
+            {
+                foreach (string type in category.BlockList)
+                {
+                    if (string.Equals(view.BlockType, type))
+                    {
+                        return category.CategoryName;
+                    }  
+                }
+            }
+            return null;
+        }
         
         #region Variables
         
@@ -69,7 +90,7 @@ namespace UBlockly.UGUI
         
         protected void BuildVariableBlocks()
         {
-            Transform parent = mRootList[Define.BLOCK_CATEGORY_NAME_VARIABLE].transform;
+            Transform parent = mRootList[Define.VARIABLE_CATEGORY_NAME].transform;
             
             //build createVar button
             GameObject obj = GameObject.Instantiate(BlockViewSettings.Get().PrefabBtnCreateVar);
@@ -97,7 +118,7 @@ namespace UBlockly.UGUI
                 return;
 
             GameObject parentObj;
-            if (!mRootList.TryGetValue(Define.BLOCK_CATEGORY_NAME_VARIABLE, out parentObj))
+            if (!mRootList.TryGetValue(Define.VARIABLE_CATEGORY_NAME, out parentObj))
                 return;
 
             Block block = mWorkspace.NewBlock(Define.VARIABLE_GET_BLOCK_TYPE);
@@ -120,11 +141,11 @@ namespace UBlockly.UGUI
         protected void CreateVariableHelperViews()
         {
             GameObject parentObj;
-            if (!mRootList.TryGetValue(Define.BLOCK_CATEGORY_NAME_VARIABLE, out parentObj))
+            if (!mRootList.TryGetValue(Define.VARIABLE_CATEGORY_NAME, out parentObj))
                 return;
             
             string varName = mWorkspace.GetAllVariables()[0].Name;
-            List<string> blockTypes = BlockFactory.Instance.GetCategories()[Define.BLOCK_CATEGORY_NAME_VARIABLE];
+            List<string> blockTypes = mConfig.GetBlockCategory(Define.VARIABLE_CATEGORY_NAME).BlockList;
             foreach (string blockType in blockTypes)
             {
                 if (!blockType.Equals(Define.VARIABLE_GET_BLOCK_TYPE))
@@ -217,8 +238,8 @@ namespace UBlockly.UGUI
         
         protected void BuildProcedureBlocks()
         {
-            Transform parent = mRootList[Define.BLOCK_CATEGORY_NAME_PROCEDURE].transform;
-            List<string> blockTypes = BlockFactory.Instance.GetCategories()[Define.BLOCK_CATEGORY_NAME_PROCEDURE];
+            Transform parent = mRootList[Define.PROCEDURE_CATEGORY_NAME].transform;
+            List<string> blockTypes = mConfig.GetBlockCategory(Define.PROCEDURE_CATEGORY_NAME).BlockList;
             foreach (string blockType in blockTypes)
             {
                 if (!blockType.Equals(Define.CALL_NO_RETURN_BLOCK_TYPE) &&
@@ -241,7 +262,7 @@ namespace UBlockly.UGUI
                 return;
             
             GameObject parentObj;
-            if (!mRootList.TryGetValue(Define.BLOCK_CATEGORY_NAME_PROCEDURE, out parentObj))
+            if (!mRootList.TryGetValue(Define.PROCEDURE_CATEGORY_NAME, out parentObj))
                 return;
 
             string blockType = hasReturn ? Define.CALL_WITH_RETURN_BLOCK_TYPE : Define.CALL_NO_RETURN_BLOCK_TYPE;

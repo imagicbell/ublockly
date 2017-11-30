@@ -61,18 +61,14 @@ namespace UBlockly
         }
 
         /// <summary>
-        /// String for use in the 'custom' attribute of a category in toolbox xml.
-        /// This string indicates that the category shoud be dynamically populated with
-        /// variable blocks
-        /// @const(string)
+        /// String for use in the 'custom' attribute of a category in toolbox.
+        /// This string indicates that the category shoud be dynamically populated with variable blocks
         /// </summary>
         public const string VARIABLE_CATEGORY_NAME = "VARIABLE";
 
         /// <summary>
-        /// String for use in the 'custom' attribute of a category in toolbox xml.
-        /// This string indicates that the category shoud be dynamically populated with
-        /// procedure blocks.
-        /// @const {string}
+        /// String for use in the 'custom' attribute of a category in toolbox.
+        /// This string indicates that the category shoud be dynamically populated with procedure blocks.
         /// </summary>
         public const string PROCEDURE_CATEGORY_NAME = "PROCEDURE";
 
@@ -82,20 +78,6 @@ namespace UBlockly
         public const string DEFINE_WITH_RETURN_BLOCK_TYPE = "procedures_defreturn";
         public const string CALL_NO_RETURN_BLOCK_TYPE = "procedures_callnoreturn";
         public const string CALL_WITH_RETURN_BLOCK_TYPE = "procedures_callreturn";
-
-        /*
-            category's name for blocks
-        */
-        public const string BLOCK_CATEGORY_NAME_LIST = "lists";
-        public const string BLOCK_CATEGORY_NAME_CONTROL = "controls";
-        public const string BLOCK_CATEGORY_NAME_LOGIC = "logic";
-        public const string BLOCK_CATEGORY_NAME_MATH = "math";
-        public const string BLOCK_CATEGORY_NAME_PROCEDURE = "procedures";
-        public const string BLOCK_CATEGORY_NAME_TEXT = "text";
-        public const string BLOCK_CATEGORY_NAME_VARIABLE = "variables";
-        public const string BLOCK_CATEGORY_NAME_COROUTINE = "coroutine";
-        public const string BLOCK_CATEGORY_NAME_COLOUR = "colour";
-        public const string BLOCK_CATEGORY_NAME_UNITTEST = "unittest";
 
         /// <summary>
         /// a list of field types defined in block

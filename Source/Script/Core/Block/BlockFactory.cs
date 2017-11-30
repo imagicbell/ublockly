@@ -23,7 +23,7 @@ namespace UBlockly
             return mDefinitions;
         }
 
-        private Dictionary<string, List<string>> mCategories = new Dictionary<string, List<string>>();
+        /*private Dictionary<string, List<string>> mCategories = new Dictionary<string, List<string>>();
 
         public Dictionary<string, List<string>> GetCategories()
         {
@@ -41,6 +41,18 @@ namespace UBlockly
                     return category;
             }
             return null;
+        }*/
+
+        private Dictionary<string, List<string>> mPrefixCategories = new Dictionary<string, List<string>>();
+
+        /// <summary>
+        /// Get block types width the specific prefix
+        /// </summary>
+        public List<string> GetBlockTypesOfPrefix(string prefix)
+        {
+            List<string> blockTypes;
+            mPrefixCategories.TryGetValue(prefix, out blockTypes);
+            return blockTypes;
         }
 
         /// <summary>
@@ -49,6 +61,7 @@ namespace UBlockly
         public void Clear()
         {
             mDefinitions.Clear();
+            mPrefixCategories.Clear();
         }
 
         /// <summary>
@@ -71,10 +84,10 @@ namespace UBlockly
                 }
 
                 int length = typeName.IndexOf("_");
-                string categoryName = length > 0 ? typeName.Substring(0, length) : typeName;
-                if (!mCategories.ContainsKey(categoryName))
-                    mCategories[categoryName] = new List<string>();
-                mCategories[categoryName].Add(typeName);
+                string prefix = length > 0 ? typeName.Substring(0, length) : typeName;
+                if (!mPrefixCategories.ContainsKey(prefix))
+                    mPrefixCategories[prefix] = new List<string>();
+                mPrefixCategories[prefix].Add(typeName);
             }
         }
 

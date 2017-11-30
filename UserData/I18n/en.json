@@ -1,4 +1,16 @@
 {
+// Block Category Name
+    "VARIABLE": "Variables",
+    "PROCEDURE": "Procedures",
+    "LOGIC": "Logic",
+    "CONTROL": "Controls",
+    "MATH": "Math",
+    "TEXT": "Text",
+    "LIST": "Lists",
+    "COLOR": "Color",
+    "COROUTINE": "Coroutines",
+    
+    
     /// (Notranslate) Hue value for all logic blocks.
     "LOGIC_HUE": "210",
     "CONTROLS_HUE": "190",
