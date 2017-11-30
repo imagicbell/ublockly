@@ -114,7 +114,12 @@ namespace UBlockly.UGUI
                 NewBlockView(blockType, contentTrans);
             }
         }
-        
+
+        protected override void OnPickBlockView()
+        {
+            HideBlockCategory();
+        }
+
         public override bool CheckBin(BlockView blockView)
         {
             if (blockView.InToolbox) return false;

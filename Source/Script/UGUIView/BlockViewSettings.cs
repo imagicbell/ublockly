@@ -12,7 +12,9 @@ namespace UBlockly.UGUI
         [SerializeField] public RectOffset ContentMargin;
         [SerializeField] public Vector2 ContentSpace;
         [SerializeField] public int ColorFieldWidth;
-        
+
+        [Tooltip("Whether block pattern views in toolbox have masks and are unable to receive input.")]
+        [SerializeField] public bool MaskedInToolbox = true;
         [Tooltip("Maximum misalignment between connections for them to snap together.")]
         [SerializeField] public int ConnectSearchRange = 100;
         [Tooltip("The offset for bumpping away disconnected blocks ")]

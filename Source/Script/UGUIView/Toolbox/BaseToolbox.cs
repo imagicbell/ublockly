@@ -24,8 +24,10 @@ namespace UBlockly.UGUI
 
         protected Workspace mWorkspace;
         protected ToolboxConfig mConfig;
+        protected BlockView mPickedBlockView; 
 
         protected abstract void Build();
+        protected virtual void OnPickBlockView(){}
 
         public void Init(Workspace workspace, ToolboxConfig config)
         {
@@ -57,12 +59,56 @@ namespace UBlockly.UGUI
             BlockView view = BlockViewFactory.CreateView(block);
             view.InToolbox = true;
             view.ViewTransform.SetParent(parent, false);
-            ToolboxBlockMask.AddMask(view);
 
             if (index >= 0)
                 view.ViewTransform.SetSiblingIndex(index);
+
+            //add mask
+            GameObject maskObj = new GameObject("ToolboxMask");
+            maskObj.transform.SetParent(view.ViewTransform, false);
+            RectTransform maskTrans = maskObj.AddComponent<RectTransform>();
+            maskTrans.sizeDelta = view.Size;
+            Image maskImage = maskObj.AddComponent<Image>();
+            maskImage.color = new Color(1, 1, 1, 0);
+            UIEventListener.Get(maskObj).onBeginDrag = data => PickBlockView(view);
+            if (!BlockViewSettings.Get().MaskedInToolbox)
+                maskTrans.SetAsFirstSibling();
             
             return view;
+        }
+
+        protected void PickBlockView(BlockView blockView)
+        {
+            if (mPickedBlockView != null)
+            {
+                Debug.LogError("Toolbox-PickBlockView: Already picked a block view.");
+                return;
+            }
+
+            // compute the local position of the block view in coding area
+            Vector3 localPos = BlocklyUI.WorkspaceView.CodingArea.InverseTransformPoint(blockView.ViewTransform.position);
+            
+            // clone a new block view for coding area
+            mPickedBlockView = BlocklyUI.WorkspaceView.CloneBlockView(blockView, new Vector2(localPos.x, localPos.y));
+            mPickedBlockView.OnBeginDrag(null);
+
+            OnPickBlockView();
+        }
+
+        protected void UpdatePickedBlockView()
+        {
+            if (mPickedBlockView == null) return;
+            #if UNITY_EDITOR
+            if (!UnityEngine.Input.anyKey)
+            #else
+            if (UnityEngine.Input.touchCount == 0)
+            #endif
+            {
+                mPickedBlockView.OnEndDrag(null);
+                mPickedBlockView = null;
+                return;
+            }
+            mPickedBlockView.OnDrag(null);
         }
 
         /// <summary>
@@ -365,5 +411,15 @@ namespace UBlockly.UGUI
         public abstract void FinishCheckBin(BlockView blockView);
 
         #endregion
+        
+        #region Monobehavior calls
+
+        private void Update()
+        {
+            UpdatePickedBlockView();
+        }
+
+        #endregion
+        
     }
 }
