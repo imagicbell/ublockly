@@ -17,8 +17,8 @@ rm "$SOURCE_PATH"/Script/Test/ViewTest.meta
 SOURCE_DATA_PATH="/Users/$USER/Desktop/MSpace/UBlockly/UserData"
 TARGET_DATA_PATH="/Users/$USER/Desktop/PTProjects/Blockly/PTBlockly/Blockly/Assets/PTGameData/PTBlockly"
 
-rm -rf "$SOURCE_DATA_PATH"/I18n/*
-cp -a "$TARGET_DATA_PATH"/I18n/. "$SOURCE_DATA_PATH"/I18n
+rm -rf "$SOURCE_DATA_PATH"/*
+cp -a "$TARGET_DATA_PATH"/. "$SOURCE_DATA_PATH"
 
 cd "$SOURCE_PATH"
 find . -type f -name "*.cs" | while read filename; do
