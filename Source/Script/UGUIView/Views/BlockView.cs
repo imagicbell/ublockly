@@ -213,6 +213,7 @@ namespace UBlockly.UGUI
         /// </summary>
         public void ChangeBgColor(Color color)
         {
+            m_BgImages.RemoveAll(bg => bg == null);
             foreach (Image bg in m_BgImages)
             {
                 bg.color = color;
@@ -338,6 +339,9 @@ namespace UBlockly.UGUI
                     
                     //call this once to update the connection DB
                     this.OnXYUpdated();
+                    
+                    //call this again to change new input views
+                    this.ChangeBgColor(m_BgImages[0].color);
                     
                     break;
                 }

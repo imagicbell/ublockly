@@ -98,6 +98,8 @@ namespace UBlockly.UGUI
                     BlockView nextView = mTargetBlockView;
                     while (nextView != null)
                     {
+                        size.y += nextView.Height;
+                        
                         ConnectionView nextCon = nextView.GetConnectionView(Define.EConnection.NextStatement);
                         if (nextCon == null)
                         {
@@ -105,7 +107,6 @@ namespace UBlockly.UGUI
                             break;
                         }
                         
-                        size.y += nextView.Height;
                         nextView = nextCon.TargetBlockView;
                     }
                     if (addConnectPointSpace)
