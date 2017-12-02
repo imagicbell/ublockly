@@ -78,7 +78,7 @@ namespace UBlockly.UGUI
             }
 
             Rect pixelAdjustedRect = this.GetPixelAdjustedRect();
-            Vector4 adjustedBorders = this.GetAdjustedBorders(border, pixelAdjustedRect);
+            //Vector4 adjustedBorders = this.GetAdjustedBorders(border, pixelAdjustedRect);
 
 //                Debug.Log(">>>>>>  this.GetPixelAdjustedRect():  " + pixelAdjustedRect);
 //                Debug.Log(">>>>>>  DataUtility.GetOuterUV(this.overrideSprite): " + outerUV);
@@ -92,14 +92,12 @@ namespace UBlockly.UGUI
             RectTransform rectTrans = GetComponent<RectTransform>();
             float xFactor = pixelAdjustedRect.width / rectTrans.rect.width;
             float yFactor = pixelAdjustedRect.height / rectTrans.rect.height;
+            Vector4 factor = new Vector4(xFactor, yFactor, xFactor, yFactor);
 
             for (int i = 0; i < m_DrawDimensions.Length; i++)
             {
                 Vector4 dimension = m_DrawDimensions[i];
-                dimension.x *= xFactor;
-                dimension.y *= yFactor;
-                dimension.z *= xFactor;
-                dimension.w *= yFactor;
+                dimension.Scale(factor);
 
                 int xCount = 3;
                 int yCount;
