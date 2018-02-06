@@ -1,6 +1,6 @@
 # UBlocky
 
-see the follows for details:
+See the follows for details:
 
 1. http://magicbell.beanstu.io/unity/2017/10/11/blockly-one.html
 2. http://magicbell.beanstu.io/unity/2017/10/14/blockly-two.html
@@ -8,7 +8,7 @@ see the follows for details:
 4. http://magicbell.beanstu.io/unity/2017/10/31/blockly-four.html
 
 
-
+Have fun with [2 game demo](https://github.com/imagicbell/ublocklygame).
 
 ## HOW TO RUN
 
