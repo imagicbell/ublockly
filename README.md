@@ -37,3 +37,13 @@ To change themes:
 
 ![](Doc/changeui_2.png)
 
+
+
+## Contributors
+
+Greatly appreciate the help by:
+
+[liangxie](https://github.com/liangxieq)
+
+[dtknowlove](https://github.com/dtknowlove)
+
