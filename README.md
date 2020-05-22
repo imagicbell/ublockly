@@ -2,10 +2,10 @@
 
 See the follows for details:
 
-1. http://magicbell.beanstu.io/unity/2017/10/11/blockly-one.html
-2. http://magicbell.beanstu.io/unity/2017/10/14/blockly-two.html
-3. http://magicbell.beanstu.io/unity/2017/10/22/blockly-three.html
-4. http://magicbell.beanstu.io/unity/2017/10/31/blockly-four.html
+1. http://imagicbell.github.io/unity/2017/10/11/blockly-one.html
+2. http://imagicbell.github.io/unity/2017/10/14/blockly-two.html
+3. http://imagicbell.github.io/unity/2017/10/22/blockly-three.html
+4. http://imagicbell.github.io/unity/2017/10/31/blockly-four.html
 
 
 Have fun with [2 game demo](https://github.com/imagicbell/ublocklygame).
