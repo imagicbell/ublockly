@@ -286,6 +286,8 @@
     /// block input text - Indicates that the following input should be returned (used as output) if the test input is false.
     "LOGIC_TERNARY_IF_FALSE": "if false",
     
+    "LOGIC_TOGGLE_BOOLEAN": "checkbox",
+    
 // Math Blocks.
     /// url - Information about (real) numbers.
     "MATH_NUMBER_HELPURL": "https://en.wikipedia.org/wiki/Number",

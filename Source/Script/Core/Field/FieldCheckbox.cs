@@ -26,7 +26,7 @@ namespace UBlockly
         private static FieldCheckbox CreateFromJson(JObject json)
         {
             string fieldName = json["name"].IsString() ? json["name"].ToString() : "FIELDNAME_DEFAULT";
-            return new FieldCheckbox(fieldName, json["checked"] != null ? "TRUE" : "FALSE");
+            return new FieldCheckbox(fieldName, json["checked"] != null && json["checked"].ToString().ToUpper() == "TRUE" ? "TRUE" : "FALSE");
         }
         
         /// <summary>
@@ -41,8 +41,11 @@ namespace UBlockly
 
         public override void SetValue(string newValue)
         {
+            newValue = newValue.ToUpper();
+            if (newValue != "TRUE" && newValue != "FALSE")
+                return;
+
             base.SetValue(newValue);
-            //todo
         }
     }
 }

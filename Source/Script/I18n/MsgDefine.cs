@@ -280,6 +280,8 @@ namespace UBlockly
 
         public const string LOGIC_TERNARY_TOOLTIP = "LOGIC_TERNARY_TOOLTIP";
 
+        public const string LOGIC_TOGGLE_BOOLEAN_TITLE = "LOGIC_TOGGLE_BOOLEAN_TITLE";
+
         public const string MATH_ADDITION_SYMBOL = "MATH_ADDITION_SYMBOL";
         public const string MATH_ARITHMETIC_HELPURL = "MATH_ARITHMETIC_HELPURL";
         public const string MATH_ARITHMETIC_TOOLTIP_ADD = "MATH_ARITHMETIC_TOOLTIP_ADD";

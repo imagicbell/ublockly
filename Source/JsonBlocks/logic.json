@@ -197,5 +197,26 @@
     "tooltip": "%{BKY_LOGIC_TERNARY_TOOLTIP}",
     "helpUrl": "%{BKY_LOGIC_TERNARY_HELPURL}",
     "extensions": ["logic_ternary"]
+  },
+  
+  {
+    "type": "logic_toggle_boolean",
+    "message0": "%{BKY_LOGIC_TOGGLE_BOOLEAN} %1 %2",
+    "args0": [
+      {
+        "type": "field_checkbox",
+        "name": "CHECKBOX",
+        "checked": "FALSE"
+      },
+      {
+        "type": "field_input",
+        "name": "TEXT",
+        "text": ""
+      }
+    ],
+    "output": "Boolean",
+    "colour": "%{BKY_LOGIC_HUE}",
+    "tooltip": "",
+    "helpUrl": ""
   }
 ]

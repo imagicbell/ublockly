@@ -321,7 +321,8 @@ namespace UBlockly.UGUI
             }
             else if (fieldType == typeof(FieldCheckbox))
             {
-
+                fieldObj = GameObject.Instantiate(BlockViewSettings.Get().PrefabFieldCheckbox);
+                fieldView = AddViewComponent<FieldCheckboxView>(fieldObj);
             }
             else
             {

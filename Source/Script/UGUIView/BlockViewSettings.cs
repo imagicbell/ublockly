@@ -55,6 +55,7 @@ namespace UBlockly.UGUI
         [SerializeField] public GameObject PrefabFieldImage;
         [SerializeField] public GameObject PrefabFieldButton;
         [SerializeField] public GameObject PrefabFieldVariable;
+        [SerializeField] public GameObject PrefabFieldCheckbox;
 
         [SerializeField] public GameObject PrefabBtnCreateVar;
         [SerializeField] public GameObject PrefabConnectHighlight;

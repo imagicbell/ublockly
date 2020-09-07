@@ -208,4 +208,15 @@ namespace UBlockly
             }
         }
     }
+
+    [CodeInterpreter(BlockType = "logic_toggle_boolean")]
+    public class Logic_Toggle_Boolean_Cmdtor : ValueCmdtor
+    {
+        protected override DataStruct Execute(Block block)
+        {
+            string toggleString = block.GetFieldValue("CHECKBOX");
+            bool toggleValue = toggleString.Equals("TRUE");
+            return new DataStruct(toggleValue);
+        }
+    }
 }
