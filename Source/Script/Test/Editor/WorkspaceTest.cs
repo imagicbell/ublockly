@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using UnityEngine;
@@ -401,8 +402,15 @@ namespace UBlockly.Test
 			mWorkspace.CreateVariable(newName, "type2", "id2");
 			CreateMockBlock(oldName);
 			CreateMockBlock(newName);
+
+			try
+			{
+				mWorkspace.RenameVariable(oldName, newName);
+			}
+			catch (Exception e)
+			{
+			}
 			
-			mWorkspace.RenameVariable(oldName,newName);
 			
 			CheckVariableValues(mWorkspace,oldName,"type1","id1");
 			CheckVariableValues(mWorkspace,newName,"type2","id2");

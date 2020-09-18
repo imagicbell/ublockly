@@ -397,10 +397,9 @@ namespace UBlockly
             // If they are different types, throw an error.
             if (null != variable && null != newVariable && !string.Equals(variable.Type, newVariable.Type))
             {
-                Debug.LogError("Variable " + variable.Name + " is type " + variable.Type +
-                               " and variable " + newName + " is type " + newVariable.Type +
-                               ".Both must be the same type.");
-                return;
+                throw new Exception("Variable " + variable.Name + " is type " + variable.Type +
+                                    " and variable " + newName + " is type " + newVariable.Type +
+                                    ".Both must be the same type.");
             }
 
             string oldName = variable != null ? variable.Name : null;
