@@ -41,7 +41,7 @@ namespace UBlockly.UGUI
             {
                 GameObject menuItem = GameObject.Instantiate(m_MenuItemPrefab, m_MenuListContent, false);
                 menuItem.name = category.CategoryName;
-                menuItem.GetComponentInChildren<Text>().text = I18n.Msg[category.CategoryName];
+                menuItem.GetComponentInChildren<Text>().text = I18n.Get(category.CategoryName);
                 Image[] images = menuItem.GetComponentsInChildren<Image>();
                 for (int i = 0; i < images.Length; i++)
                 {

@@ -37,7 +37,7 @@ namespace UBlockly.UGUI
             m_ItemCountSlider.value = mItemListMutator.ItemCount;
             m_ItemCountText.text = mItemListMutator.ItemCount.ToString();
 
-            m_ItemCountTitle.text = I18n.Msg[MsgDefine.TEXT_CREATE_JOIN_ITEM_TITLE_ITEM];
+            m_ItemCountTitle.text = I18n.Get(MsgDefine.TEXT_CREATE_JOIN_ITEM_TITLE_ITEM);
             
             AddCloseEvent(() =>
             {

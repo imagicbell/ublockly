@@ -158,7 +158,7 @@ namespace UBlockly
             List<String> arguments = mProcedure.Arguments;
             if (arguments.Count > 0)
             {
-                sb.Append(I18n.Msg[MsgDefine.PROCEDURES_BEFORE_PARAMS]);
+                sb.Append(I18n.Get(MsgDefine.PROCEDURES_BEFORE_PARAMS));
                 for (int i = 0; i < arguments.Count; ++i)
                 {
                     sb.Append(i == 0 ? " " : ", ");

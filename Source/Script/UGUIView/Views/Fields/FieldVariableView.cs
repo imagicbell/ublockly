@@ -67,9 +67,9 @@ namespace UBlockly.UGUI
         protected override void OnBindModel()
         {
             m_Label.text = mFieldVar.GetText();
-            m_BtnSelect.GetComponentInChildren<Text>().text = I18n.Msg[MsgDefine.SELECT_VARIABLE];
-            m_BtnRename.GetComponentInChildren<Text>().text = I18n.Msg[MsgDefine.RENAME_VARIABLE];
-            m_BtnDelete.GetComponentInChildren<Text>().text = I18n.Msg[MsgDefine.DELETE_VARIABLE];
+            m_BtnSelect.GetComponentInChildren<Text>().text = I18n.Get(MsgDefine.SELECT_VARIABLE);
+            m_BtnRename.GetComponentInChildren<Text>().text = I18n.Get(MsgDefine.RENAME_VARIABLE);
+            m_BtnDelete.GetComponentInChildren<Text>().text = I18n.Get(MsgDefine.DELETE_VARIABLE);
             UpdateMenuWidth();
             
             mObserver = new MemorySafeVariableObserver(this);
@@ -129,11 +129,11 @@ namespace UBlockly.UGUI
         /// </summary>
         private void UpdateMenuWidth()
         {
-            string maxOption = I18n.Msg[MsgDefine.SELECT_VARIABLE];
-            if (maxOption.Length < I18n.Msg[MsgDefine.RENAME_VARIABLE].Length)
-                maxOption = I18n.Msg[MsgDefine.RENAME_VARIABLE];
-            if (maxOption.Length < I18n.Msg[MsgDefine.DELETE_VARIABLE].Length)
-                maxOption = I18n.Msg[MsgDefine.DELETE_VARIABLE];
+            string maxOption = I18n.Get(MsgDefine.SELECT_VARIABLE);
+            if (maxOption.Length < I18n.Get(MsgDefine.RENAME_VARIABLE).Length)
+                maxOption = I18n.Get(MsgDefine.RENAME_VARIABLE);
+            if (maxOption.Length < I18n.Get(MsgDefine.DELETE_VARIABLE).Length)
+                maxOption = I18n.Get(MsgDefine.DELETE_VARIABLE);
 
             Text texCom = m_BtnSelect.GetComponentInChildren<Text>();
             float width = texCom.CalculateTextWidth(maxOption);

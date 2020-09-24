@@ -195,9 +195,9 @@ namespace UBlockly
                             // core files adn the predefined blocks in ../blocks/. These strings
                             // are defined in ../msgs/ files.
                             var bklyKey = keyUpper.StartsWith("BKY_") ? keyUpper.Substring(4) : null;
-                            if (!string.IsNullOrEmpty(bklyKey) && I18n.Msg.ContainsKey(bklyKey))
+                            if (!string.IsNullOrEmpty(bklyKey) && I18n.Contains(bklyKey))
                             {
-                                var rawValue = I18n.Msg[bklyKey];
+                                var rawValue = I18n.Get(bklyKey);
                                 tokens.AddRange(TokenizeInterpolation(rawValue));
                             }
                             else

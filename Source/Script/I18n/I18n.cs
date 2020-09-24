@@ -16,6 +16,7 @@ limitations under the License.
 
 ****************************************************************************/
 
+using System;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 
@@ -27,14 +28,33 @@ namespace UBlockly
         public const string CN = "cn";
 
         private static Dictionary<string, string> mMsg = null;
-        public static Dictionary<string, string> Msg
+        
+        public static string Get(string key)
         {
-            get
-            {
-                if (mMsg == null)
-                    BlockResMgr.Get().LoadI18n(I18n.EN);
-                return mMsg;
-            }
+            if (mMsg == null)
+                BlockResMgr.Get().LoadI18n(I18n.EN);
+            
+            string value;
+            if (mMsg.TryGetValue(key, out value))
+                return value;
+
+            throw new Exception("I18n file doesn't contain translation for key: " + key);
+        }
+
+        public static void Add(string key, string value)
+        {
+            if (mMsg == null)
+                BlockResMgr.Get().LoadI18n(I18n.EN);
+
+            mMsg[key] = value;
+        }
+
+        public static bool Contains(string key)
+        {
+            if (mMsg == null)
+                BlockResMgr.Get().LoadI18n(I18n.EN);
+
+            return mMsg.ContainsKey(key);
         }
 
         public static void AddI18nFile(string text)

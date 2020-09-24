@@ -116,12 +116,12 @@ namespace UBlockly
             {
                 options.Add(new FieldDropdownMenu()
                 {
-                    Text = I18n.Msg[MsgDefine.RENAME_VARIABLE],
+                    Text = I18n.Get(MsgDefine.RENAME_VARIABLE),
                     Value = MsgDefine.RENAME_VARIABLE
                 });
                 options.Add(new FieldDropdownMenu()
                 {
-                    Text = I18n.Msg[MsgDefine.DELETE_VARIABLE],
+                    Text = I18n.Get(MsgDefine.DELETE_VARIABLE),
                     Value = MsgDefine.DELETE_VARIABLE
                 });
             }

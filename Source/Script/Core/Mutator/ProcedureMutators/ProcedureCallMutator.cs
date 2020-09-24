@@ -70,7 +70,7 @@ namespace UBlockly
                 // add "with: " label
                 if (i == 0)
                 {
-                    FieldLabel withLabel = new FieldLabel("WITH", I18n.Msg[MsgDefine.PROCEDURES_CALL_BEFORE_PARAMS]);
+                    FieldLabel withLabel = new FieldLabel("WITH", I18n.Get(MsgDefine.PROCEDURES_CALL_BEFORE_PARAMS));
                     stackInput.AppendField(withLabel);
                 }
                 

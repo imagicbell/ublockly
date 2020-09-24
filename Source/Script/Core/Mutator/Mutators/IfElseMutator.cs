@@ -134,11 +134,11 @@ namespace UBlockly
                 {
                     // IFi value input
                     Input inputValue = InputFactory.Create(Define.EConnection.InputValue, IF_INPUT_PREFIX + i, ALIGN, new List<string>() {CHECK});
-                    inputValue.AppendField(new FieldLabel(null, I18n.Msg[MsgDefine.CONTROLS_IF_MSG_ELSEIF]));
+                    inputValue.AppendField(new FieldLabel(null, I18n.Get(MsgDefine.CONTROLS_IF_MSG_ELSEIF)));
 
                     // DOi statement input
                     Input inputStatement = InputFactory.Create(Define.EConnection.NextStatement, DO_INPUT_PREFIX + i, ALIGN, null);
-                    inputStatement.AppendField(new FieldLabel(null, I18n.Msg[MsgDefine.CONTROLS_IF_MSG_THEN]));
+                    inputStatement.AppendField(new FieldLabel(null, I18n.Get(MsgDefine.CONTROLS_IF_MSG_THEN)));
                     
                     newInputs.Add(inputValue);
                     newInputs.Add(inputStatement);
@@ -151,7 +151,7 @@ namespace UBlockly
                 if (elseInput == null)
                 {
                     elseInput = InputFactory.Create(Define.EConnection.NextStatement, ELSE_INPUT_NAME, ALIGN, null);
-                    elseInput.AppendField(new FieldLabel(null, I18n.Msg[MsgDefine.CONTROLS_IF_MSG_ELSE]));
+                    elseInput.AppendField(new FieldLabel(null, I18n.Get(MsgDefine.CONTROLS_IF_MSG_ELSE)));
                 }
                 newInputs.Add(elseInput);
             }

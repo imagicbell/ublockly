@@ -328,7 +328,7 @@ namespace UBlockly
                     string.Equals(block.Type, Define.DEFINE_WITH_RETURN_BLOCK_TYPE))
                 {
                     var procedureName = block.GetFieldValue("NAME");
-                    Debug.LogError("Alert:" + I18n.Msg[MsgDefine.CANNOT_DELETE_VARIABLE_PROCEDURE].
+                    Debug.LogError("Alert:" + I18n.Get(MsgDefine.CANNOT_DELETE_VARIABLE_PROCEDURE).
                                        Replace("%1",name).
                                        Replace("%2",procedureName));
                     return;
@@ -340,7 +340,7 @@ namespace UBlockly
             if (uses.Count > 1)
             {
                 // Confirm before deleting multiple blocks.
-                Debug.Log("confirm:" + I18n.Msg[MsgDefine.DELETE_VARIABLE_CONFIRMATION]
+                Debug.Log("confirm:" + I18n.Get(MsgDefine.DELETE_VARIABLE_CONFIRMATION)
                               .Replace("%1", uses.Count.ToString()).Replace("%2", name));
                 workspace.DeleteVariableInternal(variable);
             }
