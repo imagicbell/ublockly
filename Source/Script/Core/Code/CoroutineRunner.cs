@@ -84,6 +84,7 @@ namespace UBlockly
             CoroutineStruct value;
             if (mCoroutineDict.TryGetValue(itorFunc, out value))
             {
+                value.paused = true;
                 StopCoroutine(value.coroutine);
                 mCoroutineDict.Remove(itorFunc);
 
@@ -144,6 +145,9 @@ namespace UBlockly
         /// <returns></returns>
         IEnumerator SimulateCoroutine(IEnumerator itorFunc)
         {
+            //wait for one frame to get the coroutine returned, for dictionary check.
+            yield return null;
+            
             Debug.LogFormat("<color=green>[CodeRunner]SimulateCoroutine: begin - time: {0}.</color>", Time.time);
 
             Stack<IEnumerator> stack = new Stack<IEnumerator>();

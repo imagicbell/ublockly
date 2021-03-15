@@ -77,6 +77,11 @@ namespace UBlockly
         /// stop the current running interpreting process 
         /// </summary>
         public virtual void Stop() {}
+        
+        /// <summary>
+        /// process overflows
+        /// </summary>
+        public virtual void Error(string msg) {}
     }
     
     public class InterpreterUpdateState
@@ -86,9 +91,11 @@ namespace UBlockly
         public const int Pause = 3;
         public const int Resume = 4;
         public const int Stop = 5;
+        public const int Error = 6;
 
         public readonly int Type;
         public readonly Block RunningBlock;
+        public readonly string Msg;
 
         public InterpreterUpdateState(int type)
         {
@@ -98,6 +105,11 @@ namespace UBlockly
         public InterpreterUpdateState(int type, Block runBlock) : this(type)
         {
             RunningBlock = runBlock;
+        }
+
+        public InterpreterUpdateState(int type, string msg) : this(type)
+        {
+            Msg = msg;
         }
     }
 }

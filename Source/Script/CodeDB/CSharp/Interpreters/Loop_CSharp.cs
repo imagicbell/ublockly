@@ -27,7 +27,7 @@ namespace UBlockly
     public abstract class ControlCmdtor : EnumeratorCmdtor
     {
         protected ControlFlowType mFlowState;
-
+    
         public bool NeedBreak
         {
             get { return mFlowState == ControlFlowType.Break; }
@@ -46,6 +46,19 @@ namespace UBlockly
         public void ResetFlowState()
         {
             mFlowState = ControlFlowType.None;
+        }
+
+        private int mLoopCount = 0;
+
+        protected bool CheckInfiniteLoop()
+        {
+            if (++mLoopCount == Int16.MaxValue)
+            {
+                CSharp.Interpreter.Error("Infinite loop!");
+                mLoopCount = 0;
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -99,6 +112,7 @@ namespace UBlockly
                 //reset flow control
                 if (NeedBreak) break;
                 if (NeedContinue) ResetFlowState();
+                if (CheckInfiniteLoop()) break;
             }
         }
     }
@@ -124,6 +138,7 @@ namespace UBlockly
                 //reset flow control
                 if (NeedBreak) break;
                 if (NeedContinue) ResetFlowState();
+                if (CheckInfiniteLoop()) break;
             }
         }
     }
@@ -157,6 +172,7 @@ namespace UBlockly
                 //reset flow control
                 if (NeedBreak) break;
                 if (NeedContinue) ResetFlowState();
+                if (CheckInfiniteLoop()) break;
             }
         }
     }
@@ -190,6 +206,7 @@ namespace UBlockly
                 //reset flow control
                 if (NeedBreak) break;
                 if (NeedContinue) ResetFlowState();
+                if (CheckInfiniteLoop()) break;
             }
         }
     }
@@ -226,6 +243,7 @@ namespace UBlockly
                 //reset flow control
                 if (NeedBreak) break;
                 if (NeedContinue) ResetFlowState();
+                if (CheckInfiniteLoop()) break;
             }
         }
     }

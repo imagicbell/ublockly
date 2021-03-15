@@ -92,6 +92,18 @@ namespace UBlockly.UGUI
                     mRunBlockView = null;
                     break;
                 }
+                case InterpreterUpdateState.Error:
+                {
+                    if (!string.IsNullOrEmpty(args.Msg))
+                    {
+                        MsgDialog dialog = DialogFactory.CreateDialog("message") as MsgDialog;
+                        dialog.SetMsg(args.Msg);    
+                    }
+                    enabled = false;
+                    mRunningBlocks.Clear();
+                    mRunBlockView = null;
+                    break;
+                }
             }
         }
 

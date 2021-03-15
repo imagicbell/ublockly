@@ -83,12 +83,24 @@ namespace UBlockly
             }
         }
 
+        public override void Error(string msg)
+        {
+            if (mRunningProcess != null)
+            {
+                mRunner.StopProcess(mRunningProcess);
+                mRunningProcess = null;
+                CSharp.Interpreter.FireUpdate(new InterpreterUpdateState(InterpreterUpdateState.Error, msg));
+            }
+        }
+
         /// <summary>
         /// coroutine run code for workspace
         /// todo: execute topblocks in order or synchronously
         /// </summary>
         IEnumerator RunWorkspace(Workspace workspace)
         {
+            yield return null;
+            
             //traverse all blocks in the workspace and run code for the blocks
             List<Block> blocks = workspace.GetTopBlocks(true);
             foreach (Block block in blocks)
@@ -109,6 +121,12 @@ namespace UBlockly
         /// </summary>
         IEnumerator RunBlock(Block block)
         {
+            //check if stopped
+            if (mRunningProcess == null)
+            {
+                yield break;
+            }
+            
             //check flow 
             if (ControlCmdtor.SkipRunByControlFlow(block))
             {
