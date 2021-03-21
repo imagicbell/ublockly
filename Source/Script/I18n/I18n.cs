@@ -32,7 +32,7 @@ namespace UBlockly
         public static string Get(string key)
         {
             if (mMsg == null)
-                BlockResMgr.Get().LoadI18n(I18n.EN);
+                BlockResMgr.Get().LoadI18n();
             
             string value;
             if (mMsg.TryGetValue(key, out value))
@@ -44,7 +44,7 @@ namespace UBlockly
         public static void Add(string key, string value)
         {
             if (mMsg == null)
-                BlockResMgr.Get().LoadI18n(I18n.EN);
+                BlockResMgr.Get().LoadI18n();
 
             mMsg[key] = value;
         }
@@ -52,7 +52,7 @@ namespace UBlockly
         public static bool Contains(string key)
         {
             if (mMsg == null)
-                BlockResMgr.Get().LoadI18n(I18n.EN);
+                BlockResMgr.Get().LoadI18n();
 
             return mMsg.ContainsKey(key);
         }

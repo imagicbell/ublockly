@@ -31,7 +31,7 @@ namespace UBlockly
         /// </summary>
         public static void Init()
         {
-            BlockResMgr.Get().LoadI18n(I18n.EN);
+            BlockResMgr.Get().LoadI18n();
             BlockResMgr.Get().LoadJsonDefinitions();
         }
         
