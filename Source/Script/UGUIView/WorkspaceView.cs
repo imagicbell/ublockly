@@ -30,7 +30,6 @@ namespace UBlockly.UGUI
         [SerializeField] private RectTransform m_CodingArea;
         [SerializeField] private Button m_RunBtn;
         [SerializeField] private BlockStatusView m_StatusView;
-        [SerializeField] private string m_ToolboxConfig = "default";
  
         public BaseToolbox Toolbox
         {
@@ -60,7 +59,7 @@ namespace UBlockly.UGUI
             RectTransform codingAreaTrans = m_CodingArea.GetComponentInParent<ScrollRect>().transform as RectTransform;
             codingAreaTrans.offsetMin = new Vector2(((RectTransform) m_Toolbox.transform).sizeDelta.x, codingAreaTrans.offsetMin.y);
             
-            m_Toolbox.Init(workspace, ToolboxConfig.Load(m_ToolboxConfig));
+            m_Toolbox.Init(workspace, ToolboxConfig.Load());
             
             m_RunBtn.onClick.AddListener(RunCode);
             

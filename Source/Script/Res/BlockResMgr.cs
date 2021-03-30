@@ -74,7 +74,7 @@ namespace UBlockly
         [SerializeField] private BlockResLoadType m_LoadType;
         [SerializeField] private List<BlockTextResWithSelectionParam> m_I18nFiles;
         [SerializeField] private List<BlockTextResParam> m_BlockJsonFiles;
-        [SerializeField] private List<BlockTextResParam> m_ToolboxFiles;
+        [SerializeField] private List<BlockTextResWithSelectionParam> m_ToolboxFiles;
 
         [SerializeField] public string m_BlockViewPrefabPath;
         [SerializeField] private List<BlockObjectParam> m_BlockViewPrefabs;
@@ -204,40 +204,48 @@ namespace UBlockly
         
         #region Toolbox Config Files
 
-        public UGUI.ToolboxConfig LoadToolboxConfig(string configName)
+        public UGUI.ToolboxConfig LoadToolboxConfig()
         {
             if (m_ToolboxFiles == null || m_ToolboxFiles.Count == 0)
-                return null;
-
-            UGUI.ToolboxConfig toolboxConfig = null;
-            TextAsset textAsset = null;
-            foreach (BlockTextResParam resParam in m_ToolboxFiles)
             {
-                if (string.Equals(configName, resParam.IndexName))
-                {
-                    switch (m_LoadType)
-                    {
-                        case BlockResLoadType.Assetbundle:
-                            if (mABSyncLoad != null)
-                                textAsset = mABSyncLoad(resParam.ResName) as TextAsset;
-                            break;
-                        case BlockResLoadType.Resources:
-                            textAsset = Resources.Load<TextAsset>(resParam.ResName);
-                            break;
-                        case BlockResLoadType.Serialized:
-                            textAsset = resParam.TextFile;
-                            break;
-                    }
-
-                    if (textAsset != null)
-                    {
-                        toolboxConfig = JsonUtility.FromJson<UGUI.ToolboxConfig>(textAsset.text);
-                        if (m_LoadType == BlockResLoadType.Assetbundle && mABUnload != null)
-                            mABUnload(resParam.ResName);
-                    }    
-                    break;
-                }
+                Debug.LogError("Load Toolbox config failed. Please assign toolbox config files to BlockResSettings.asset.");
+                return null;
             }
+
+            var configSelected = m_ToolboxFiles.FindAll(file => file.Selected);
+            if (configSelected.Count == 0)
+            {
+                Debug.LogWarning("Please select a toolbox config file in BlockResSettings.asset. Default select \'default\'.");
+                configSelected.Add(m_ToolboxFiles.Find(file => file.IndexName == "default"));
+            } 
+            else if (configSelected.Count > 1)
+            {
+                Debug.LogWarning("You have selected more than one toolbox config files in BlockResSettings.asset. The first one will be used.");
+            }
+
+            var resParam = configSelected[0];
+            TextAsset textAsset = null;
+            switch (m_LoadType)
+            {
+                case BlockResLoadType.Assetbundle:
+                    if (mABSyncLoad != null)
+                        textAsset = mABSyncLoad(resParam.ResName) as TextAsset;
+                    break;
+                case BlockResLoadType.Resources:
+                    textAsset = Resources.Load<TextAsset>(resParam.ResName);
+                    break;
+                case BlockResLoadType.Serialized:
+                    textAsset = resParam.TextFile;
+                    break;
+            }
+
+            if (textAsset == null) 
+                return null;
+            
+            UGUI.ToolboxConfig toolboxConfig = JsonUtility.FromJson<UGUI.ToolboxConfig>(textAsset.text);
+            if (m_LoadType == BlockResLoadType.Assetbundle && mABUnload != null)
+                mABUnload(resParam.ResName);
+
             return toolboxConfig;
         }
 

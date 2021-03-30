@@ -36,12 +36,9 @@ namespace UBlockly.UGUI
             return category;
         }
 
-        public static ToolboxConfig Load(string configName)
+        public static ToolboxConfig Load()
         {
-            ToolboxConfig config = BlockResMgr.Get().LoadToolboxConfig(configName);
-            if (config == null)
-                throw new Exception("Can\'t load ToolboxConfig: " + configName);
-            
+            ToolboxConfig config = BlockResMgr.Get().LoadToolboxConfig();
             foreach (var category in config.BlockCategoryList)
             {
                 category.Init();
