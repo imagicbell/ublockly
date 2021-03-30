@@ -75,7 +75,7 @@ There are two **Settings** under `ublockly/UserData/Resources`.
 
    * **I18n Files**
 
-     This is where you can add your own language. Remember to check the **selected** checkbox. See #8.
+     This is where you can add your own language. Remember to check the **selected** checkbox. See [#8](https://github.com/imagicbell/ublockly/issues/8).
 
    * **Block Json Files**
 
