@@ -61,6 +61,46 @@ To change themes:
 
    
 
+## Some Settings
+
+There are two **Settings** under `ublockly/UserData/Resources`.
+
+1. <a id="blockressettings">**BlockResSettings**</a>
+
+   ![](Doc/settings1.png)
+
+   * **Load Type**
+
+     Define which way to load resources. Default **Serialized**.
+
+   * **I18n Files**
+
+     This is where you can add your own language. Remember to check the **selected** checkbox. See #8.
+
+   * **Block Json Files**
+
+     This is where you add your customized block json files.
+
+   * **Toolbox Files**
+
+     This is where you can add your customized toolbox config files. e.g. change colors of blocks, select block categories, etc. Remember to check the **selected** checkbox.
+
+   * **Block View Prefab Path**
+
+     This is where the automatically generated block prefabs located. You can change it as your preferred location.
+
+   * **Block View Prefabs**
+
+     This is where to reference the automatically generated block prefabs. Just leave it!
+
+   * **Dialog Prefabs**
+
+     This is where to reference all the dialog prefabs. If you want to add your customized dialog. Drag it here and give a name for loading.
+
+2. **BlockViewSettings**
+
+   This is where to tweak the look of blocks. Currently you may just leave it there.
+
 ## Contributors
 
 Greatly appreciate the help by:
