@@ -57,7 +57,24 @@ namespace UBlockly.UGUI
             mWorkspace.VariableMap.AddObserver(new VariableObserver(this));
             mWorkspace.ProcedureDB.AddObserver(new ProcedureObserver(this));
         }
-        
+
+        public void Clean()
+        {
+            mActiveCategory = null;
+
+            foreach (GameObject obj in mRootList.Values)
+            {
+                GameObject.Destroy(obj);
+            }
+            mRootList.Clear();
+
+            foreach (Toggle toggle in mMenuList.Values)
+            {
+                GameObject.Destroy(toggle.gameObject);
+            }
+            mMenuList.Clear();
+        }
+
         /// <summary>
         /// Create a new block view in toolbox 
         /// </summary>
