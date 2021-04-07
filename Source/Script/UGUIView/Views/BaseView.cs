@@ -378,12 +378,8 @@ namespace UBlockly.UGUI
         /// </summary>
         public void UpdateLayout(Vector2 startPos)
         {
-            Vector2 newSize = CalculateSize();
-            bool changePos = XY != startPos;
-            bool changeSize = Size != newSize;
-            
-            if (changePos) XY = startPos;
-            if (changeSize) Size = newSize;
+            XY = startPos;
+            Size = CalculateSize();
 
             switch (Type)
             {
@@ -448,11 +444,14 @@ namespace UBlockly.UGUI
         /// calculate the size of this view
         /// </summary>
         protected abstract Vector2 CalculateSize();
-        
+
         /// <summary>
         /// called when position is changed
         /// </summary>
-        protected internal virtual void OnXYUpdated(){}
+        protected internal virtual void OnXYUpdated()
+        {
+            Childs.ForEach(child => child.OnXYUpdated());
+        }
         
         /// <summary>
         /// called when size is updated

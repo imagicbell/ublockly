@@ -205,24 +205,18 @@ namespace UBlockly.UGUI
             if (InToolbox) return;
 
             mBlock.XY = XY;
-            //update all connection's location
-            foreach (var view in Childs)
+            base.OnXYUpdated();
+        }
+        
+        protected internal override void OnSizeUpdated()
+        {
+            Childs.ForEach(child =>
             {
-                if (view.Type == ViewType.Connection)
+                if (child.Type == ViewType.Connection)
                 {
-                    view.OnXYUpdated();
+                    child.OnXYUpdated();
                 }
-                else if (view.Type == ViewType.LineGroup)
-                {
-                    LineGroupView groupView = view as LineGroupView;
-                    foreach (var inputView in groupView.Childs)
-                    {
-                        ConnectionInputView conInputView = ((InputView) inputView).GetConnectionView();
-                        if (conInputView != null)
-                            conInputView.OnXYUpdated();
-                    }
-                }
-            }
+            });
         }
         
         /// <summary>
