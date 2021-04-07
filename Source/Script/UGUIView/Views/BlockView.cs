@@ -84,7 +84,6 @@ namespace UBlockly.UGUI
         public void UnBindModel()
         {
             //unbind input and connections
-            int inputIndex = 0;
             foreach (BaseView view in Childs)
             {
                 if (view.Type == ViewType.Connection)
@@ -97,7 +96,6 @@ namespace UBlockly.UGUI
                     foreach (var inputView in groupView.Childs)
                     {
                         ((InputView) inputView).UnBindModel();
-                        inputIndex++;
                     }
                 }
             }
@@ -112,6 +110,24 @@ namespace UBlockly.UGUI
         /// </summary>
         public void Dispose()
         {
+            foreach (BaseView view in Childs)
+            {
+                if (view.Type == ViewType.Connection)
+                {
+                    if (((ConnectionView) view).TargetBlockView != null)
+                        ((ConnectionView) view).TargetBlockView.Dispose();
+                }
+                else if (view.Type == ViewType.LineGroup)
+                {
+                    LineGroupView groupView = view as LineGroupView;
+                    foreach (var inputView in groupView.Childs)
+                    {
+                        if (((InputView) inputView).HasConnection && ((InputView) inputView).GetConnectionView().TargetBlockView != null)
+                            ((InputView) inputView).GetConnectionView().TargetBlockView.Dispose();
+                    }
+                }
+            }
+
             Block model = mBlock;
             UnBindModel();
             GameObject.Destroy(this.gameObject);
