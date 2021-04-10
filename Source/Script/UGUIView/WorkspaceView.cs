@@ -184,7 +184,13 @@ namespace UBlockly.UGUI
             CSharp.Interpreter.Run(mWorkspace);
             m_StatusView.enabled = true;
         }
-        
+
+        public void StopRunCode()
+        {
+            CSharp.Interpreter.Stop();
+            m_StatusView.enabled = false;
+        }
+
         /// <summary>
         /// todo: entry
         /// </summary>
@@ -195,11 +201,14 @@ namespace UBlockly.UGUI
             BlocklyUI.NewWorkspace();
         }
 
-        /// <summary>
-        /// todo: call in OnDestroy() 
-        /// </summary>
+        private void OnDestroy()
+        {
+            BlocklyUI.DestroyWorkspace();
+        }
+
         public void Dispose()
         {
+            StopRunCode();
             UnBindModel();
             
             BlockViewSettings.Dispose();

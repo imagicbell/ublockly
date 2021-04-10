@@ -44,9 +44,11 @@ namespace UBlockly.UGUI
         {
             if (WorkspaceView == null)
                 return;
-            
+
             WorkspaceView.Dispose();
-            GameObject.Destroy(WorkspaceView.gameObject);
+            if (WorkspaceView.gameObject != null)
+                GameObject.Destroy(WorkspaceView.gameObject);
+            WorkspaceView = null;
         }
     }
 }
