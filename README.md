@@ -61,6 +61,43 @@ To change themes:
 
    
 
+## How to reset workspace
+
+There are 2 ways to reset the workspace.
+
+1. **Brutal**
+
+```c#
+BlocklyUI.DestroyWorkspace();
+GameObject.Instantiate(workspacePrefab, GameObject.Find("Canvas").transform);
+```
+
+This destroys the `Workspace` gameobject entirely and then re-create a new one. It also reset the logical `workspace`, not only the UI. Just everything.
+
+- *The `workspacePrefab` shall be referenced or loaded by `Resources.Load` or `Assetbundle.Load`...*  
+
+- Also switching scenes can destroy the  `Workspace` gameobject and finish the dispose work automatically, unless you make it undestroyable.
+
+  
+
+2. **Reset block views and toolbox respectively.**
+
+- Stop running code and clean blocks
+
+```c#
+BlocklyUI.WorkspaceView.StopRunCode();
+BlocklyUI.WorkspaceView.CleanViews();
+```
+
+- Reset Toolbox
+
+```c#
+BlocklyUI.WorkspaceView.Toolbox.Clean();
+BlocklyUI.WorkspaceView.Toolbox.Init(BlocklyUI.WorkspaceView.Workspace, ToolboxConfig.Load());
+```
+
+
+
 ## Some Settings
 
 There are two **Settings** under `ublockly/UserData/Resources`.
