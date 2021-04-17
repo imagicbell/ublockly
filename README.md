@@ -138,11 +138,25 @@ There are two **Settings** under `ublockly/UserData/Resources`.
 
    This is where to tweak the look of blocks. Currently you may just leave it there.
 
+## A detailed guide by contributors
+   
+   Also check this cool [guide](https://hackmd.io/@beBvDP44ShyK5VorFbhGcw/H1Qbb1HBu), written by [Toamig](https://github.com/toamig) and [LockDownPT](https://github.com/LockDownPT), for detailed instructions on the usage of ublockly, e.g. changing languages, creating new categories/blocks, etc.
+
+
 ## Contributors
 
-Greatly appreciate the help by:
+   * These two guys made great contributions in the early stage of ublockly.
 
-[liangxie](https://github.com/liangxieq)
+      [liangxie](https://github.com/liangxieq)
 
-[dtknowlove](https://github.com/dtknowlove)
+      [dtknowlove](https://github.com/dtknowlove)
+      
+   * These guys contributed a detailed [guide](https://hackmd.io/@beBvDP44ShyK5VorFbhGcw/H1Qbb1HBu) for ublockly.
+
+      [Toamig](https://github.com/toamig)
+
+      [LockDownPT](https://github.com/LockDownPT)
+      
+   Many thanks to these cool guys!
+      
 
