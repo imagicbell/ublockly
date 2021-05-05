@@ -17,10 +17,12 @@ limitations under the License.
 ****************************************************************************/
 
 
+using System;
 using System.Collections;
 using System.IO;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace UBlockly.UGUI
@@ -149,9 +151,14 @@ namespace UBlockly.UGUI
             string inputXml;
             if (path.Contains("://"))
             {
-                WWW www = new WWW(path);
-                yield return www;
-                inputXml = www.text;
+                using (UnityWebRequest webRequest = UnityWebRequest.Get(path))
+                {
+                    yield return webRequest.SendWebRequest();
+                    if (webRequest.result != UnityWebRequest.Result.Success) {
+                        throw new Exception(webRequest.error + ": " + path);
+                    }
+                    inputXml = webRequest.downloadHandler.text;
+                }
             }
             else
                 inputXml = System.IO.File.ReadAllText(path);
