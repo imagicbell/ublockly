@@ -16,4 +16,7 @@
 **.userprefs
 **/JetBrains/
 **/JetBrains.meta
-
+**/Logs/
+**/.vs/
+**/.vsconfig
+**/UserSettings/
