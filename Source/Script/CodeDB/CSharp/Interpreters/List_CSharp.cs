@@ -857,7 +857,7 @@ namespace UBlockly
         public ArrayListCompare(Func<object,object,bool> f,bool reverse=false)
         {
             m_Func = f;
-            reverse = reverse;
+            m_Reverse = reverse;
         }   
         public int Compare(object x, object y)
         {
