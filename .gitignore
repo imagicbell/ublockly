@@ -5,8 +5,6 @@
 **.idea/
 **.sln
 
-**/ProjectVersion.txt
-
 **/PersistentPath/
 **/PersistentPath.meta
 **/BlockGenPrefabs/
