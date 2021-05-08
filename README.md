@@ -1,4 +1,4 @@
-# UBlocky
+# UBlocky &middot; [![CI](https://github.com/imagicbell/ublockly/actions/workflows/ci.yml/badge.svg)](https://github.com/imagicbell/ublockly/actions/workflows/ci.yml)
 
 See the follows for details:
 
