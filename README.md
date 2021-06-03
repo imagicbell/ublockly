@@ -1,11 +1,11 @@
 # UBlocky &middot; [![CI](https://github.com/imagicbell/ublockly/actions/workflows/ci.yml/badge.svg)](https://github.com/imagicbell/ublockly/actions/workflows/ci.yml)
 
-See the follows for details:
+Please read the following blogs for detailed explanation of ublockly:
 
-1. http://imagicbell.github.io/unity/2017/10/11/blockly-one.html
-2. http://imagicbell.github.io/unity/2017/10/14/blockly-two.html
-3. http://imagicbell.github.io/unity/2017/10/22/blockly-three.html
-4. http://imagicbell.github.io/unity/2017/10/31/blockly-four.html
+1. [Introduction](https://imagicbell.github.io/posts/2017-10-11-blockly-one)
+2. [Blockly Model](https://imagicbell.github.io/posts/2017-10-14-blockly-two)
+3. [Code Generator, Interpreter and Runner](https://imagicbell.github.io/posts/2017-10-22-blockly-three)
+4. [UGUI Design](https://imagicbell.github.io/posts/2017-10-31-blockly-four)
 
 
 Have fun with [2 game demo](https://github.com/imagicbell/ublocklygame).
