@@ -24,7 +24,7 @@ using System.Collections;
 
 namespace UBlockly
 {
-    public abstract class ControlCmdtor : EnumeratorCmdtor
+    public abstract class LoopCmdtor : EnumeratorCmdtor
     {
         protected ControlFlowType mFlowState;
     
@@ -64,7 +64,7 @@ namespace UBlockly
         /// <summary>
         /// find the parent loop block of the flow block
         /// </summary>
-        public static ControlCmdtor FindParentControlCmdtor(Block block)
+        public static LoopCmdtor FindParentLoopCmdtor(Block block)
         {
             Block loopBlock = block;
             while (loopBlock != null && !IsLoopBlock(loopBlock))
@@ -73,7 +73,7 @@ namespace UBlockly
             }
 
             if (loopBlock == null) return null;
-            return CSharp.Interpreter.GetBlockInterpreter(loopBlock) as ControlCmdtor;
+            return CSharp.Interpreter.GetBlockInterpreter(loopBlock) as LoopCmdtor;
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace UBlockly
         /// </summary>
         public static bool SkipRunByControlFlow(Block block)
         {
-            ControlCmdtor loopCmdtor = FindParentControlCmdtor(block);
+            LoopCmdtor loopCmdtor = FindParentLoopCmdtor(block);
             if (loopCmdtor != null)
                 return loopCmdtor.NeedBreak || loopCmdtor.NeedContinue;
             return false;
@@ -89,16 +89,12 @@ namespace UBlockly
         
         public static bool IsLoopBlock(Block block)
         {
-            return block.Type.Equals("controls_repeat") ||
-                   block.Type.Equals("controls_repeat_ext") ||
-                   block.Type.Equals("controls_whileUntil") ||
-                   block.Type.Equals("controls_for") ||
-                   block.Type.Equals("controls_forEach");
+            return CSharp.Interpreter.GetBlockInterpreter(block) is LoopCmdtor;
         }
     }
     
     [CodeInterpreter(BlockType = "controls_repeat")]
-    public class Control_Repeat_Cmdtor : ControlCmdtor
+    public class LoopRepeatCmdtor : LoopCmdtor
     {
         protected override IEnumerator Execute(Block block)
         {
@@ -118,7 +114,7 @@ namespace UBlockly
     }
 
     [CodeInterpreter(BlockType = "controls_repeat_ext")]
-    public class Control_RepeatExt_Cmdtor : ControlCmdtor
+    public class LoopRepeatExtCmdtor : LoopCmdtor
     {
         protected override IEnumerator Execute(Block block)
         {
@@ -144,7 +140,7 @@ namespace UBlockly
     }
 
     [CodeInterpreter(BlockType = "controls_whileUntil")]
-    public class Control_WhileUntil_Cmdtor : ControlCmdtor
+    public class LoopWhileUntilCmdtor : LoopCmdtor
     {
         protected override IEnumerator Execute(Block block)
         {
@@ -178,7 +174,7 @@ namespace UBlockly
     }
 
     [CodeInterpreter(BlockType = "controls_for")]
-    public class Control_For_Cmdtor : ControlCmdtor
+    public class LoopForCmdtor : LoopCmdtor
     {
         protected override IEnumerator Execute(Block block)
         {
@@ -212,7 +208,7 @@ namespace UBlockly
     }
 
     [CodeInterpreter(BlockType = "controls_forEach")]
-    public class Control_ForEach_Cmdtor : ControlCmdtor
+    public class LoopForEachCmdtor : LoopCmdtor
     {
         protected override IEnumerator Execute(Block block)
         {
@@ -253,7 +249,7 @@ namespace UBlockly
     {
         protected override void Execute(Block block)
         {
-            ControlCmdtor loopCmdtor = ControlCmdtor.FindParentControlCmdtor(block);
+            LoopCmdtor loopCmdtor = LoopCmdtor.FindParentLoopCmdtor(block);
             if (loopCmdtor == null)
                 throw new Exception("blocks of \"break\" and \"continue\" can only be put in blocks of loop control types");
             

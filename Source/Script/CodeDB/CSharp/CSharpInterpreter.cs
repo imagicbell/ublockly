@@ -128,7 +128,7 @@ namespace UBlockly
             }
             
             //check flow 
-            if (ControlCmdtor.SkipRunByControlFlow(block))
+            if (LoopCmdtor.SkipRunByControlFlow(block))
             {
                 yield break;
             }
