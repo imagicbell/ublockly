@@ -33,146 +33,126 @@ namespace UBlockly
             get { return CodeName.CSharp; }
         }
 
-        private readonly CoroutineRunner mRunner;
         private readonly Names mVariableNames;
         private readonly Datas mVariableDatas;
-
-        private IEnumerator mRunningProcess;
+        private List<KeyValuePair<Block, CodeRunner>> mCodeRunners;
 
         public CSharpInterpreter(Names variableNames, Datas variableDatas)
         {
             mVariableNames = variableNames;
             mVariableDatas = variableDatas;
-            mRunner = CoroutineRunner.Create("CodeRunner", true);
+            mCodeRunners = new List<KeyValuePair<Block, CodeRunner>>();
         }
 
         public override void Run(Workspace workspace)
         {
             mVariableNames.Reset();
             mVariableDatas.Reset();
-
-            mRunningProcess = RunWorkspace(workspace);
-            mRunner.StartProcess(mRunningProcess);
-        }
-
-        public override void Pause()
-        {
-            if (mRunningProcess != null)
-            {
-                mRunner.PauseProcess(mRunningProcess);
-                CSharp.Interpreter.FireUpdate(new InterpreterUpdateState(InterpreterUpdateState.Pause));
-            }
-        }
-
-        public override void Resume()
-        {
-            if (mRunningProcess != null)
-            {
-                mRunner.ResumeProcess(mRunningProcess);
-                CSharp.Interpreter.FireUpdate(new InterpreterUpdateState(InterpreterUpdateState.Resume));
-            }
-        }
-
-        public override void Stop()
-        {
-            if (mRunningProcess != null)
-            {
-                mRunner.StopProcess(mRunningProcess);
-                mRunningProcess = null;
-                CSharp.Interpreter.FireUpdate(new InterpreterUpdateState(InterpreterUpdateState.Stop));
-            }
-        }
-
-        public override void Error(string msg)
-        {
-            if (mRunningProcess != null)
-            {
-                mRunner.StopProcess(mRunningProcess);
-                mRunningProcess = null;
-                CSharp.Interpreter.FireUpdate(new InterpreterUpdateState(InterpreterUpdateState.Error, msg));
-            }
-        }
-
-        /// <summary>
-        /// coroutine run code for workspace
-        /// todo: execute topblocks in order or synchronously
-        /// </summary>
-        IEnumerator RunWorkspace(Workspace workspace)
-        {
-            yield return null;
             
-            //traverse all blocks in the workspace and run code for the blocks
+            //start runner from the topmost blocks
             List<Block> blocks = workspace.GetTopBlocks(true);
             foreach (Block block in blocks)
             {
                 //exclude the procedure definition blocks
                 if (ProcedureDB.IsDefinition(block))
                     continue;
-                
-                yield return RunBlock(block);
-            }
-            
-            mRunningProcess = null;
-            CSharp.Interpreter.FireUpdate(new InterpreterUpdateState(InterpreterUpdateState.Stop));
-        }
-        
-        /// <summary>
-        /// run the block in a coroutine way
-        /// </summary>
-        IEnumerator RunBlock(Block block)
-        {
-            //check if stopped
-            if (mRunningProcess == null)
-            {
-                yield break;
-            }
-            
-            //check flow 
-            if (LoopCmdtor.SkipRunByControlFlow(block))
-            {
-                yield break;
+
+                CodeRunner runner = CodeRunner.Create(block.Type);
+                mCodeRunners.Add(new KeyValuePair<Block, CodeRunner>(block, runner));
             }
 
-            if (!block.Disabled)
+            if (workspace.Options.Synchronous)
             {
-                CSharp.Interpreter.FireUpdate(new InterpreterUpdateState(InterpreterUpdateState.RunBlock, block));
-                yield return GetBlockInterpreter(block).Run(block);
-                CSharp.Interpreter.FireUpdate(new InterpreterUpdateState(InterpreterUpdateState.FinishBlock, block));
+                //run synchronously
+                foreach (KeyValuePair<Block, CodeRunner> pair in mCodeRunners)
+                {
+                    pair.Value.StartRun(new CmdEnumerator(pair.Key));
+                }
             }
-            
-            if (block.NextBlock != null)
-                yield return RunBlock(block.NextBlock);
+            else
+            {
+                //run one after another
+                for (int i = 0; i < mCodeRunners.Count - 1; i++)
+                {
+                    var next = mCodeRunners[i + 1];
+                    mCodeRunners[i].Value.SetFinishCallback(() =>
+                    {
+                        next.Value.StartRun(new CmdEnumerator(next.Key));
+                    });
+                }
+                mCodeRunners[0].Value.StartRun(new CmdEnumerator(mCodeRunners[0].Key));
+            }
         }
-        
+
+        public override void Pause()
+        {
+            foreach (KeyValuePair<Block, CodeRunner> pair in mCodeRunners)
+            {
+                var runner = pair.Value;
+                if (runner.CurStatus == CodeRunner.Status.Running)
+                    runner.Pause();
+            }
+            CSharp.Interpreter.FireUpdate(new InterpreterUpdateState(InterpreterUpdateState.Pause));
+        }
+
+        public override void Resume()
+        {
+            foreach (KeyValuePair<Block, CodeRunner> pair in mCodeRunners)
+            {
+                var runner = pair.Value;
+                if (runner.CurStatus == CodeRunner.Status.Pause)
+                    runner.Resume();
+            }
+            CSharp.Interpreter.FireUpdate(new InterpreterUpdateState(InterpreterUpdateState.Resume));
+        }
+
+        public override void Stop()
+        {
+            foreach (KeyValuePair<Block, CodeRunner> pair in mCodeRunners)
+            {
+                var runner = pair.Value;
+                runner.Stop();
+            }
+            CSharp.Interpreter.FireUpdate(new InterpreterUpdateState(InterpreterUpdateState.Stop));
+        }
+
+        public override void Error(string msg)
+        {
+            foreach (KeyValuePair<Block, CodeRunner> pair in mCodeRunners)
+            {
+                var runner = pair.Value;
+                runner.Stop();
+            }
+            CSharp.Interpreter.FireUpdate(new InterpreterUpdateState(InterpreterUpdateState.Error, msg));
+        }
+
+
         /// <summary>
         /// run code representing the specified value input.
         /// should return a DataStruct
         /// </summary>
-        public CustomEnumerator ValueReturn(Block block, string name)
+        public CmdEnumerator ValueReturn(Block block, string name)
         {
             var targetBlock = block.GetInputTargetBlock(name);
             if (targetBlock == null)
             {
                 Debug.Log(string.Format("Value input block of {0} is null", block.Type));
-                return new CustomEnumerator(null);
+                return null;
             }
             if (targetBlock.OutputConnection == null)
             {
                 Debug.Log(string.Format("Value input block of {0} must have an output connection", block.Type));
-                return new CustomEnumerator(null);
+                return null;
             }
-
-            CustomEnumerator etor = new CustomEnumerator(RunBlock(targetBlock));
-            etor.Cmdtor = GetBlockInterpreter(targetBlock);
-            return etor;
+            return new CmdEnumerator(targetBlock);
         }
 
         /// <summary>
         /// run code representing the specified value input. WITH a default DataStruct
         /// </summary>
-        public CustomEnumerator ValueReturn(Block block, string name, DataStruct defaultData)
+        public CmdEnumerator ValueReturn(Block block, string name, DataStruct defaultData)
         {
-            CustomEnumerator etor = ValueReturn(block, name);
+            CmdEnumerator etor = ValueReturn(block, name);
             etor.Cmdtor.DefaultData = defaultData;
             return etor;
         }
@@ -180,21 +160,21 @@ namespace UBlockly
         /// <summary>
         /// Run code representing the statement.
         /// </summary>
-        public IEnumerator StatementRun(Block block, string name)
+        public CmdEnumerator StatementRun(Block block, string name)
         {
             var targetBlock = block.GetInputTargetBlock(name);
             if (targetBlock == null)
             {
                 Debug.Log(string.Format("Statement input block of {0} is null", block.Type));
-                yield break;
+                return null;
             }
             if (targetBlock.PreviousConnection == null)
             {
                 Debug.Log(string.Format("Statement input block of {0} must have a previous connection", block.Type));
-                yield break;
+                return null;
             }
 
-            yield return RunBlock(targetBlock);
+            return new CmdEnumerator(targetBlock);
         }
 
         public Cmdtor GetBlockInterpreter(Block block)

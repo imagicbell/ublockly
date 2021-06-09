@@ -60,7 +60,7 @@ namespace UBlockly
     {
         protected override IEnumerator Execute(Block block)
         {
-            CustomEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "ITEM", new DataStruct());
+            CmdEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "ITEM", new DataStruct());
             yield return ctor;
             DataStruct arg0 = ctor.Data;
             
@@ -83,7 +83,7 @@ namespace UBlockly
     {
         protected override IEnumerator Execute(Block block)
         {
-            CustomEnumerator ctor = CSharp.Interpreter.ValueReturn(block,"LIST",new DataStruct(new ArrayList()));
+            CmdEnumerator ctor = CSharp.Interpreter.ValueReturn(block,"LIST",new DataStruct(new ArrayList()));
             yield return ctor;
             DataStruct arg0 = ctor.Data;
             
@@ -97,7 +97,7 @@ namespace UBlockly
     {
         protected override IEnumerator Execute(Block block)
         {
-            CustomEnumerator ctor = CSharp.Interpreter.ValueReturn(block,"VALUE",new DataStruct(new ArrayList()));
+            CmdEnumerator ctor = CSharp.Interpreter.ValueReturn(block,"VALUE",new DataStruct(new ArrayList()));
             yield return ctor;
             DataStruct arg0 = ctor.Data;
 
@@ -110,7 +110,7 @@ namespace UBlockly
     {
         protected override IEnumerator Execute(Block block)
         {
-            CustomEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "VALUE", new DataStruct(new ArrayList()));
+            CmdEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "VALUE", new DataStruct(new ArrayList()));
             yield return ctor;
             DataStruct arg0 = ctor.Data;
 
@@ -123,7 +123,7 @@ namespace UBlockly
     {
         protected override IEnumerator Execute(Block block)
         {
-            CustomEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "VALUE", new DataStruct(""));
+            CmdEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "VALUE", new DataStruct(""));
             yield return ctor;
             DataStruct arg0 = ctor.Data;
             
@@ -153,7 +153,7 @@ namespace UBlockly
     {
         protected override IEnumerator Execute(Block block)
         {
-            CustomEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "VALUE", new DataStruct(""));
+            CmdEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "VALUE", new DataStruct(""));
             yield return ctor;
             DataStruct argList = ctor.Data;
             
@@ -222,7 +222,7 @@ namespace UBlockly
     {
         protected override IEnumerator Execute(Block block)
         {
-            CustomEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "VALUE", new DataStruct(""));
+            CmdEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "VALUE", new DataStruct(""));
             yield return ctor;
             DataStruct argList = ctor.Data;
             
@@ -264,7 +264,7 @@ namespace UBlockly
     {
         protected override IEnumerator Execute(Block block)
         {
-            CustomEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "LIST", new DataStruct(""));
+            CmdEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "LIST", new DataStruct(""));
             yield return ctor;
             DataStruct argList = ctor.Data;
             
@@ -325,7 +325,7 @@ namespace UBlockly
     {
         protected override IEnumerator Execute(Block block)
         {
-            CustomEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "LIST", new DataStruct(""));
+            CmdEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "LIST", new DataStruct(""));
             yield return ctor;
             DataStruct argList = ctor.Data;
             
@@ -391,7 +391,7 @@ namespace UBlockly
     {
         protected override IEnumerator Execute(Block block)
         {
-            CustomEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "LIST", new DataStruct(""));
+            CmdEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "LIST", new DataStruct(""));
             yield return ctor;
             DataStruct arg0 = ctor.Data;
             
@@ -435,7 +435,7 @@ namespace UBlockly
     {
         protected override IEnumerator Execute(Block block)
         {
-            CustomEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "INPUT", new DataStruct(""));
+            CmdEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "INPUT", new DataStruct(""));
             yield return ctor;
             DataStruct arg0 = ctor.Data;
             
@@ -452,7 +452,7 @@ namespace UBlockly
     {
         protected override IEnumerator Execute(Block block)
         {
-            CustomEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "INPUT", new DataStruct(""));
+            CmdEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "INPUT", new DataStruct(""));
             yield return ctor;
             DataStruct arg0 = ctor.Data;
             

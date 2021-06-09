@@ -21,18 +21,34 @@ using System.Collections;
 namespace UBlockly
 {
     /// <summary>
-    /// custom inplementation of IEnumerator for carrying data
+    /// IEnumerator wrapper for running Cmdtor, block code
     /// </summary>
-    public class CustomEnumerator : IEnumerator
+    public class CmdEnumerator : IEnumerator
     {
+        private readonly Block mBlock;
+        private readonly Cmdtor mCmdtor;
         private IEnumerator mItor;
-        
-        public Cmdtor Cmdtor { get; set; }
-        public DataStruct Data { get { return Cmdtor.Data; } }
 
-        public CustomEnumerator(IEnumerator itor)
+        public Block Block
         {
-            mItor = itor;
+            get { return mBlock; }
+        }
+
+        public Cmdtor Cmdtor
+        {
+            get { return mCmdtor; }
+        }
+
+        public DataStruct Data
+        {
+            get { return mCmdtor.Data; }
+        }
+
+        public CmdEnumerator(Block block)
+        {
+            mBlock = block;
+            mCmdtor = CSharp.Interpreter.GetBlockInterpreter(block);
+            mItor = mCmdtor.Run(block);
         }
 
         public bool MoveNext()
@@ -48,6 +64,22 @@ namespace UBlockly
         public object Current
         {
             get { return mItor.Current; }
+        }
+
+        /// <summary>
+        /// get the next block's running code 
+        /// </summary>
+        public CmdEnumerator GetNextCmd()
+        {
+            var nextblock = mBlock.NextBlock;
+            if (nextblock == null || nextblock.Disabled)
+                return null;
+
+            //parent loop was break or continue, move out. 
+            if (LoopCmdtor.SkipRunByControlFlow(nextblock))
+                return null;
+
+            return new CmdEnumerator(nextblock);
         }
     }
 }

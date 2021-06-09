@@ -33,7 +33,7 @@ namespace UBlockly
             bool satisfyIf = false;
             do
             {
-                CustomEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "IF" + n);
+                CmdEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "IF" + n);
                 yield return ctor;
                 DataStruct condition = ctor.Data;
                 if (!condition.IsUndefined && condition.IsBoolean && condition.BooleanValue)
@@ -64,7 +64,7 @@ namespace UBlockly
         {
             string op = block.GetFieldValue("OP");
 
-            CustomEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "A", new DataStruct(0));
+            CmdEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "A", new DataStruct(0));
             yield return ctor;
             DataStruct argument0 = ctor.Data;
 
@@ -121,7 +121,7 @@ namespace UBlockly
         {
             string op = block.GetFieldValue("OP");
 
-            CustomEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "A", new DataStruct(false));
+            CmdEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "A", new DataStruct(false));
             yield return ctor;
             DataStruct argument0 = ctor.Data;
 
@@ -151,7 +151,7 @@ namespace UBlockly
     {
         protected override IEnumerator Execute(Block block)
         {
-            CustomEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "BOOL", new DataStruct(false));
+            CmdEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "BOOL", new DataStruct(false));
             yield return ctor;
             DataStruct argument = ctor.Data;
             
@@ -191,7 +191,7 @@ namespace UBlockly
     {
         protected override IEnumerator Execute(Block block)
         {
-            CustomEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "IF", new DataStruct(false));
+            CmdEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "IF", new DataStruct(false));
             yield return ctor;
             DataStruct condition = ctor.Data;
             

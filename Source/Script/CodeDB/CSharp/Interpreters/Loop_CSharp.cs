@@ -66,7 +66,7 @@ namespace UBlockly
         /// </summary>
         public static LoopCmdtor FindParentLoopCmdtor(Block block)
         {
-            Block loopBlock = block;
+            Block loopBlock = block.ParentBlock;
             while (loopBlock != null && !IsLoopBlock(loopBlock))
             {
                 loopBlock = loopBlock.ParentBlock;
@@ -120,7 +120,7 @@ namespace UBlockly
         {
             ResetFlowState();
             
-            CustomEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "TIMES", new DataStruct(0));
+            CmdEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "TIMES", new DataStruct(0));
             yield return ctor;
             DataStruct repeats = ctor.Data;
             
@@ -148,7 +148,7 @@ namespace UBlockly
             
             bool until = block.GetFieldValue("MODE").Equals("UNTIL");
             
-            CustomEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "BOOL", new DataStruct(false));
+            CmdEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "BOOL", new DataStruct(false));
             yield return ctor;
             DataStruct arg = ctor.Data;
             
@@ -180,7 +180,7 @@ namespace UBlockly
         {
             ResetFlowState();
             
-            CustomEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "FROM", new DataStruct(0));
+            CmdEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "FROM", new DataStruct(0));
             yield return ctor;
             DataStruct from = ctor.Data;
             
@@ -214,7 +214,7 @@ namespace UBlockly
         {
             ResetFlowState();
             
-            CustomEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "LIST");
+            CmdEnumerator ctor = CSharp.Interpreter.ValueReturn(block, "LIST");
             yield return ctor;
             DataStruct arg0 = ctor.Data;
             

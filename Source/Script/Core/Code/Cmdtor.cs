@@ -38,11 +38,15 @@ namespace UBlockly
 
         public IEnumerator Run(Block block)
         {
+            CSharp.Interpreter.FireUpdate(new InterpreterUpdateState(InterpreterUpdateState.RunBlock, block));
+            
             Reset();
             yield return OnRun(block);
 
             if (mData.IsUndefined && !mDefaultData.IsUndefined)
                 mData = mDefaultData;
+            
+            CSharp.Interpreter.FireUpdate(new InterpreterUpdateState(InterpreterUpdateState.FinishBlock, block));
         }
 
         public void Reset()

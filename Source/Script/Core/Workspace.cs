@@ -37,6 +37,10 @@ namespace UBlockly
             public bool RTL = false;
             public int MaxBlocks = -1;
             public bool ReadOnly = false;
+            /// <summary>
+            /// if the workspace has more than one top blocks, do they run synchronously or wait until the last group of blocks have finished.
+            /// </summary>
+            public bool Synchronous = false;
         }
         
         public WorkspaceOptions Options { get; private set; }
