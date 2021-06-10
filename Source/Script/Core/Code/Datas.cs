@@ -99,22 +99,6 @@ namespace UBlockly
             }
         }
 
-        public object Value
-        {
-            get
-            {
-                switch (this.Type)
-                {
-                    case Define.EDataType.Undefined: return null;
-                    case Define.EDataType.Boolean: return mBooleanValue;
-                    case Define.EDataType.Number: return mNumberValue;
-                    case Define.EDataType.String: return mStringValue;
-                    case Define.EDataType.List: return mListValue;
-                    default: return null;
-                }
-            }
-        }
-
         public DataStruct(bool booleanValue)
         {
             this.Type = Define.EDataType.Boolean;
@@ -212,15 +196,7 @@ namespace UBlockly
 
         public override bool Equals(object obj)
         {
-            if (obj is DataStruct)
-            {
-                DataStruct data = (DataStruct)obj;
-                return data.Type == this.Type && data.Value == this.Value;
-            }
-            else
-            {
-                return false;
-            }
+            return (obj is DataStruct) && (this == (DataStruct) obj);
         }
 
         public override string ToString()
@@ -241,6 +217,37 @@ namespace UBlockly
                 default: return "Undefined";
             }
         }
+        
+        public static bool operator ==(DataStruct a, DataStruct b)
+        {
+            if (a.Type != b.Type)
+                return false;
+            switch (a.Type)
+            {
+                case Define.EDataType.Undefined: return true;
+                case Define.EDataType.Boolean: return a.BooleanValue == b.BooleanValue;
+                case Define.EDataType.Number: return a.NumberValue == b.NumberValue;
+                case Define.EDataType.String: return a.StringValue == b.StringValue;
+                case Define.EDataType.List:
+                {
+                    if (a.ListValue.Count != b.ListValue.Count)
+                        return false;
+                    for (int i = 0; i < a.ListValue.Count; i++)
+                    {
+                        if (a.ListValue[i] != b.ListValue[i])
+                            return false;
+                    }
+                    return true;
+                }
+                default: return false;
+            }
+        }
+
+        public static bool operator !=(DataStruct a, DataStruct b)
+        {
+            return !(a == b);
+        }
+
 
         #endregion
        

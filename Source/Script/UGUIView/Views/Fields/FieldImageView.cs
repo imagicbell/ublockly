@@ -60,7 +60,7 @@ namespace UBlockly.UGUI
         protected override Vector2 CalculateSize()
         {
             int width = mFieldImage.Size.x;
-            Debug.LogFormat(">>>>> CalculateSize-Image: width: {0}", width);
+            //Debug.LogFormat(">>>>> CalculateSize-Image: width: {0}", width);
             return new Vector2(width, BlockViewSettings.Get().ContentHeight);
         }
     }

@@ -53,7 +53,7 @@ namespace UBlockly.UGUI
         protected override Vector2 CalculateSize()
         {
             int width = m_TextUI.CalculateTextWidth(m_TextUI.text);
-            Debug.LogFormat(">>>>> CalculateSize-Label: text: {0}, width: {1}", m_TextUI.text, width);
+            //Debug.LogFormat(">>>>> CalculateSize-Label: text: {0}, width: {1}", m_TextUI.text, width);
             return new Vector2(width, BlockViewSettings.Get().ContentHeight);
         }
     }

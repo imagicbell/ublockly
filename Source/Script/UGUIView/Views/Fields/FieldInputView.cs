@@ -70,7 +70,7 @@ namespace UBlockly.UGUI
             float width = m_InputField.textComponent.CalculateTextWidth(m_InputField.text);
             width += mHorizontalMargin;
 
-            Debug.LogFormat(">>>>> CalculateSize-TextInput: text: {0}, width: {1}", m_InputField.text, width);
+            //Debug.LogFormat(">>>>> CalculateSize-TextInput: text: {0}, width: {1}", m_InputField.text, width);
             return new Vector2(width, BlockViewSettings.Get().ContentHeight);
         }
     }
