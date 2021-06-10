@@ -89,7 +89,7 @@
   
   {
     "type": "lists_indexOf",
-    "message0": "%1 %2 %3",
+    "message0": "%{BKY_LISTS_GET_INDEX_INPUT_IN_LIST} %1 %{BKY_LISTS_INDEX_FIND} %2 %{BKY_LISTS_INDEX_OF_OCCURANCE} %3",
     "args0": [
       {
         "type": "input_value",

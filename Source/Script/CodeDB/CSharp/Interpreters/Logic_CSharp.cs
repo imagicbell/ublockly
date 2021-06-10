@@ -79,11 +79,11 @@ namespace UBlockly
             switch (op)
             {
                 case "EQ":
-                    returnData.BooleanValue = argument0.Value == argument1.Value;
+                    returnData.BooleanValue = argument0 == argument1;
                     break;
                     
                 case "NEQ":
-                    returnData.BooleanValue = argument0.Value != argument1.Value;
+                    returnData.BooleanValue = argument0 != argument1;
                     break;
                     
                 case "LT":

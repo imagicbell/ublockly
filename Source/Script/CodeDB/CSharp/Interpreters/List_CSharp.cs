@@ -72,7 +72,7 @@ namespace UBlockly
             int repeatCount = (int) arg1.NumberValue.Value;
             for (int i = 0; i < repeatCount; i++)
             {
-                list.Add(arg0.NumberValue);
+                list.Add(arg0);
             }
             ReturnData(new DataStruct(list));
         }
@@ -132,19 +132,49 @@ namespace UBlockly
             DataStruct arg1 = ctor.Data;
             
             string end = block.GetFieldValue("END");
+            int index = -1;
             switch (end)
             {
                 case "FIRST":
-                    ReturnData(arg0.IsString
-                        ? new DataStruct(arg0.StringValue.IndexOf(arg1.StringValue) + 1)
-                        : new DataStruct(arg0.ListValue.IndexOf(arg1.Value) + 1));
+                {
+                    if (arg0.IsString)
+                    {
+                        index = arg0.StringValue.IndexOf(arg1.StringValue);
+                    }
+                    else
+                    {
+                        for (int i = 0; i < arg0.ListValue.Count; i++)
+                        {
+                            if (arg1.Equals(arg0.ListValue[i]))
+                            {
+                                index = i;
+                                break;
+                            }
+                        }
+                    }
                     break;
+                }
                 case "LAST":
-                    ReturnData(arg0.IsString
-                        ? new DataStruct(arg0.StringValue.LastIndexOf(arg1.StringValue) + 1)
-                        : new DataStruct(arg0.ListValue.LastIndexOf(arg1.Value) + 1));
+                {
+                    if (arg0.IsString)
+                    {
+                        index = arg0.StringValue.LastIndexOf(arg1.StringValue);
+                    }
+                    else
+                    {
+                        for (int i = arg0.ListValue.Count - 1; i >= 0; i--)
+                        {
+                            if (arg1.Equals(arg0.ListValue[i]))
+                            {
+                                index = i;
+                                break;
+                            }
+                        }
+                    }
                     break;
+                }
             }
+            ReturnData(new DataStruct(index));
         }
     }
 
