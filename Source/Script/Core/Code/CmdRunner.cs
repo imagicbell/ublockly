@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace UBlockly
 {
-    public class CodeRunner : MonoBehaviour
+    public class CmdRunner : MonoBehaviour
     {
-        public static CodeRunner Create(string runnerName, bool dontDestroyOnLoad = false)
+        public static CmdRunner Create(string runnerName, bool dontDestroyOnLoad = false)
         {
             GameObject parentObj = GameObject.Find("CodeRunners");
             if (parentObj == null)
@@ -21,27 +21,13 @@ namespace UBlockly
                 GameObject.DontDestroyOnLoad(runnerObj);
             }
             runnerObj.transform.parent = parentObj.transform;
-            return runnerObj.AddComponent<CodeRunner>();
+            return runnerObj.AddComponent<CmdRunner>();
         }
         
-        public enum Mode
-        {
-            Normal,
-            Step
-        }
-        
-        public enum Status
-        {
-            Idle,
-            Running,
-            Pause,
-            Stop,
-        }
+        public Runner.Mode RunMode = Runner.Mode.Normal;
 
-        public Mode RunMode = Mode.Normal;
-
-        private Status curStatus = Status.Idle;
-        public Status CurStatus { get { return curStatus; } } 
+        private Runner.Status curStatus = Runner.Status.Stop;
+        public Runner.Status CurStatus { get { return curStatus; } } 
 
         private Stack<CmdEnumerator> callStack = new Stack<CmdEnumerator>();
         private Stack<IEnumerator> itorStack = new Stack<IEnumerator>();
@@ -58,7 +44,7 @@ namespace UBlockly
         /// </summary>
         public void StartRun(CmdEnumerator entryCall)
         {
-            curStatus = Status.Running;
+            curStatus = Runner.Status.Running;
             
             itorStack.Clear();
             callStack.Clear();
@@ -72,9 +58,9 @@ namespace UBlockly
         /// <summary>
         /// api - step over to next block in debug mode
         /// </summary>
-        public void StepOver()
+        public void Step()
         {
-            if (RunMode != Mode.Step)
+            if (RunMode != Runner.Mode.Step)
                 return;
 
             StartCoroutine(Run());
@@ -85,10 +71,10 @@ namespace UBlockly
         /// </summary>
         public void Pause()
         {
-            if (RunMode == Mode.Step)
+            if (RunMode == Runner.Mode.Step)
                 return;
 
-            curStatus = Status.Pause;
+            curStatus = Runner.Status.Pause;
         }
 
         /// <summary>
@@ -96,10 +82,10 @@ namespace UBlockly
         /// </summary>
         public void Resume()
         {
-            if (RunMode == Mode.Step)
+            if (RunMode == Runner.Mode.Step)
                 return;
 
-            curStatus = Status.Running;
+            curStatus = Runner.Status.Running;
             StartCoroutine(Run());
         }
 
@@ -108,14 +94,15 @@ namespace UBlockly
         /// </summary>
         public void Stop()
         {
-            if (curStatus == Status.Running)
+            if (curStatus == Runner.Status.Running)
             {
-                curStatus = Status.Stop;
+                curStatus = Runner.Status.Stop;
             }
-            else if (curStatus == Status.Pause)
+            else if (curStatus == Runner.Status.Pause)
             {
                 itorStack.Clear();
                 callStack.Clear();
+                curStatus = Runner.Status.Stop;
             }
         }
 
@@ -163,14 +150,14 @@ namespace UBlockly
                         itorStack.Push(next);
                     }
                     
-                    if (RunMode == Mode.Step || curStatus == Status.Pause || curStatus == Status.Stop)
+                    if (RunMode == Runner.Mode.Step || curStatus == Runner.Status.Pause || curStatus == Runner.Status.Stop)
                     {
                         break;
                     }
                 }
             }
 
-            if (curStatus == Status.Stop)
+            if (curStatus == Runner.Status.Stop)
             {
                 itorStack.Clear();
                 callStack.Clear();
@@ -179,11 +166,11 @@ namespace UBlockly
             if (itorStack.Count == 0)
             {
                 Debug.LogFormat("<color=green>[CodeRunner - {0}]: end - time: {1}.</color>", gameObject.name, Time.time);
-                if (curStatus != Status.Stop)
+                if (curStatus != Runner.Status.Stop)
                 {
                     finishCb?.Invoke();
                 }
-                curStatus = Status.Idle;
+                curStatus = Runner.Status.Stop;
             }
         }
 

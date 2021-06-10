@@ -24,7 +24,7 @@ using System.Reflection;
 
 namespace UBlockly
 {
-    public abstract class Interpreter : Observable<InterpreterUpdateState>
+    public abstract class Interpreter
     {
         public abstract CodeName Name { get; }
         
@@ -56,60 +56,6 @@ namespace UBlockly
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// run code for all blocks in the workspace to the specified language.
-        /// </summary>
-        public virtual void Run(Workspace workspace) {}
-
-        /// <summary>
-        /// Pause the current running interpreting process
-        /// </summary>
-        public virtual void Pause() {} 
-
-        /// <summary>
-        /// Resume the paused the interpreting process
-        /// </summary>
-        public virtual void Resume() {}
-
-        /// <summary>
-        /// stop the current running interpreting process 
-        /// </summary>
-        public virtual void Stop() {}
-        
-        /// <summary>
-        /// process overflows
-        /// </summary>
-        public virtual void Error(string msg) {}
-    }
-    
-    public class InterpreterUpdateState
-    {
-        public const int RunBlock = 1;
-        public const int FinishBlock = 2;
-        public const int Pause = 3;
-        public const int Resume = 4;
-        public const int Stop = 5;
-        public const int Error = 6;
-
-        public readonly int Type;
-        public readonly Block RunningBlock;
-        public readonly string Msg;
-
-        public InterpreterUpdateState(int type)
-        {
-            Type = type;
-        }
-
-        public InterpreterUpdateState(int type, Block runBlock) : this(type)
-        {
-            RunningBlock = runBlock;
-        }
-
-        public InterpreterUpdateState(int type, string msg) : this(type)
-        {
-            Msg = msg;
         }
     }
 }

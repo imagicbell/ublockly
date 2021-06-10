@@ -25,7 +25,7 @@ namespace UBlockly.UGUI
 {
     public class BlockStatusView : MonoBehaviour
     {
-        private InterpreterUpdateStateObserver mObserver;
+        private RunnerUpdateStateObserver mObserver;
         private GameObject mStatusObj;
         private Stack<Block> mRunningBlocks;
         private BlockView mRunBlockView;
@@ -33,14 +33,11 @@ namespace UBlockly.UGUI
         private void Awake()
         {
             mRunningBlocks = new Stack<Block>();
-            mObserver = new InterpreterUpdateStateObserver(this);
-            CSharp.Interpreter.AddObserver(mObserver);
-
-            if (enabled)
-                enabled = false;
+            mObserver = new RunnerUpdateStateObserver(this);
+            CSharp.Runner.AddObserver(mObserver);
         }
 
-        private void OnEnable()
+        private void Show()
         {
             if (mStatusObj == null)
             {
@@ -49,10 +46,11 @@ namespace UBlockly.UGUI
                 statusRect.anchorMin = statusRect.anchorMax = new Vector2(0, 1);
                 statusRect.pivot = 0.5f * Vector2.one;
             }
-            mStatusObj.SetActive(true);
+            if (!mStatusObj.activeInHierarchy)
+                mStatusObj.SetActive(true);
         }
 
-        private void OnDisable()
+        private void Hide()
         {
             if (mStatusObj != null)
             {
@@ -62,20 +60,21 @@ namespace UBlockly.UGUI
 
         private void OnDestroy()
         {
-            CSharp.Interpreter.RemoveObserver(mObserver);
+            CSharp.Runner.RemoveObserver(mObserver);
         }
 
-        public void UpdateStatus(InterpreterUpdateState args)
+        public void UpdateStatus(RunnerUpdateState args)
         {
             switch (args.Type)
             {
-                case InterpreterUpdateState.RunBlock:
+                case RunnerUpdateState.RunBlock:
                 {
                     mRunningBlocks.Push(args.RunningBlock);
                     mRunBlockView = BlocklyUI.WorkspaceView.GetBlockView(args.RunningBlock);
+                    Show();
                     break;
                 }
-                case InterpreterUpdateState.FinishBlock:
+                case RunnerUpdateState.FinishBlock:
                 {
                     if (mRunningBlocks.Count > 0 && mRunningBlocks.Peek() == args.RunningBlock)
                     {
@@ -83,23 +82,24 @@ namespace UBlockly.UGUI
                         if (mRunningBlocks.Count > 0)
                             mRunBlockView = BlocklyUI.WorkspaceView.GetBlockView(mRunningBlocks.Peek());
                     }
+                    Hide();
                     break;
                 }
-                case InterpreterUpdateState.Stop:
+                case RunnerUpdateState.Stop:
                 {
-                    enabled = false;
+                    Hide();
                     mRunningBlocks.Clear();
                     mRunBlockView = null;
                     break;
                 }
-                case InterpreterUpdateState.Error:
+                case RunnerUpdateState.Error:
                 {
                     if (!string.IsNullOrEmpty(args.Msg))
                     {
                         MsgDialog dialog = DialogFactory.CreateDialog("message") as MsgDialog;
                         dialog.SetMsg(args.Msg);    
                     }
-                    enabled = false;
+                    Hide();
                     mRunningBlocks.Clear();
                     mRunBlockView = null;
                     break;
@@ -119,16 +119,16 @@ namespace UBlockly.UGUI
             }
         }
 
-        private class InterpreterUpdateStateObserver : IObserver<InterpreterUpdateState>
+        private class RunnerUpdateStateObserver : IObserver<RunnerUpdateState>
         {
             private BlockStatusView mView;
 
-            public InterpreterUpdateStateObserver(BlockStatusView statusView)
+            public RunnerUpdateStateObserver(BlockStatusView statusView)
             {
                 mView = statusView;
             }
 
-            public void OnUpdated(object subject, InterpreterUpdateState args)
+            public void OnUpdated(object subject, RunnerUpdateState args)
             {
                 mView.UpdateStatus(args);
             }

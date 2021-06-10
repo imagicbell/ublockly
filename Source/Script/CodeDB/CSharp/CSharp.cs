@@ -31,7 +31,13 @@ namespace UBlockly
         private static CSharpInterpreter mInterpreter = null;
         public static CSharpInterpreter Interpreter
         {
-            get { return mInterpreter ?? (mInterpreter = new CSharpInterpreter(VariableNames, VariableDatas)); }
+            get { return mInterpreter ?? (mInterpreter = new CSharpInterpreter()); }
+        }
+
+        private static CSharpRunner mRunner = null;
+        public static CSharpRunner Runner
+        {
+            get { return mRunner ?? (mRunner = new CSharpRunner(VariableNames, VariableDatas)); }            
         }
 
         private static Names mVariableNames = null;
@@ -89,6 +95,7 @@ namespace UBlockly
         {
             mGenerator = null;
             mInterpreter = null;
+            mRunner = null;
             mVariableNames = null;
             mVariableDatas = null;
         }

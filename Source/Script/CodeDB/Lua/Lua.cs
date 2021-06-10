@@ -34,6 +34,12 @@ namespace UBlockly
         {
             get { return mInterpreter ?? (mInterpreter = new LuaInterpreter()); }
         }
+
+        private static LuaRunner mRunner = null;
+        public static LuaRunner Runner
+        {
+            get { return mRunner ?? (mRunner = new LuaRunner()); }
+        }
         
         private static Names mVariableNames = null;
         public static Names VariableNames
@@ -84,6 +90,7 @@ namespace UBlockly
         {
             mGenerator = null;
             mInterpreter = null;
+            mRunner = null;
             mVariableNames = null;
         }
     }

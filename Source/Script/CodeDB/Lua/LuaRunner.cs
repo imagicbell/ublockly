@@ -1,5 +1,5 @@
 ﻿/****************************************************************************
-Copyright 2016 sophieml1989@gmail.com
+Copyright 2021 sophieml1989@gmail.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,17 +15,20 @@ limitations under the License.
 
 ****************************************************************************/
 
-#if ULUA_SUPPORT
-using LuaInterface;
-#endif
-
 namespace UBlockly
 {
-    public partial class LuaInterpreter : Interpreter
+    public class LuaRunner : Runner
     {
-        public override CodeName Name
+        public override void Run(Workspace workspace)
         {
-            get { return CodeName.Lua; }
+            string code = Lua.Generator.WorkspaceToCode(workspace);
+            
+#if ULUA_SUPPORT
+            LuaState lua = new LuaState();
+            lua.Start();
+            lua.DoString(code);
+            lua = null;
+#endif
         }
     }
 }

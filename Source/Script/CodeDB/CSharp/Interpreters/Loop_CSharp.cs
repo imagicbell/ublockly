@@ -54,7 +54,7 @@ namespace UBlockly
         {
             if (++mLoopCount == Int16.MaxValue)
             {
-                CSharp.Interpreter.Error("Infinite loop!");
+                CSharp.Runner.Error("Infinite loop!");
                 mLoopCount = 0;
                 return true;
             }

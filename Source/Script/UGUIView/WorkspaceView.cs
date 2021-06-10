@@ -28,8 +28,8 @@ namespace UBlockly.UGUI
     {
         [SerializeField] private BaseToolbox m_Toolbox;
         [SerializeField] private RectTransform m_CodingArea;
-        [SerializeField] private Button m_RunBtn;
         [SerializeField] private BlockStatusView m_StatusView;
+        [SerializeField] private PlayControlView m_PlayControlView;
  
         public BaseToolbox Toolbox
         {
@@ -60,8 +60,7 @@ namespace UBlockly.UGUI
             codingAreaTrans.offsetMin = new Vector2(((RectTransform) m_Toolbox.transform).sizeDelta.x, codingAreaTrans.offsetMin.y);
             
             m_Toolbox.Init(workspace, ToolboxConfig.Load());
-            
-            m_RunBtn.onClick.AddListener(RunCode);
+            m_PlayControlView.Init(this);
             
             if (workspace.TopBlocks.Count > 0)
                 BuildViews();
@@ -69,10 +68,10 @@ namespace UBlockly.UGUI
 
         public void UnBindModel()
         {
+            m_PlayControlView.Reset();
+            
             mWorkspace.Dispose();
             mWorkspace = null;
-            
-            m_RunBtn.onClick.RemoveAllListeners();
         }
         
         #region manage block views
@@ -160,39 +159,8 @@ namespace UBlockly.UGUI
         
         #endregion
 
-        private UnityEvent mRunCodeEvent = null;
-
-        public void AddRunCodeListener(UnityAction listener)
-        {
-            if (mRunCodeEvent == null)
-                mRunCodeEvent = new Button.ButtonClickedEvent();
-            mRunCodeEvent.AddListener(listener);
-        }
-
-        public void RemoveRunCodeListener(UnityAction listener)
-        {
-            if (mRunCodeEvent != null)
-                mRunCodeEvent.RemoveListener(listener);
-        }
-
-        public void RunCode()
-        {
-            if (mRunCodeEvent != null)
-                mRunCodeEvent.Invoke();
-            
-//            Lua.Interpreter.Run(mWorkspace);
-            CSharp.Interpreter.Run(mWorkspace);
-            m_StatusView.enabled = true;
-        }
-
-        public void StopRunCode()
-        {
-            CSharp.Interpreter.Stop();
-            m_StatusView.enabled = false;
-        }
-
         /// <summary>
-        /// todo: entry
+        /// entry
         /// </summary>
         private void Awake()
         {
@@ -208,7 +176,6 @@ namespace UBlockly.UGUI
 
         public void Dispose()
         {
-            StopRunCode();
             UnBindModel();
             
             BlockViewSettings.Dispose();
