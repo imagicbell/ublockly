@@ -67,7 +67,7 @@ namespace UBlockly
         }
 
         /// <summary>
-        /// get the next block's running code 
+        /// get the next block's running code, connected with previous - next connection
         /// </summary>
         public CmdEnumerator GetNextCmd()
         {

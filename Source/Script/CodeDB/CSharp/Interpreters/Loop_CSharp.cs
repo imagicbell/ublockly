@@ -66,10 +66,10 @@ namespace UBlockly
         /// </summary>
         public static LoopCmdtor FindParentLoopCmdtor(Block block)
         {
-            Block loopBlock = block.ParentBlock;
+            Block loopBlock = block.GetSurroundParent();
             while (loopBlock != null && !IsLoopBlock(loopBlock))
             {
-                loopBlock = loopBlock.ParentBlock;
+                loopBlock = loopBlock.GetSurroundParent();
             }
 
             if (loopBlock == null) return null;
