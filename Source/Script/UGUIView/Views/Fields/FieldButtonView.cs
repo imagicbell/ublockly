@@ -118,7 +118,7 @@ namespace UBlockly.UGUI
                 width = m_Image.mainTexture.width;
             }
             width += mHorizontalMargin;
-            Debug.LogFormat(">>>>> CalculateSize-Button: text: {0}, width: {1}", m_Label.text, width);
+            //Debug.LogFormat(">>>>> CalculateSize-Button: text: {0}, width: {1}", m_Label.text, width);
             return new Vector2(width, BlockViewSettings.Get().ContentHeight);
         }
     }
