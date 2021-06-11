@@ -1,6 +1,20 @@
 # UBlocky &middot; [![CI](https://github.com/imagicbell/ublockly/actions/workflows/ci.yml/badge.svg)](https://github.com/imagicbell/ublockly/actions/workflows/ci.yml)
 
-Please read the following blogs for detailed explanation of ublockly:
+![](Doc/glimpse.png)
+
+
+
+This library reimplements [Google Blockly](https://developers.google.com/blockly) in Unity. It has:
+
+1. **full implementation of the block models in Google Blockly.**
+2. **automatic block generation from the semantics definition in json.**
+3. **a C# interpreter for blocks, translating blocks into C# code for execution.**
+4. **a C# code runner, enabling full control of the execution of block code. Debug mode is also supported.**
+5. **an auto layout UI system based on UGUI, supporting automatic sizing and positioning of blocks.**
+
+For instructions on how to use, please see the content below.
+
+If you are interested in how I implement this library, welcome to read these blogs:
 
 1. [Introduction](https://imagicbell.github.io/posts/2017-10-11-blockly-one)
 2. [Blockly Model](https://imagicbell.github.io/posts/2017-10-14-blockly-two)
@@ -8,7 +22,7 @@ Please read the following blogs for detailed explanation of ublockly:
 4. [UGUI Design](https://imagicbell.github.io/posts/2017-10-31-blockly-four)
 
 
-Have fun with [2 game demo](https://github.com/imagicbell/ublocklygame).
+Also have fun with [2 game demos](https://github.com/imagicbell/ublocklygame).
 
 ## HOW TO RUN
 
@@ -138,8 +152,18 @@ There are two **Settings** under `ublockly/UserData/Resources`.
 
    This is where to tweak the look of blocks. Currently you may just leave it there.
 
+
+
+## Debug Mode
+
+Welcome to use the debug mode:v:. Please see this video on how to use it.
+
+[Video link](https://youtu.be/U1bwXHrmnPw)
+
+
+
 ## A detailed guide by contributors
-   
+
    Also check this cool [guide](https://hackmd.io/@beBvDP44ShyK5VorFbhGcw/H1Qbb1HBu), written by [Toamig](https://github.com/toamig) and [LockDownPT](https://github.com/LockDownPT), for detailed instructions on the usage of ublockly, e.g. changing languages, creating new categories/blocks, etc.
 
 
@@ -157,6 +181,7 @@ There are two **Settings** under `ublockly/UserData/Resources`.
 
       [LockDownPT](https://github.com/LockDownPT)
       
+
    Many thanks to these cool guys!
       
 
