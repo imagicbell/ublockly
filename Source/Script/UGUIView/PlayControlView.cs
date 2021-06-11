@@ -160,10 +160,6 @@ namespace UBlockly.UGUI
 
         private void ShowCallstack()
         {
-            List<string> callstack = CSharp.Runner.GetCallStack();
-            if (callstack == null)
-                return;
-            
             m_PanelCallstack.SetActive(true);
             
             Transform parent = m_prefabCallstackText.transform.parent;
@@ -171,6 +167,10 @@ namespace UBlockly.UGUI
             {
                 child.gameObject.SetActive(false);
             }
+            
+            List<string> callstack = CSharp.Runner.GetCallStack();
+            if (callstack == null)
+                return;
 
             int index = 1;
             foreach (string str in callstack)
@@ -192,7 +192,18 @@ namespace UBlockly.UGUI
 
         private void HideCallstack()
         {
-            m_PanelCallstack.SetActive(false);
+            if (!m_ToggleCallstack.isOn)
+            {
+                m_PanelCallstack.SetActive(false);
+            }
+            else
+            {
+                Transform parent = m_prefabCallstackText.transform.parent;
+                foreach (Transform child in parent)
+                {
+                    child.gameObject.SetActive(false);
+                }
+            }
         }
 
         private void UpdateStatus(RunnerUpdateState args)
@@ -209,8 +220,14 @@ namespace UBlockly.UGUI
                     break;
                 case RunnerUpdateState.Stop:
                 case RunnerUpdateState.Error:
+                    HideCallstack();
                     EnableSettings(true);
                     SetMode(CSharp.Runner.RunMode);
+                    break;
+                case RunnerUpdateState.RunBlock:
+                case RunnerUpdateState.FinishBlock:
+                    if (m_ToggleCallstack.isOn)
+                        ShowCallstack();
                     break;
             }
         }
