@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,7 +12,8 @@ namespace UBlockly.UGUI
         [SerializeField] private Button m_BtnPause;
         [SerializeField] private Button m_BtnStop;
         [SerializeField] private Button m_BtnStep;
-        [SerializeField] private Toggle m_ToggleRunSync;
+        [SerializeField] private Toggle m_ToggleASync;
+        [SerializeField] private Toggle m_ToggleSync;
         [SerializeField] private Toggle m_ToggleCallstack;
         [SerializeField] private GameObject m_PanelCallstack;
         [SerializeField] private GameObject m_prefabCallstackText;
@@ -27,27 +27,20 @@ namespace UBlockly.UGUI
             mWorkspaceView = workspaceView;
             mObserver = new RunnerUpdateStateObserver(this);
             CSharp.Runner.AddObserver(mObserver);
-
-            m_ToggleNormal.isOn = true;
-            SetMode(Runner.Mode.Normal);
             
-            m_ToggleNormal.onValueChanged.AddListener(on =>
-            {
-                SetMode(Runner.Mode.Normal);
-            });
-
-            m_ToggleDebug.onValueChanged.AddListener(on =>
-            {
-                SetMode(Runner.Mode.Step);
-            });
-
             m_BtnRun.onClick.AddListener(OnRun);
             m_BtnPause.onClick.AddListener(OnPause);
             m_BtnStop.onClick.AddListener(OnStop);
             m_BtnStep.onClick.AddListener(OnStep);
 
-            m_ToggleRunSync.isOn = false;
-            m_ToggleRunSync.onValueChanged.AddListener(SwitchSync);
+            m_ToggleNormal.isOn = true;
+            SetMode(Runner.Mode.Normal);            
+            m_ToggleNormal.onValueChanged.AddListener(on => SetMode(Runner.Mode.Normal));
+            m_ToggleDebug.onValueChanged.AddListener(on => SetMode(Runner.Mode.Step));
+
+            m_ToggleASync.isOn = true;
+            m_ToggleASync.onValueChanged.AddListener(on => SwitchSync(false));
+            m_ToggleSync.onValueChanged.AddListener(on => SwitchSync(true));
 
             m_ToggleCallstack.isOn = false;
             HideCallstack();
@@ -77,7 +70,8 @@ namespace UBlockly.UGUI
         {
             m_ToggleNormal.enabled = enable;
             m_ToggleDebug.enabled = enable;
-            m_ToggleRunSync.enabled = enable;
+            m_ToggleASync.enabled = enable;
+            m_ToggleSync.enabled = enable;
         }
 
         private void SetMode(Runner.Mode mode)
