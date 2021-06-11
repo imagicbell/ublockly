@@ -146,7 +146,10 @@ namespace UBlockly
             foreach (CmdRunner runner in mCodeRunners)
             {
                 runner.Stop();
+                GameObject.Destroy(runner.gameObject);
             }
+            mCodeRunners.Clear();
+            
             CSharp.Runner.FireUpdate(new RunnerUpdateState(RunnerUpdateState.Stop));
         }
 
@@ -163,9 +166,10 @@ namespace UBlockly
 
         public override void Step()
         {
-            foreach (CmdRunner runner in mCodeRunners)
+            //fix bug: mCodeRunners can be modified in loop. If runner finishes running, it is removed from the list
+            for (int i = mCodeRunners.Count - 1; i >= 0; i--)
             {
-                runner.Step();
+                mCodeRunners[i].Step();
             }
         }
 

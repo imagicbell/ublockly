@@ -81,8 +81,9 @@ namespace UBlockly.UGUI
                         mRunningBlocks.Pop();
                         if (mRunningBlocks.Count > 0)
                             mRunBlockView = BlocklyUI.WorkspaceView.GetBlockView(mRunningBlocks.Peek());
+                        else 
+                            Hide();
                     }
-                    Hide();
                     break;
                 }
                 case RunnerUpdateState.Stop:

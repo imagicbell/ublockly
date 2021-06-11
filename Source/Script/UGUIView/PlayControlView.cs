@@ -19,7 +19,6 @@ namespace UBlockly.UGUI
         [SerializeField] private GameObject m_prefabCallstackText;
 
         private WorkspaceView mWorkspaceView;
-        private Runner.Mode mCurMode = Runner.Mode.Normal;
         
         private RunnerUpdateStateObserver mObserver;
 
@@ -74,6 +73,13 @@ namespace UBlockly.UGUI
             CSharp.Runner.RemoveObserver(mObserver);
         }
 
+        private void EnableSettings(bool enable)
+        {
+            m_ToggleNormal.enabled = enable;
+            m_ToggleDebug.enabled = enable;
+            m_ToggleRunSync.enabled = enable;
+        }
+
         private void SetMode(Runner.Mode mode)
         {
             if (CSharp.Runner.CurStatus != Runner.Status.Stop)
@@ -82,9 +88,9 @@ namespace UBlockly.UGUI
                 return;
             }
             
-            mCurMode = mode;
+            CSharp.Runner.SetMode(mode);
 
-            if (mCurMode == Runner.Mode.Normal)
+            if (mode == Runner.Mode.Normal)
             {
                 m_BtnStep.gameObject.SetActive(false);
                 m_BtnStop.gameObject.SetActive(true);
@@ -103,20 +109,20 @@ namespace UBlockly.UGUI
         }
 
         private void OnRun()
-        {
-//            Lua.Runner.Run(mWorkspaceView.Workspace);
+        {            
+            m_BtnRun.gameObject.SetActive(false);
+            m_BtnPause.gameObject.SetActive(true);
+            EnableSettings(false);
 
             if (CSharp.Runner.CurStatus == Runner.Status.Stop)
             {
                 CSharp.Runner.Run(mWorkspaceView.Workspace);
+                //            Lua.Runner.Run(mWorkspaceView.Workspace);
             }
             else
             {
                 CSharp.Runner.Resume();
             }
-            
-            m_BtnRun.gameObject.SetActive(false);
-            m_BtnPause.gameObject.SetActive(true);
         }
 
         private void OnPause()
@@ -203,7 +209,8 @@ namespace UBlockly.UGUI
                     break;
                 case RunnerUpdateState.Stop:
                 case RunnerUpdateState.Error:
-                    SetMode(mCurMode);
+                    EnableSettings(true);
+                    SetMode(CSharp.Runner.RunMode);
                     break;
             }
         }

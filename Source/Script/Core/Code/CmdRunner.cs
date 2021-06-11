@@ -29,8 +29,27 @@ namespace UBlockly
         private Runner.Status curStatus = Runner.Status.Stop;
         public Runner.Status CurStatus { get { return curStatus; } } 
 
-        private Stack<CmdEnumerator> callStack = new Stack<CmdEnumerator>();
-        private Stack<IEnumerator> itorStack = new Stack<IEnumerator>();
+        private Stack<IEnumerator> callstack = new Stack<IEnumerator>();
+
+        private void PushCall(IEnumerator call)
+        {
+            callstack.Push(call);
+            if (call is CmdEnumerator)
+            {
+                Debug.Log(">>>>>enter + " + ((CmdEnumerator) call).Block.Type);
+                CSharp.Runner.FireUpdate(new RunnerUpdateState(RunnerUpdateState.RunBlock, ((CmdEnumerator) call).Block));
+            }
+        }
+
+        private void PopCall()
+        {
+            var call = callstack.Pop();
+            if (call is CmdEnumerator)
+            {
+                Debug.Log(">>>>>exit + " + ((CmdEnumerator) call).Block.Type);
+                CSharp.Runner.FireUpdate(new RunnerUpdateState(RunnerUpdateState.FinishBlock, ((CmdEnumerator) call).Block));
+            }
+        }
 
         private Action finishCb = null;
 
@@ -45,14 +64,15 @@ namespace UBlockly
         public void StartRun(CmdEnumerator entryCall)
         {
             curStatus = Runner.Status.Running;
-            
-            itorStack.Clear();
-            callStack.Clear();
-            itorStack.Push(entryCall);
+
+            callstack.Clear();
+            PushCall(entryCall);
 
             Debug.LogFormat("<color=green>[CodeRunner - {0}]: begin - time: {1}.</color>", gameObject.name, Time.time);
 
-            StartCoroutine(Run());
+            //step mode: wait until Step() calls
+            if (RunMode != Runner.Mode.Step)
+                StartCoroutine(Run());
         }
 
         /// <summary>
@@ -60,10 +80,8 @@ namespace UBlockly
         /// </summary>
         public void Step()
         {
-            if (RunMode != Runner.Mode.Step)
-                return;
-
-            StartCoroutine(Run());
+            if (RunMode == Runner.Mode.Step)
+                StartCoroutine(Run());
         }
 
         /// <summary>
@@ -100,8 +118,7 @@ namespace UBlockly
             }
             else if (curStatus == Runner.Status.Pause)
             {
-                itorStack.Clear();
-                callStack.Clear();
+                callstack.Clear();
                 curStatus = Runner.Status.Stop;
             }
         }
@@ -112,22 +129,22 @@ namespace UBlockly
         /// </summary>
         IEnumerator Run()
         {
-            while (itorStack.Count > 0)
+            while (callstack.Count > 0)
             {
-                IEnumerator itor = itorStack.Peek();
-
-                if (itor is CmdEnumerator)
-                {
-                    //entry point of running a block (RunBlock)
-                    callStack.Push((CmdEnumerator) itor);
-                }
+                IEnumerator itor = callstack.Peek();
 
                 bool finished = true;
                 while (itor.MoveNext())
                 {
                     if (itor.Current is IEnumerator)
                     {
-                        itorStack.Push((IEnumerator) itor.Current);
+                        IEnumerator current = itor.Current as IEnumerator;
+                        PushCall(current);
+                        if (RunMode == Runner.Mode.Step && (current is CmdEnumerator))
+                        {
+                            yield break;
+                        }
+
                         finished = false;
                         break;
                     }
@@ -136,34 +153,35 @@ namespace UBlockly
                 }
 
                 if (!finished) continue;
-                itorStack.Pop();
+                PopCall();
 
                 if (itor is CmdEnumerator)
                 {
-                    //exit point of running a block
-                    callStack.Pop();
+                    //exit point of block
 
                     //push next block
                     CmdEnumerator next = ((CmdEnumerator) itor).GetNextCmd();
                     if (next != null)
                     {
-                        itorStack.Push(next);
+                        PushCall(next);
                     }
-                    
-                    if (RunMode == Runner.Mode.Step || curStatus == Runner.Status.Pause || curStatus == Runner.Status.Stop)
+
+                    if (RunMode == Runner.Mode.Step)
                     {
                         break;
                     }
                 }
+
+                if (curStatus == Runner.Status.Pause || curStatus == Runner.Status.Stop)
+                    break;
             }
 
             if (curStatus == Runner.Status.Stop)
             {
-                itorStack.Clear();
-                callStack.Clear();
+                callstack.Clear();
             }
 
-            if (itorStack.Count == 0)
+            if (callstack.Count == 0)
             {
                 Debug.LogFormat("<color=green>[CodeRunner - {0}]: end - time: {1}.</color>", gameObject.name, Time.time);
                 if (curStatus != Runner.Status.Stop)
@@ -180,11 +198,12 @@ namespace UBlockly
         public List<string> GetCallStack()
         {
             List<string> blocks = new List<string>();
-            foreach (CmdEnumerator itor in callStack)
+            IEnumerator[] calls = callstack.ToArray();
+            for (int i = calls.Length - 1; i >= 0; i--)
             {
-                blocks.Add(itor.Block.Type);
+                if (calls[i] is CmdEnumerator)
+                    blocks.Add(((CmdEnumerator) calls[i]).Block.Type);
             }
-            blocks.Reverse();
             return blocks;
         }
     }
