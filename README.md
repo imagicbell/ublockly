@@ -158,7 +158,7 @@ There are two **Settings** under `ublockly/UserData/Resources`.
 
 Welcome to use the debug mode:v:. Please see this video on how to use it.
 
-[Video link](https://youtu.be/U1bwXHrmnPw)
+[Video link](https://youtu.be/jVWgKLCPQPA)
 
 
 
