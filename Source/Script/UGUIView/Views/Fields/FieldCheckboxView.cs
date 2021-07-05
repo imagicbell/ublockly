@@ -54,8 +54,11 @@ namespace UBlockly.UGUI
 
         protected override void OnValueChanged(string newValue)
         {
+            bool isOn = newValue == "TRUE";
+            if (m_Toggle.isOn != isOn)
+                m_Toggle.isOn = isOn;
         }
-        
+
         protected override Vector2 CalculateSize()
         {
             return new Vector2(uiWidth, BlockViewSettings.Get().ContentHeight);

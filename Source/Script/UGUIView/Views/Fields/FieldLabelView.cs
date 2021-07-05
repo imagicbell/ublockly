@@ -48,6 +48,9 @@ namespace UBlockly.UGUI
 
         protected override void OnValueChanged(string newValue)
         {
+            if (!string.Equals(m_TextUI.text, newValue))
+                m_TextUI.text = newValue;
+            UpdateLayout(XY);
         }
 
         protected override Vector2 CalculateSize()
