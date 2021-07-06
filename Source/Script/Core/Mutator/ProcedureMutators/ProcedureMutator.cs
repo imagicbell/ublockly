@@ -67,11 +67,6 @@ namespace UBlockly
         {
             return mProcedure != null && mProcedure.DefinitionHasStatementBody;
         }
-
-        public override bool NeedEditor
-        {
-            get { return true; }
-        }
         
         public void Mutate(Procedure info)
         {

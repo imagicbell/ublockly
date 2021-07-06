@@ -27,6 +27,11 @@ namespace UBlockly
     [MutatorClass(MutatorId = "procedures_defnoreturn_mutator;procedures_defreturn_mutator")]
     public class ProcedureDefinitionMutator : ProcedureMutator
     {
+        public override bool NeedEditor
+        {
+            get { return true; }
+        }
+        
         /// Sets the mutator name, including setting the associated name field on the block.
         /// </summary>
         protected override void SetProcedureNameInternal(string name)

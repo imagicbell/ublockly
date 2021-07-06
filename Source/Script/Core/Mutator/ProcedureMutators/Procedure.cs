@@ -62,17 +62,13 @@ namespace UBlockly
         public static XmlElement Serialize(Procedure info, bool isDefinition)
         {
             XmlElement xmlElement = XmlUtil.CreateDom("mutation");
+            
+            string procName = info.Name;
+            xmlElement.SetAttribute("name", procName);
+            
             if (isDefinition)
             {
-                if (!info.DefinitionHasStatementBody)
-                {
-                    xmlElement.SetAttribute("statements", "false");
-                }
-            }
-            else
-            {
-                string procName = info.Name;
-                xmlElement.SetAttribute("name", procName);
+                xmlElement.SetAttribute("statements", !info.DefinitionHasStatementBody ? "false" : "true");
             }
             
             foreach (string argument in info.Arguments)

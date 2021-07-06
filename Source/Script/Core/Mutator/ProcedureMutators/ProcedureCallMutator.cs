@@ -26,6 +26,11 @@ namespace UBlockly
     [MutatorClass(MutatorId = "procedures_callnoreturn_mutator;procedures_callreturn_mutator")]
     public class ProcedureCallMutator : ProcedureMutator
     {
+        public override bool NeedEditor
+        {
+            get { return false; }
+        }
+        
         /// <summary>
         /// This retrieves the block's Input that represents the nth argument.
         /// </summary>

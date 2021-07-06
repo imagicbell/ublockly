@@ -139,6 +139,7 @@ namespace UBlockly
                 }
             }
             workspace.UpdateVariableStore(false);
+            workspace.UpdateProcedureDB();
             return newBlockIds;
         }
 

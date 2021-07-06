@@ -214,13 +214,15 @@ namespace UBlockly
         /// <returns></returns>
         public List<Block> GetAllBlocks()
         {
-            var blocks = this.GetTopBlocks(false);
-            for (int i = 0; i < blocks.Count; i++)
+            var topBlocks = this.GetTopBlocks(false);
+            List<Block> blocks = new List<Block>();
+            foreach (Block topBlock in topBlocks)
             {
-                blocks.AddRange(blocks[i].GetChildren());
+                blocks.AddRange(topBlock.GetDescendants());
             }
             return blocks;
         }
+
         #endregion
         
         
@@ -493,7 +495,31 @@ namespace UBlockly
             }
         }
 
-        #endregion 
+        #endregion
+
+        public void UpdateProcedureDB()
+        {
+            var allBlocks = GetAllBlocks();
+            List<Block> procedureDefs = new List<Block>();
+            List<Block> procedureCalls = new List<Block>();
+            foreach (var block in allBlocks)
+            {
+                if (ProcedureDB.IsDefinition(block))
+                    procedureDefs.Add(block);
+                else if (ProcedureDB.IsCaller(block))
+                    procedureCalls.Add(block);
+            }
+            //add definition first
+            foreach (Block block in procedureDefs)
+            {
+                ProcedureDB.AddDefinition(block);
+            }
+            //then add callers
+            foreach (Block block in procedureCalls)
+            {
+                ProcedureDB.AddCaller(block);
+            }
+        }
         
         static Dictionary<string,Workspace> mWorkspaceDB = new Dictionary<string, Workspace>();
 

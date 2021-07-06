@@ -400,14 +400,16 @@ namespace UBlockly.UGUI
                 case ProcedureUpdateData.Mutate:
                 {
                     //mutate the caller prototype view
-                    BlockView view = mProcedureCallerViews[updateData.ProcedureInfo.Name];
-                    if (!updateData.ProcedureInfo.Name.Equals(updateData.NewProcedureInfo.Name))
+                    BlockView view;
+                    if (mProcedureCallerViews.TryGetValue(updateData.ProcedureInfo.Name, out view))
                     {
-                        mProcedureCallerViews.Remove(updateData.ProcedureInfo.Name);
-                        mProcedureCallerViews[updateData.NewProcedureInfo.Name] = view;
+                        if (!updateData.ProcedureInfo.Name.Equals(updateData.NewProcedureInfo.Name))
+                        {
+                            mProcedureCallerViews.Remove(updateData.ProcedureInfo.Name);
+                            mProcedureCallerViews[updateData.NewProcedureInfo.Name] = view;
+                        }
+                        ((ProcedureMutator) view.Block.Mutator).Mutate(updateData.NewProcedureInfo);
                     }
-                    
-                    ((ProcedureMutator) view.Block.Mutator).Mutate(updateData.NewProcedureInfo);
                     break;
                 }
             }
