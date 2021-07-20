@@ -83,9 +83,15 @@ namespace UBlockly
 
         public Cmdtor GetBlockInterpreter(Block block)
         {
+            // function definition doesn't need interpreter. 
+            if (ProcedureDB.IsDefinition(block))
+                return null;
+
             Cmdtor cmdtor;
             if (!mCmdMap.TryGetValue(block.Type, out cmdtor))
-                throw new Exception(string.Format("Language {0} does not know how to interprete code for block type {1}.", Name, block.Type));
+                Debug.Log(string.Format(
+                    "<color='orange'>Language {0} does not know how to interprete code for block type {1}. If this block type doesn't need to be interpreted, please ignore this message.</color>",
+                    Name, block.Type));
             return cmdtor;
         }
     }
