@@ -133,11 +133,8 @@ namespace UBlockly.UGUI
         protected void UpdatePickedBlockView()
         {
             if (mPickedBlockView == null) return;
-            #if UNITY_EDITOR
-            if (!UnityEngine.Input.anyKey)
-            #else
-            if (UnityEngine.Input.touchCount == 0)
-            #endif
+            if (UnityEngine.Input.touchSupported && UnityEngine.Input.touchCount == 0
+                || !UnityEngine.Input.anyKey)
             {
                 mPickedBlockView.OnEndDrag(null);
                 mPickedBlockView = null;
