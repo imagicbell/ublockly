@@ -289,7 +289,7 @@ namespace UBlockly.UGUI
             
             //record the touch offset relative to the block transform
             Vector2 localPos;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform) ViewTransform.parent, UnityEngine.Input.mousePosition,
+            RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform) ViewTransform.parent, eventData.position,
                                                                     BlocklyUI.UICanvas.worldCamera, out localPos);
             mTouchOffset = XY - localPos;
         }
@@ -297,7 +297,7 @@ namespace UBlockly.UGUI
         public void OnDrag(PointerEventData eventData)
         {
             Vector2 localPos;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform) ViewTransform.parent, UnityEngine.Input.mousePosition,
+            RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform) ViewTransform.parent, eventData.position,
                                                                     BlocklyUI.UICanvas.worldCamera, out localPos);
             XY = localPos + mTouchOffset;
 

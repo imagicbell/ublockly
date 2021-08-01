@@ -19,6 +19,7 @@ limitations under the License.
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace UBlockly.UGUI
@@ -105,14 +106,16 @@ namespace UBlockly.UGUI
             maskTrans.sizeDelta = view.Size;
             Image maskImage = maskObj.AddComponent<Image>();
             maskImage.color = new Color(1, 1, 1, 0);
-            UIEventListener.Get(maskObj).onBeginDrag = data => PickBlockView(view);
+            UIEventListener.Get(maskObj).onBeginDrag = data => PickBlockView(data, view);
+            UIEventListener.Get(maskObj).onDrag = UpdatePickedBlockView;
+            UIEventListener.Get(maskObj).onEndDrag = EndPickBlockView;
             if (!BlockViewSettings.Get().MaskedInToolbox)
                 maskTrans.SetAsFirstSibling();
             
             return view;
         }
 
-        protected void PickBlockView(BlockView blockView)
+        protected void PickBlockView(PointerEventData data, BlockView blockView)
         {
             if (mPickedBlockView != null)
             {
@@ -125,22 +128,20 @@ namespace UBlockly.UGUI
             
             // clone a new block view for coding area
             mPickedBlockView = BlocklyUI.WorkspaceView.CloneBlockView(blockView, new Vector2(localPos.x, localPos.y));
-            mPickedBlockView.OnBeginDrag(null);
+            mPickedBlockView.OnBeginDrag(data);
 
             OnPickBlockView();
         }
 
-        protected void UpdatePickedBlockView()
+        protected void UpdatePickedBlockView(PointerEventData data)
         {
-            if (mPickedBlockView == null) return;
-            if (UnityEngine.Input.touchSupported && UnityEngine.Input.touchCount == 0
-                || !UnityEngine.Input.anyKey)
-            {
-                mPickedBlockView.OnEndDrag(null);
-                mPickedBlockView = null;
-                return;
-            }
-            mPickedBlockView.OnDrag(null);
+            mPickedBlockView.OnDrag(data);
+        }
+
+        protected void EndPickBlockView(PointerEventData data)
+        {
+            mPickedBlockView.OnEndDrag(data);
+            mPickedBlockView = null;
         }
 
         /// <summary>
@@ -450,7 +451,7 @@ namespace UBlockly.UGUI
 
         private void Update()
         {
-            UpdatePickedBlockView();
+//            UpdatePickedBlockView();
         }
 
         #endregion
