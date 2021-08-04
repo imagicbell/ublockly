@@ -135,7 +135,7 @@ namespace UBlockly.UGUI
 
         protected override void OnPickBlockView()
         {
-//            HideBlockCategory();
+            HideBlockCategory();
         }
 
         public override bool CheckBin(BlockView blockView)

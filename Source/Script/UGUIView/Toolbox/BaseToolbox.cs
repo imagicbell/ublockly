@@ -43,7 +43,6 @@ namespace UBlockly.UGUI
 
         protected Workspace mWorkspace;
         protected ToolboxConfig mConfig;
-        protected BlockView mPickedBlockView; 
 
         protected abstract void Build();
         protected virtual void OnPickBlockView(){}
@@ -107,8 +106,6 @@ namespace UBlockly.UGUI
             Image maskImage = maskObj.AddComponent<Image>();
             maskImage.color = new Color(1, 1, 1, 0);
             UIEventListener.Get(maskObj).onBeginDrag = data => PickBlockView(data, view);
-            UIEventListener.Get(maskObj).onDrag = UpdatePickedBlockView;
-            UIEventListener.Get(maskObj).onEndDrag = EndPickBlockView;
             if (!BlockViewSettings.Get().MaskedInToolbox)
                 maskTrans.SetAsFirstSibling();
             
@@ -117,31 +114,17 @@ namespace UBlockly.UGUI
 
         protected void PickBlockView(PointerEventData data, BlockView blockView)
         {
-            if (mPickedBlockView != null)
-            {
-                Debug.LogError("Toolbox-PickBlockView: Already picked a block view.");
-                return;
-            }
-
             // compute the local position of the block view in coding area
             Vector3 localPos = BlocklyUI.WorkspaceView.CodingArea.InverseTransformPoint(blockView.ViewTransform.position);
             
             // clone a new block view for coding area
-            mPickedBlockView = BlocklyUI.WorkspaceView.CloneBlockView(blockView, new Vector2(localPos.x, localPos.y));
-            mPickedBlockView.OnBeginDrag(data);
+            BlockView newBlockView = BlocklyUI.WorkspaceView.CloneBlockView(blockView, new Vector2(localPos.x, localPos.y));
+            newBlockView.OnBeginDrag(data);
+            
+            //change the dragging object as the newly created blockview 
+            data.pointerDrag = newBlockView.gameObject;
 
             OnPickBlockView();
-        }
-
-        protected void UpdatePickedBlockView(PointerEventData data)
-        {
-            mPickedBlockView.OnDrag(data);
-        }
-
-        protected void EndPickBlockView(PointerEventData data)
-        {
-            mPickedBlockView.OnEndDrag(data);
-            mPickedBlockView = null;
         }
 
         /// <summary>
