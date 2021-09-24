@@ -55,7 +55,7 @@ To change themes:
 
 ## How to add customerized blocks
 
-1. Add json definition for the block. Please follow the format of the built-in blocks under `ublockly/Source/JsonBlocks/`.
+1. Add json definition for the block. Please follow the format of the built-in blocks under `ublockly/Source/JsonBlocks/`. [This doc](https://hackmd.io/@beBvDP44ShyK5VorFbhGcw/H1Qbb1HBu#Create-a-new-block) provides a detailed explaination and instruction on the JSON definition.
 
    1. If you want to add a block in the existing category, just add the json definition in the existing json files.
 
