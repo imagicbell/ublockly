@@ -42,7 +42,7 @@ namespace UBlockly.UGUI
             m_HasElseToggle.isOn = mIfElseMutator.HasElse;
 
             m_ElseIfCountTitle.text = I18n.Get(MsgDefine.CONTROLS_IF_MSG_ELSEIF);
-            m_HasElseTitle.text = I18n.Get(MsgDefine.CONTROLS_IF_MSG_THEN);
+            m_HasElseTitle.text = I18n.Get(MsgDefine.CONTROLS_IF_MSG_ELSE);
             
             AddCloseEvent(() =>
             {
