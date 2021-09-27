@@ -16,10 +16,18 @@ For instructions on how to use, please see the content below.
 
 If you are interested in how I implement this library, welcome to read these blogs:
 
-1. [Introduction](https://imagicbell.github.io/posts/2017-10-11-blockly-one)
-2. [Blockly Model](https://imagicbell.github.io/posts/2017-10-14-blockly-two)
-3. [Code Generator, Interpreter and Runner](https://imagicbell.github.io/posts/2017-10-22-blockly-three)
-4. [UGUI Design](https://imagicbell.github.io/posts/2017-10-31-blockly-four)
+1. Introduction
+   * [en](https://imagicbell.github.io/posts/2021-6-10-ublockly-introduction)
+   * [cn](https://imagicbell.github.io/posts/2017-10-11-blockly-one)
+2. Blockly Model
+  * [en](https://imagicbell.github.io/posts/2021-6-11-ublockly-model)
+  * [cn](https://imagicbell.github.io/posts/2017-10-14-blockly-two)
+3. Code Interpreter and Runner
+   * [en](https://imagicbell.github.io/posts/2021-6-12-ublockly-interpreter-runner)
+   * [cn](https://imagicbell.github.io/posts/2017-10-22-blockly-three)
+4. UGUI Design
+   * [en](https://imagicbell.github.io/posts/2021-6-13-ublockly-ugui)
+   * [cn](https://imagicbell.github.io/posts/2017-10-31-blockly-four)
 
 
 Also have fun with [2 game demos](https://github.com/imagicbell/ublocklygame).
