@@ -49,6 +49,7 @@ namespace UBlockly.UGUI
                 
                 GameObject.Destroy(this.gameObject);
             });
+            
         }
 
         /// <summary>
@@ -67,10 +68,11 @@ namespace UBlockly.UGUI
         {
             mOnCloseEvent += onClose;
         }
-        
+
         public void OnPointerClick(PointerEventData eventData)
         {
-            GameObject.Destroy(this.gameObject);
+            if (eventData.rawPointerPress == gameObject)
+                GameObject.Destroy(this.gameObject);
         }
 
         protected virtual void OnInit(){}
