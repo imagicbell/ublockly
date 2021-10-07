@@ -384,6 +384,14 @@ namespace UBlockly
             int canConnect = this.CanConnectWithReason(candidate);
             if (canConnect != Connection.CAN_CONNECT)
                 return false;
+
+            // Don't connect to its sourceblock's children
+            Block candidateParent = candidate.SourceBlock.ParentBlock;
+            while (candidateParent != null) {
+                if (candidateParent == this.SourceBlock) 
+                    return false;
+                candidateParent = candidateParent.ParentBlock;
+            }
             
             // Don't offer to connect an already connected left (male) value plug to
             // an available right (female) value plug.  Don't offer to connect the
