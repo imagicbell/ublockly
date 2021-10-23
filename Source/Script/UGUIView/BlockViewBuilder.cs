@@ -63,6 +63,8 @@ namespace UBlockly.UGUI
                 blockPrefab = BlockViewSettings.Get().PrefabRootPrevNext;
             else if (block.PreviousConnection != null)
                 blockPrefab = BlockViewSettings.Get().PrefabRootPrev;
+            else if (block.NextConnection != null) 
+                blockPrefab = BlockViewSettings.Get().PrefabRootNext;
 
             GameObject blockObj = GameObject.Instantiate(blockPrefab);
             blockObj.name = "Block_" + block.Type;

@@ -44,6 +44,7 @@ namespace UBlockly.UGUI
         [SerializeField] public GameObject PrefabRoot;
         [SerializeField] public GameObject PrefabRootOutput;
         [SerializeField] public GameObject PrefabRootPrev;
+        [SerializeField] public GameObject PrefabRootNext;
         [SerializeField] public GameObject PrefabRootPrevNext;
 
         [SerializeField] public GameObject PrefabInputValue;
