@@ -124,12 +124,13 @@ namespace UBlockly
             if (string.IsNullOrEmpty(name))
                 return "unnamed";
 
-            name = Uri.EscapeUriString(name.Replace(" ", "_"));
-            Regex regex = new Regex(@"[^\w]");
-            regex.Replace(name, "_");
+            // remove the check of invalid characters in C#.
+            // name = Uri.EscapeUriString(name.Replace(" ", "_"));
+            // Regex regex = new Regex(@"[^\w]");
+            // regex.Replace(name, "_");
 
-            if ("0123456789".IndexOf(name[0]) != -1)
-                name = "my_" + name;
+            // if ("0123456789".IndexOf(name[0]) != -1)
+            //     name = "my_" + name;
             
             return name;
         }
