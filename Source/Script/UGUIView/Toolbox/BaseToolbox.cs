@@ -174,6 +174,9 @@ namespace UBlockly.UGUI
             
             //build createVar button
             GameObject obj = GameObject.Instantiate(BlockViewSettings.Get().PrefabBtnCreateVar);
+
+            obj.GetComponentInChildren<Text>().text = I18n.Get(MsgDefine.NEW_VARIABLE); 
+
             obj.transform.SetParent(parent, false);
             obj.GetComponentInChildren<Image>().color = mConfig.GetBlockCategory(Define.VARIABLE_CATEGORY_NAME).Color;
             obj.GetComponent<Button>().onClick.AddListener(() =>
