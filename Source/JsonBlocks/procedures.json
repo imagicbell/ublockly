@@ -1,7 +1,7 @@
 [
   {
     "type": "procedures_defnoreturn",
-    "message0": "to %1 %2",
+    "message0": "%{BKY_PROCEDURES_DEFNORETURN_TITLE} %1 %2",
     "args0": [
       {
         "type": "field_label",
@@ -20,7 +20,7 @@
   },
   {
     "type": "procedures_defreturn",
-    "message0": "to %1 %2",
+    "message0": "%{BKY_PROCEDURES_DEFNORETURN_TITLE} %1 %2",
     "args0": [
       {
         "type": "field_label",
@@ -32,7 +32,7 @@
         "name": "PARAMS"
       }
     ],
-    "message1": "return %1",
+    "message1": "%{BKY_PROCEDURES_DEFRETURN_RETURN} %1",
     "args1": [
       {
         "type": "input_value",
